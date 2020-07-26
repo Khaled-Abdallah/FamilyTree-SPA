@@ -1,0 +1,523 @@
+<div class="row" style="margin-bottom: 7px;margin-top: -8px">
+    <div class="col-sm-12">
+        <h4 class="page-title" style="font-size: 18px;padding-right: 5px; ">  تفاصيل المدونة </h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card widget-user" style="padding:9px;padding-top: 15px;">
+
+                <div class="col-sm-12">
+
+                        <div>
+                                <div class="card widget-user" style="padding-bottom: -40px;border:1px solid #cfd4cf;padding: 20px">
+                                    <!-- data -->
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <!-- <img [src]= "blog?.image == null || blog?.image == '' ? '../../../assets/users/user.png' : imgUrl + blog?.image" class="img-responsive rounded-circle" alt="user"
+                                                style="border:1px solid gray;width: 70px;height: 66px;"> -->
+                                            <!-- <div class="wid-u-info" style="width:100%"> -->
+                                                <div>
+                                                    <h4 class="m-t-0 m-b-5" style="color:green">{{blog?.byUser}}</h4>
+                                                    <p class="m-b-5 font-14" style="color:green;font-weight: bold;font-size: 13px">{{blog?.title}}</p>
+                                                    <p class="text-muted m-b-5 font-13">
+                                                        {{blog?.createdDateM | date}}  -
+                                                        {{blog?.createdDateH | date :'yyyy/MM/dd'}} &nbsp;
+                                                        ( &nbsp;{{blog?.createdDateM | amLocale:'ar' | amTimeAgo}}&nbsp;)
+                                                    </p>
+                                                    <p class="text-muted m-b-5 font-13">
+                                                            عدد التعليقات ( {{ blog?.commentCount }} ) 
+                                                       </p>  
+                                                    <p class="text-muted m-b-5 font-13">
+                                                            السماح بالتعليقات ( 
+                                                                <span *ngIf="blog?.allowComment"> <i class="fa fa-check" style="color:#1aaf2e"></i></span>
+                                                                <span *ngIf="!blog?.allowComment"> <span class="fa fa-times" style="color:black"></span></span>
+                                                     )
+                                                       </p>  
+                                                </div>                                                
+                                            <!-- </div> -->
+                                        </div>
+                                        <div class="col-xl-2 col-md-10" >
+                                                <div  *ngIf="blog.isAccepted" style="text-align: center;">
+                                                        حالة المدونة
+                                                        <div>
+                                                            <span class="badge badge-success"
+                                                                style="font-size: 12px;padding: 6px">تم القبول
+                                                            </span>
+                                                        </div>
+                                                    </div>   
+                                                    <div  *ngIf="blog.isAccepted == false" style="text-align: center;">
+                                                            حالة المدونة
+                                                            <div>
+                                                                <span class="badge badge-danger"
+                                                                    style="font-size: 12px;padding: 6px">مرفوضة
+                                                                </span>
+                                                            </div>
+                                                    </div>
+                                                    <div *ngIf="blog.isAccepted == null" style="text-align: center;">
+                                                        حالة المدونة
+                                                        <div>
+                                                            <span class="badge badge-inverse" style="font-size: 10px;padding: 6px">قيد
+                                                                الانتظار
+                                                            </span>
+                                                        </div>
+                                                    </div>  
+                                        </div>                    
+                                    </div>
+                                       <!-- description -->
+                                    <div class="row">
+                                            <div class="col-xl-12 col-md-12" >
+                                                    <div style="margin-right: 83px;margin-top: 10px;">
+                                                            <p style="color:black;font-size: 14px">
+                                                                    {{blog?.description}}
+                                                            </p>
+                                                    </div>
+                                            </div>
+                                    </div>
+        
+                                    <!-- buttons -->
+                                    <div class="row" style="margin-top:-10px;text-align: center">
+                                        
+                                        <div class="col-xl-12 col-md-10;">
+                                                <!-- <div style="padding-top:10px;border-top: 1px solid rgb(206, 202, 202)"> -->
+                                            <div style="padding-top:10px;">
+                                                    <button [disabled]="blog.isAccepted" 
+                                                        class="btn btn-sm btn-radius btn-bgcolor" 
+                                                        style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                        type="button" (click)="setAcceptStatus(true, blog.id)">
+                                                    قبول
+                                                &nbsp;<i class="fa fa-check" aria-hidden="true"></i>&nbsp;
+                                                <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingAcceptedStatus"></i>
+                                                    </button> &nbsp;     
+
+                                               <!-- <div *ngIf="blog.isAccepted || !blog.isAccepted"> -->
+                                                    <button [disabled]="blog.isAccepted == false"
+                                                        class="btn btn-sm btn-radius btn-bgcolor" 
+                                                        style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                        type="button" (click)="confirmNotAccept(notAcceptTemplate,blog.userId, blog.id)"> 
+                                                        رفض
+                                                        &nbsp;<span class="fa fa-times"></span>&nbsp;
+                                                        <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingNotAcceptedStatus"></i>
+                                                    </button> &nbsp;  
+                                               <!-- </div> -->
+
+                                                <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                    type="submit" (click)="openConfirmDelete(deleteBlogTemplate, blog.id)">
+                                                    حذف
+                                                    &nbsp;<i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+        
+        
+                                        </div>
+                                    </div>
+        
+                                </div>
+        
+                        </div>
+
+                        <!-- comments -->
+                        <div style="padding-top: 10px;margin-bottom: 0px;" class="col-xl-12">
+                            <div class="float-right">
+                              <div style="width: 270px;margin-top: -8px;text-align: left">
+                                <button type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="showAdd(newCommentTemplate)">إضافة
+                                  تعليق
+                                  &nbsp;<span class="fa fa-plus"></span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        <tabset class="member-tabset">
+                            <tab heading="تعليقات المدونة">
+                                <div class="row">
+                                   <div class="col-12">
+                                        <div *ngFor="let comment of comments.data | paginate: config" 
+                                          style="padding-bottom: -40px;padding-right: 20px;padding-left: 20px;padding-bottom: 10px;padding-top: -5px;border-radius: 5px;margin-bottom: 15px;border-bottom:1px solid  rgb(222, 226, 222)">
+                                            <!-- data -->
+                                            <div class="row">
+                                                <div class="col-11" >
+                                                    <img [src]= "comment?.image == null || comment?.image == '' ? '../../../assets/users/user.png' : imgUrl + comment?.image"  class="img-responsive rounded-circle" alt="user"
+                                                        style="border:1px solid gray;width:50px;height:45px">
+                                                    <div class="wid-u-info">
+                                                        <div>
+                                                            <h4 class="m-t-5 m-b-5" style="color:green">{{comment?.byUser}}</h4>
+                                                            <p class="m-b-5 font-13">
+                                                                {{comment?.createdDateM | date}} 
+                                                                - {{comment?.createdDateH | date :'yyyy/MM/dd'}}
+                                                                &nbsp;( &nbsp;{{comment?.createdDateM | amLocale:'ar' | amTimeAgo}}&nbsp;)
+                                                            </p>                                                            
+                                                        </div>                                                
+                                                    </div>
+                                                    <div style="margin-right: 90px;">
+                                                        <p class="m-b-5 font-13" style="color:black">
+                                                            {{comment?.comment}}
+                                                        </p>
+                                                    </div>
+                                                </div> 
+                                                <div class="col-1"  style="text-align: left;padding-top: 10px">
+                                                    <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                        type="submit" (click)="openConfirmDelete(deleteCommentTemplate, comment.id)">
+                                                        حذف
+                                                        &nbsp;<i class="fas fa-trash"></i>
+                                                </button>
+                                                </div>                                                                                
+                                            </div>                                                                                      
+                                     </div>
+        
+                                   </div>
+                                </div>
+
+                                <div class="row" *ngIf="comments.data?.length > 0" >
+                                        <div class="col-7" style="text-align: left;margin-top: 23px;height: 40px">
+                                            <pagination-controls 
+                                            id ="blogComments"
+                                            class="my-pagination" 
+                                            (pageChange)="getNextComment(blog.id, $event)" 
+                                            directionLinks="true" 
+                                            autoHide="false" 
+                                            responsive="true" 
+                                            previousLabel="السابق" 
+                                            nextLabel="التالى"
+                                            screenReaderPaginationLabel="Pagination" 
+                                            screenReaderPageLabel="page"
+                                            screenReaderCurrentLabel="You're on page">
+                                        </pagination-controls>
+                                    </div>
+                                    <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px">
+                                        <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingData"></i>
+                                    </div>
+                                </div>                             
+
+                                <div *ngIf="comments.data?.length == 0" style="text-align: center;font-size: 16px;padding: 20px;margin-bottom: 10px">
+                                            لا توجد تعليقات
+                                </div>
+                            </tab>
+
+                            <tab heading="تعليقات قيد الانتظار">
+                                <div class="row" style="padding-left:25px;padding-right:25px;padding-top: 17px" *ngIf="commentsNotAccepted.data?.length > 0">
+                                    <table class="table table-hover table-bordered m-0">
+                                        <thead>
+                                            <tr style="text-align: center">
+                                                <th  style="width:55px">الصورة </th>
+                                                <th style="width: 230px;">الاسم</th>
+                                                <th style="width: 200px;">تاريخ التعليق</th>
+                                                <!-- <th style="width: 400px;"> التعليق</th> -->
+                                                <th style="width: 180px;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let userCom of commentsNotAccepted.data | paginate: config2">
+                                                <td class="align-middle" style="text-align: center">
+                                                    <div class="inbox-item-img" >
+                                                        <img [src]= "userCom?.userImage == null || userCom?.userImage == '' ? '../../../assets/users/user.png' : imgUrl + userCom?.userImage" class="rounded-circle" 
+                                                        style="width:55px;height:45px; border: 1px solid rgb(180, 180, 192);margin-right:8px"
+                                                            alt="user">
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle" style="text-align: right;">{{userCom?.byUser}}</td>
+                                                <td class="align-middle" style="text-align: center">
+                                                    <p>
+                                                        {{userCom?.createdDateM | date}} -
+                                                        {{userCom?.createdDateH | date :'yyyy/MM/dd'}}
+                                                        &nbsp;( &nbsp;{{userCom?.createdDateM | amLocale:'ar' | amTimeAgo}}&nbsp;)
+                                                    </p>
+                                                  </td>
+                                                <!-- <td>{{ userCom?.comment | slice:0:50 }} ....</td> -->
+                                                
+                                                <td class="align-middle" style="text-align: center">
+                                                    <button (click)="getUserComment(commentDetailsTemplate,userCom?.id)" class="btn btn-sm btn-radius btn-bgcolor"
+                                                        style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                        type="button">
+                                                        تفاصيل التعليق
+                                                        &nbsp;
+                                                        <i class="fas fa-info-circle"></i>
+                                                    </button> &nbsp;
+
+                                                    <button (click)="acceptBlogUserComment(blogDetailsId, userCom.id, true )" class="btn btn-sm btn-radius btn-bgcolor"
+                                                    style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                    type="button">
+                                                    قبول
+                                                    &nbsp;<i class="fa fa-check" aria-hidden="true"></i>
+                                                        <i class="fa fa-spinner fa-spin" style="font-size:15px;color: white" *ngIf="loadingAcceptUserCommentData == userCom.id"></i>
+                                                </button>&nbsp;
+
+                                                <button (click)="refusalBlogUserComment(blogDetailsId, userCom.id, false )" class="btn btn-sm btn-radius btn-bgcolor"
+                                                style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                type="button">
+                                                رفض
+                                                &nbsp;<span class="fa fa-times"></span>
+                                                    <i class="fa fa-spinner fa-spin" style="font-size:15px;color: white" *ngIf="loadingRefusalCommentStatus == userCom.id"></i>
+                                            </button>
+                                                  </td>
+                                            </tr>
+                    
+                                        </tbody>
+                                    </table>
+                                   
+                               </div>
+                                  
+                                   <div class="row" *ngIf="commentsNotAccepted.data?.length > 0">
+                                    <div class="col-7" *ngIf="commentsNotAccepted.data?.length > 0" style="text-align: left;margin-top: 23px;height: 40px">
+                                        
+                                            <pagination-controls 
+                                                id="blogCommentsNotAccept" class="my-pagination" 
+                                                (pageChange)="getNextCommentsNotAccept(this.blog.id, $event)" maxSize="10"
+                                                directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
+                                                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                                                screenReaderCurrentLabel="You're on page">
+                                            </pagination-controls>
+                                            
+                                    </div>
+                                    <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px" *ngIf="commentsNotAccepted.data?.length > 0">
+                                        <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingDataComNotAccepted"></i>
+                                    </div>
+                                  </div>
+                              
+                  
+                               <div *ngIf="commentsNotAccepted.data?.length == 0" style="border-radius: 5px;text-align: center;font-size: 16px;padding: 20px;margin-bottom: 10px">
+                                لا توجد تعليقات قيد الانتظار
+                              </div>
+                            </tab>
+
+                            <tab heading="تعليقات مرفوضة">
+                                <div class="row" style="padding-left:25px;padding-right:25px;padding-top: 17px" *ngIf="refusComments.data?.length > 0">
+                                    <table class="table table-hover table-bordered m-0">
+                                        <thead>
+                                            <tr style="text-align: center">
+                                                <th  style="width:65px">الصورة </th>
+                                                <th style="width: 230px;">الاسم</th>
+                                                <th style="width: 200px;">تاريخ التعليق</th>
+                                                <th style="width: 400px;"> التعليق</th>
+                                                <th style="width: 180px;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let refusComm of refusComments.data | paginate: config3">
+                                                <td class="align-middle" style="text-align: center">
+                                                    <div class="inbox-item-img" >
+                                                        <img [src]= "refusComm?.userImage == null || refusComm?.userImage == '' ? '../../../assets/users/user.png' : imgUrl + refusComm?.userImage" class="rounded-circle" 
+                                                        style="width:65px;height:45px; border: 1px solid rgb(180, 180, 192)"
+                                                            alt="user">
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle" style="text-align: right;">{{refusComm?.byUser}}</td>
+                                                <td class="align-middle" style="text-align: center">
+                                                    <p>
+                                                        {{refusComm?.createdDateM | date}} -
+                                                        {{refusComm?.createdDateH | date :'yyyy/MM/dd'}}
+                                                        <br>
+                                                        ( &nbsp;{{refusComm?.createdDateM | amLocale:'ar' | amTimeAgo}}&nbsp;)
+                                                    </p>
+                                                  </td>
+                                                <td>{{ refusComm?.comment }}</td>
+                                                
+                                                <td class="align-middle" style="text-align: center">
+                                                <button (click)="confirmDeleteRefuseComment(deleteRefuseCommentTemplate, refusComm.id )" class="btn btn-sm btn-radius btn-bgcolor"
+                                                style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                    type="button">
+                                                    حذف
+                                                    &nbsp;<i class="fas fa-trash"></i>
+                                                    <i class="fa fa-spinner fa-spin" style="font-size:15px;color: white" *ngIf="loadingRefusalCommentStatus == refusComm.id"></i>
+                                            </button>
+                                                  </td>
+                                            </tr>
+                    
+                                        </tbody>
+                                    </table>
+                               </div>
+                                  
+                                   <div class="row" *ngIf="refusComments.data?.length > 0">
+                                    <div class="col-7" *ngIf="refusComments.data?.length > 0" style="text-align: left;margin-top: 23px;height: 40px">
+                                        
+                                           <pagination-controls 
+                                                id="blogCommentsRefuse" class="my-pagination" 
+                                                (pageChange)="getNextRefusalComments(this.blog.id, $event)" maxSize="10"
+                                                directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
+                                                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                                                screenReaderCurrentLabel="You're on page">
+                                            </pagination-controls>
+                                            
+                                    </div>
+                                    <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px" *ngIf="refusComments.data?.length > 0">
+                                        <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingRefusComments"></i>
+                                    </div>
+                                  </div>
+                              
+                  
+                               <div *ngIf="refusComments.data?.length == 0" style="border-radius: 5px;text-align: center;font-size: 16px;padding: 20px;margin-bottom: 10px">
+                                لا توجد تعليقات مرفوضة
+                              </div>
+                            </tab>
+                        </tabset>
+                        
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Confirm delete -->
+<ng-template #deleteBlogTemplate>
+        <div class="modal-body text-center">
+            <p>هل تريد حذف المدونة؟</p>
+            <button type="button" class="btn btn-sm btn-bgcolor btn-radius"  (click)="deleteBlog()">موافق
+                &nbsp;<i class="fa fa-spinner fa-spin" style="font-size:20px;" *ngIf="loadingBlogDel"></i></button> &nbsp;
+            <button type="button" class="btn btn-sm btn-secondary waves-effect btn-radius" (click)="closeModal()">إالغاء</button>
+        </div>
+</ng-template>
+
+<!-- Confirm delete -->
+<ng-template #deleteCommentTemplate>
+        <div class="modal-body text-center">
+            <p>  هل تريد حذف التعليق؟</p>
+            <button type="button" class="btn btn-radius btn-sm btn-bgcolor" style="background-color:rgb(32, 133, 32);color:white" (click)="deleteComment()">موافق
+                &nbsp;<i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingCommentDel"></i></button> &nbsp;
+            <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()">إالغاء</button>
+        </div>
+</ng-template>
+
+<!-- Modal new -->
+<ng-template #newCommentTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">إضافة تعليق</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body" style="margin-top:7px;margin-bottom: 13px" >
+        <label>التعليق</label>
+        <textarea class="form-control" #commnent rows="5" placeholder="اضف تعليق"></textarea>
+        <div *ngIf="commentRequired" style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert">
+            التعليق مطلوب
+      </div>
+    </div>
+
+    <div style="text-align: center"> <hr>          
+        <button class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="addComment(commnent.value)">
+            &nbsp;   حفظ
+        &nbsp;<i class="fas fa-save"></i>
+        &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingCommentData"></i>
+    </button>&nbsp;
+    <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()"
+        data-dismiss="modal">اغلاق
+        &nbsp;<span class="fa fa-times"></span>
+    </button>
+   </div>
+
+    <!-- <div class="modal-footer">
+        <button class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="addComment(commnent.value)">
+                &nbsp;   حفظ
+            &nbsp;<i class="fas fa-save"></i>
+            &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingCommentData"></i>
+        </button>
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()"
+            data-dismiss="modal">اغلاق
+            &nbsp;<span class="fa fa-times"></span>
+        </button>
+    </div> -->
+</ng-template>
+
+<!-- Modal details -->
+<ng-template #commentDetailsTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">تفاصيل التعليق</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+      
+         <div class="row">
+                <div class="col-xl-2" style="text-align: left;">
+                    <img [src]= "userComment?.userImage == null || userComment?.userImage == '' ? '../../../assets/users/user.png' : imgUrl + userComment?.userImage"
+                         class=" rounded-circle" alt="user" style="border:1px solid gray;width: 70px;height:65px;">
+                </div>
+                <div class="col-xl-8">
+                    <div class="wid-u-info" style="width:100%">
+                        <div>
+                            <h5 class="m-t-0 m-b-5" style="color:green">{{userComment?.byUser}}</h5>                            
+                            <p class="text-muted m-b-5 font-13">
+                                    <span style="font-weight: bold;font-size: 12px">  تاريخ الاضافة &nbsp;: &nbsp;</span>
+                                  
+                                    {{userComment?.createdDateM | date }} &nbsp; -&nbsp;
+                                    {{userComment?.createdDateH | date :'yyyy/MM/dd'}} 
+                                    &nbsp;( &nbsp;{{userComment?.createdDateM | amLocale:'ar' | amTimeAgo}}&nbsp;)
+                                </p>
+                        </div>
+                    </div>
+                </div>
+                                       
+            </div>
+
+            <!-- description -->
+            <div class="row" style="margin-top:10px;">        
+                <div class="col-xl-12">
+                  <p style="margin-right:123px">
+                    {{userComment?.comment}}
+                  </p>
+                </div>
+            </div>            
+
+         <!-- <div class="modal-footer">
+                <div class="row">                      
+                   <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()" data-dismiss="modal">اغلاق
+                       &nbsp;<span class="fa fa-times"></span>
+                   </button>
+                    </div>                                
+        </div> -->
+        
+
+    </div>
+
+    <div style="text-align: center"> <hr>          
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()" data-dismiss="modal">اغلاق
+            &nbsp;<span class="fa fa-times"></span>
+        </button>
+   </div>
+
+</ng-template>
+ 
+<!-- Modal confirm Desline -->
+<ng-template #notAcceptTemplate>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">سبب رفض المدونة</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    
+        <div class="modal-body" style="margin-top:2px;margin-bottom: 13px" > 
+           سيتم ارسال بريد اليكترونى بسبب الرفض الى (<strong>{{blog?.byUser}}</strong> )
+           <br><br>
+            <textarea class="form-control" #reason rows="3" placeholder="سبب الرفض"></textarea>
+            <div *ngIf="reasonRequired" style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert">
+                    سبب الرفض مطلوب
+            </div>
+        </div>        
+    
+        <div style="text-align: center"> <hr>
+            <button class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="setNotAcceptStatus(false,reason.value)">
+                    &nbsp;   ارسال
+                &nbsp;<i class="fas fa-save"></i>
+                &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingReasonStatus"></i>
+            </button> &nbsp;
+            <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()"
+                data-dismiss="modal">اغلاق
+                &nbsp;<span class="fa fa-times"></span>
+            </button>
+        </div>
+</ng-template>
+
+<!-- Confirm delete -->
+<ng-template #deleteRefuseCommentTemplate>
+    <div class="modal-body text-center">
+        <p>  هل تريد حذف التعليق؟</p>
+        <button type="button" class="btn btn-radius btn-sm btn-bgcolor" style="background-color:rgb(32, 133, 32);color:white" 
+            (click)="deleteRefuseComment()">موافق
+            &nbsp;<i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingCommentDel"></i></button> &nbsp;
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()">إالغاء</button>
+    </div>
+</ng-template>
+

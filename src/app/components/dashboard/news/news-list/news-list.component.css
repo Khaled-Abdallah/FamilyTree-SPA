@@ -1,0 +1,18 @@
+.custom-fa{
+    color:red;
+}
+
+.set-color{
+    background-color: red;
+}
+
+
+.table tr.active td {
+    background-color:#efefe8 !important;
+  }
+
+
+.ng-select.custom ::ng-deep .ng-select-container  {
+    padding-right: 20px;
+    
+}

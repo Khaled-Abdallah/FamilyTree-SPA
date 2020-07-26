@@ -1,0 +1,410 @@
+<div class="row" style="margin-bottom: 7px;margin-top: -8px">
+    <div class="col-12">
+        <h4 class="page-title" style="font-size: 18px;padding-right: 5px; ">شجرة العائلة
+        {{ treeTitle }} 
+        </h4>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="row" *ngIf="showFamilyTree">
+                <div class="col-12">
+                    <tabset #productTabs class="member-tabset">
+                        <tab heading="شجرة العائلة">
+                            <div style="padding:6px;">
+                                
+                                <!-- search --> 
+                                <div style="padding-top: 10px;" class="col-xl-12">
+                                    <div class="float-left" style="width:500px;margin-bottom: 13px;">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                            </div>
+                                            <input id="filter" placeholder="بحث بالإســــم" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="float-left" style="margin-top: 10px;margin-right: 10px;">
+                                        <i class="fa fa-spinner fa-spin" style="font-size:22px;color:green" *ngIf="loadingSearch"></i>
+                                    </div>
+                                    <br>
+                                    <div style="padding-top: 10px;">
+                                        <hr>
+                                    </div>
+                                </div>
+
+                                <!-- tree -->
+                                <div class="row">
+                                    <div class="col-12" style="margin-top: 10px;">
+                                        <div class="myScroll">
+                                            <div class="tree" *ngIf="familyTree">
+                                                <ng-template #familyTreeTemplate let-node>
+                                                    <li>
+                                                        <span (click)="printNode(node)" 
+                                                             [ngClass]="{'rounded-circle ' :  node.children?.length === 0  , 'maleClass' : node.gender === 1, 'femaleClass' : node.gender === 2, 'status' : node.status === 2}">
+                                                            {{ node.name }} <br>
+                                                            {{ node.identityNum }}
+                                                        </span>
+                                                        <ul *ngIf="node.children?.length > 0">
+                                                            <ng-template *ngIf="node.children?.length" ngFor [ngForOf]="node.children"
+                                                                [ngForTemplate]="familyTreeTemplate">
+                                                            </ng-template>
+                                                        </ul>
+                                                    </li>
+                                                </ng-template>
+                                                <figure>
+                                                    <ul class="tree">
+                                                        <ng-template [ngTemplateOutlet]="familyTreeTemplate"
+                                                            [ngTemplateOutletContext]="{ $implicit: familyTree[0] }">
+                                                        </ng-template>
+                                                    </ul>
+                                                </figure>
+                                            </div>
+                                            <!-- </div> -->
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </tab>
+
+                        <tab heading="طلبات الاضافة">
+                            <div class="row" style="padding-left:15px;padding-right:15px;padding-top: 15px">
+                                <div class="col-md-12" style="text-align: center">
+                                    <div>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                            </div>
+                                            <input type="text" [(ngModel)]="searchWord" class="form-control form-control-sm"
+                                                placeholder=" بحث بالاسم  " #txtSearch>
+                                        </div>
+                                        <button class="btn btn-sm  btn-radius btn-bgcolor" style="margin-top: 11px;"
+                                            type="button" (click)="filterUserNotAccepted(template)"> &nbsp;
+                                            &nbsp;بحث
+                                            &nbsp; &nbsp;<span><i class="fa fa-search"></i></span> &nbsp;
+                                            <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingUserSearch"></i>
+                                        </button> &nbsp;
+
+                                        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm"
+                                            style="margin-top: 11px;" (click)="clearSearch()">بحث جديد
+                                            &nbsp;<span class="fa fa-search"></span>&nbsp;
+                                            <i class="fa fa-spinner fa-spin" style="font-size:15px;color:black;" *ngIf="loadingNewsSearch"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="row" style="padding-left:25px;padding-right:25px;">
+                                <table *ngIf="users.data?.length > 0" class="table table-hover table-bordered m-0 align-middle">
+                                    <thead>
+                                        <tr style="text-align: center">
+                                            <!-- <th>#</th> -->
+                                            <th style="min-width: 320px;">الاسم بالكامل</th>
+                                            <th style="min-width: 270px;">البريد الاليكترونى</th>
+                                            <th style="min-width: 180px;"> رقم الجوال</th>
+                                            <th></th>
+                                            <!-- <th></th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let user of users.data | paginate: configUsers " class="align-middle"
+                                            style="text-align: center">
+                                            <!-- <td>{{user?.id}}</td> -->
+                                            <td class="align-middle" style="text-align: right;">
+                                                {{user?.fullName}}
+                                            </td>
+                                            <td class="align-middle" style="text-align: center">
+                                                {{user?.email}}
+                                            </td>
+                                            <td class="align-middle" style="text-align: center">
+                                                {{user?.phoneNumber}}
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <button class="btn btn-sm btn-radius btn-bgcolor" type="button"
+                                                        (click)="showDetails(detailsTemplate,user?.id, user?.parentId)">
+                                                        تفاصيل
+                                                        &nbsp;<i class="fa fa-list"></i>
+                                                    </button> &nbsp;
+                                                </div>
+                                            </td>
+                                            <!-- <td>
+                                                            <div *ngIf="!user?.acceptedAdd" style="text-align: center;">
+                                                                <button (click)="updateUserStatus(user.id, false)" class="btn btn-sm btn-radius"
+                                                                    style="background-color:rgb(185, 21, 15);color:white;" type="button">
+                                                                    رفض
+                                                                    &nbsp;<i class="fas fa-trash"></i>&nbsp;
+                                                                    <i class="fa fa-spinner fa-list" style="font-size:16x;color:#f7f7f7;"
+                                                                        *ngIf="loading_AcceptedStatus == user.id"></i>
+                                                                </button> &nbsp;
+                                                            </div>
+                                                        </td> -->
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- paging -->
+                            <div class="row" *ngIf="users.data?.length > 0" style="text-align: center;margin-top:18px;margin-bottom: -25px">
+                                <div class="col-12">
+                                    <pagination-controls id="paginationUsers" class="my-pagination" (pageChange)="getNextUser($event)"
+                                        directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق"
+                                        nextLabel="التالى" screenReaderPaginationLabel="Pagination"
+                                        screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+                                    </pagination-controls>
+                                    &nbsp;
+                                    <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingUsersPaging"><br><br></i>
+
+                                </div>
+                            </div>
+
+
+                            <div class="row" *ngIf="users.data?.length == 0" style="text-align: center;margin-top:18px">
+                                <div class="col-12">
+                                    لا توجد بيانات
+                                    <br><br>
+                                </div>
+                            </div>
+
+                            <!-- Confirm search -->
+                            <ng-template #template>
+                                <div class="modal-body text-center">
+                                    <p>ادخل كلمات بحثية</p>
+                                    <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm"
+                                        style="width: 50%" (click)="closeModal()">إالغاء</button>
+                                </div>
+                            </ng-template>
+                        </tab>
+                       
+                    </tabset>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" *ngIf="showUserDetails">
+    <!-- user details data -->
+    <div class="col-5">
+        <div class="card">
+                <user-info [userInfo]="userData.userInfo"></user-info>
+        </div>
+    </div>
+
+    <div class="col-7">
+        <div class="card">
+            <div class="col-12">
+                <tabset #productTabs class="member-tabset">
+                    <tab heading=" الزوجات">
+                        <user-wifes [userWifes]="userData.wifes"></user-wifes>
+                    </tab>
+                    <tab heading=" الابناء">
+                        <user-children [userChildren]="userData.children"></user-children>
+                    </tab>
+                    <tab heading=" بيانات الدخول">
+                        <user-login  [userLogin]="userData.userInfo"></user-login>
+                    </tab>
+                    <tab heading=" الصلاحيات">
+                        <children-permission [userInfo]="userData.userInfo"></children-permission>
+                    </tab>
+                </tabset>
+                <br>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- return  -->
+<div class="row" *ngIf="showUserDetails" >
+       
+    <div class="col-12">
+            <div class="card">
+                <div style="text-align: center;padding:10px">  
+                        <button class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="returnToFamilyTree()" style="width:10%">
+                                رجوع
+                                &nbsp;
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    
+                            </button>
+                </div>
+            </div>
+</div>
+</div>
+
+<ng-template #detailsTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">تفاصيل طلب الاضافة</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body" style="margin-top:7px;">
+
+        <div class="row">
+            <div class="col-12">
+                <label for="">بيانات الوالد</label>
+                <table style="width: 100%" class="table table-bordered m-0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;vertical-align:middle" class="icon-table">الصورة
+                            </td>
+                            <td style="font-size: 15px" class="icon-table">
+                                <div class="inbox-item-img">
+                                    <img src="../../../assets/users/user.png" class="rounded-circle" style="width:55px;height:47px; border: 1px solid rgb(180, 180, 192)"
+                                        alt="user">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table">الرقم التعريفى
+                            </td>
+                            <td style="font-size: 15px" class="icon-table">{{fatherData?.identityNumber}}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table"> الاسم بالكامل</td>
+                            <td style="font-size: 15px" class="icon-table">{{fatherData?.fullName}}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table"> البريد الاليكترونى</td>
+                            <td style="font-size: 15px" class="icon-table">{{fatherData?.email}}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table"> رقم الجوال</td>
+                            <td style="font-size: 15px" class="icon-table">{{fatherData?.phoneNumber}}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table"> تاريخ الميلاد</td>
+                            <td style="font-size: 15px" class="icon-table">
+                                {{fatherData?.birthDateM | date :'yyyy/MM/dd'}} - {{fatherData?.birthDateH | date
+                                :'yyyy/MM/dd'}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <label for="">بيانات الابن</label>
+                <table style="width: 100%" class="table table-bordered m-0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table"> الاسم بالكامل</td>
+                            <td style="font-size: 15px" class="icon-table">{{user?.fullName}}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table"> البريد الاليكترونى</td>
+                            <td style="font-size: 15px" class="icon-table">{{user?.email}}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table"> رقم الجوال</td>
+                            <td style="font-size: 15px" class="icon-table">{{user?.phoneNumber}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <hr>
+        <div style="text-align: center">
+            <button class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="acceptUser(user?.id, user?.email, fatherData?.identityNumber)">
+                &nbsp; قبول الاضافة
+                &nbsp;<i class="fas fa-save"></i>
+                &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingAcceptedUser"></i>
+            </button>&nbsp;
+
+            <!-- <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 21, 15);color:white;" type="button">
+                رفض الطلب
+                &nbsp;<i class="fas fa-trash"></i>&nbsp;
+
+            </button> &nbsp; -->
+        </div>
+    </div>
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+                                        <!-- <div class="col-12" style="margin-top: 10px;"> -->
+                                        <!-- <div class="myScroll"> -->
+                                        <!-- <div class="tf-tree" *ngIf="familyTree">
+                                                                    <ng-template #familyTreeTemplate let-node>
+                                                                        <li>
+                                                                            <span (click)="printNode(node)"
+                                                                                  [ngClass]="{'tf-nc rounded-circle ' :  node.children?.length === 0  , 'tf-nc maleClass' : node.gender === 1, 'tf-nc femaleClass' : node.gender === 2, 'tf-nc status' : node.status === 2}">
+                                                                                {{ node.name }} <br>
+                                                                                {{ node.identityNum }}
+                                                                            </span>
+                                                                            <ul *ngIf="node.children?.length > 0">
+                                                                                <ng-template *ngIf="node.children?.length" ngFor [ngForOf]="node.children"
+                                                                                    [ngForTemplate]="familyTreeTemplate">
+                                                                                </ng-template>
+                                                                            </ul>
+                                                                        </li>
+                                                                    </ng-template>
+                                                                    <figure>
+                                                                        <ul class="tree">
+                                                                            <ng-template [ngTemplateOutlet]="familyTreeTemplate"
+                                                                                [ngTemplateOutletContext]="{ $implicit: familyTree[0] }">
+                                                                            </ng-template>
+                                                                        </ul>
+                                                                    </figure>
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+
+                                        <!--  -->
+                                        <!-- <div class="tf-tree">
+                                                            <ul>
+                                                              <li>
+                                                                <span class="tf-nc">1</span>
+                                                                <ul>
+                                                                  <li>
+                                                                    <span class="tf-nc">2asasasasa</span>
+                                                                    <ul>
+                                                                      <li><span class="tf-nc">4asasas</span></li>
+                                                                      <li>
+                                                                        <span class="tf-nc">5asasasas</span>
+                                                                        <ul>
+                                                                          <li><span class="tf-nc">92323232323</span></li>
+                                                                          <li><span class="tf-nc">102323232322</span></li>
+                                                                        </ul>
+                                                                      </li>
+                                                                      <li><span class="tf-nc">62323232323232323</span></li>
+                                                                    </ul>
+                                                                  </li>
+                                                                  <li>
+                                                                    <span class="tf-nc">32323232323</span>
+                                                                    <ul>
+                                                                      <li><span class="tf-nc">72323232232</span></li>
+                                                                      <li><span class="tf-nc">8232323232323</span></li>
+                                                                    </ul>
+                                                                  </li>
+                                                                </ul>
+                                                              </li>
+                                                            </ul>
+                                                          </div> -->

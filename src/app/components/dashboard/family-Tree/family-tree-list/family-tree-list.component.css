@@ -1,0 +1,121 @@
+.maleClass{
+    background-color:#65b4be;
+    color:white;
+    cursor: pointer; 
+}
+
+.femaleClass{
+    background-color:#88b772;
+    color:white;
+    cursor: pointer; 
+}
+
+.custom-image{
+    border:1px solid gray;width: 55px;height: 50px;margin-top: 5px
+}
+/* 
+.responsive {
+    width: 100%;
+    height: auto;
+  } */
+
+  @media screen and ( max-width: 992px ) {
+    img.responsive { width: 200px; }
+    }
+
+
+.myScroll { 
+    overflow: auto;
+    white-space: nowrap;
+} 
+
+  /* It's supposed to look like a tree diagram */
+  .tree, .tree ul, .tree li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.tree {
+    margin: 0 0 1em;
+    text-align: center;
+    width: 100%
+}
+.tree, .tree ul {
+    display: table;
+}
+.tree ul {
+  width: 100%;
+}
+
+.tree li {
+        display: table-cell;
+        padding: .5em 0;
+        vertical-align: top;
+ }
+        /* _________ */
+ .tree li:before {
+            outline: solid 1px #666;
+            content: "";
+            right: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+ }
+ .tree li:first-child:before {right: 50%;}
+.tree li:last-child:before {left: 50%;}
+
+.status {
+    background-color:#dea457;
+}
+
+.tree code, .tree span {
+            border: solid .1em #666;
+            border-radius: .2em;
+            display: inline-block;
+            margin: 0 .2em .5em;
+            /* padding: .3em .5em; */
+            padding:6px;
+            position: relative;
+            min-width: 60px;
+            min-height: 40px;
+            font-size: 11px;
+ }
+
+ /* If the tree represents DOM structure */
+ .tree code {
+    font-family: monaco, Consolas, 'Lucida Console', monospace;
+}
+
+/* | */
+ .tree ul:before,
+ .tree code:before,
+ .tree span:before {
+                outline: solid 1px #666;
+                content: "";
+                height: .5em;
+                right: 50%;
+                position: absolute;
+            }
+.tree ul:before {
+    top: -.5em;
+}
+
+.tree code:before,
+.tree span:before {
+     top: -.55em;
+}
+
+/* The root node doesn't connect upwards */
+.tree > li {margin-top: 0;}
+    .tree > li:before,
+    .tree > li:after,
+    .tree > li > code:before,
+    .tree > li > span:before {
+      outline: none;
+}
+
+/* ========================================== */
+
+

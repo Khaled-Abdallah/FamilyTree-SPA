@@ -1,0 +1,10 @@
+.btn-custom{
+    background-color:green;
+    color:white;
+    font-weight:bold;
+    font-size: 16px;
+}
+
+.btn-radius{
+    border-radius: 10px;
+}

@@ -1,0 +1,96 @@
+<div class="row" style="margin-bottom: 7px;margin-top: -8px">
+    <div class="col-sm-12">
+        <h4 class="page-title" style="font-size: 18px;padding-right: 5px; ">الشروط والاحكام</h4>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+
+                    <input type="hidden" [(ngModel)]="termsModel.id" >
+                    <ckeditor 
+                          [(ngModel)]="termsModel.termss" 
+                          name="PageContent" 
+                          required    
+                          [config]="ckeConfig" debounce="500"
+                          #defContent>    
+                    </ckeditor>
+                    <div *ngIf="definationRequired" style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert">
+                    الشروط والاحكام مطلوبة
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button class="btn btn-radius btn-sm btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                    type="button" (click)="onSubmit(termsModel)">
+                                    <span>حفظ
+                                        &nbsp;<span class="fa fa-save"></span>
+                                    </span>
+                                 
+                                    &nbsp;<i class="fa fa-spinner fa-spin" style="font-size:14px;color: white" *ngIf="loading"></i>
+                                </button>
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- <form [formGroup]="termsForm" id="termsForm" (ngSubmit)="onSubmit(termsForm.value)">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="hidden" formControlName="id" >
+
+                            <div class="form-group" [ngClass]="{'has-error': (termsForm.get('termss').touched || termsForm.get('termss').dirty)
+                                        && !termsForm.get('termss').valid }">
+                                <label class="control-label" for="termss">التفاصيل </label> -->
+
+                                <!-- <div class="form-group">
+                                    <div formControlName="termss" [froalaEditor]='editorOptions'
+                                        [(froalaModel)]="definitionModel.termss"></div>
+                                </div> -->
+
+                                <!-- <textarea [froalaEditor] formControlName="termss" 
+                                          rows="10" >
+                                </textarea> -->
+
+                                <!-- <ckeditor 
+                                    [(ngModel)]="definitionModel.termss" 
+                                    name="PageContent" 
+                                    required    
+                                    [config]="ckeConfig" debounce="500"
+                                #defContent>    
+                          </ckeditor> -->
+                                
+                                <!-- <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                class="alert" *ngIf="!termsForm.get('termss').valid && (termsForm.get('termss').touched
+                                             || termsForm.get('termss').dirty)">
+                                <div *ngIf="termsForm.get('termss').hasError('required')">تفاصيل الشروط والاحكام مطلوبه
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button class="btn btn-radius btn-sm btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                    type="submit" [disabled]="!termsForm.valid">
+                                    <span>حفظ
+                                        &nbsp;<span class="fa fa-save"></span>
+                                    </span>
+                                 
+                                    &nbsp;<i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loading"></i>
+                                </button>
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div> -->
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+</div>

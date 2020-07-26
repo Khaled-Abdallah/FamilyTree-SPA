@@ -1,0 +1,218 @@
+<div class="row" style="margin-bottom: 7px;margin-top: -8px">
+    <div class="col-sm-12">
+        <h4 class="page-title" style="font-size: 18px;padding-right: 5px; ">الاعدادات العامة</h4>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-8">
+        <div class="card widget-user">
+
+            <div class="alert alert-warning" style="margin: 20px;padding: 16px;">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12">
+                            <h4 class="alert-heading">تنوية!</h4>
+                       <span style="color:black">  يرجى التأكد والتحقق من البيانات المدخلة فى الاعدادات حيث من خلالها تتم اكمال عمليه تسجيل المستخدمين فى النظام وارسال رسائل البريد الاليكترونى للمستخدمين  !</span>
+                    </div>
+
+                </div>
+            </div>       
+
+            <div class="row">
+                <div class="card-body" style="padding:20px;">
+                    <form [formGroup]="settingForm" (ngSubmit)="onSubmit(settingForm.value)" class="form-horizontal">
+                        <div class="col-12">
+                            <input type="hidden" formControlName="id" >
+
+                            <div class="form-group" [ngClass]="{'has-error': (settingForm.get('appName').touched || settingForm.get('appName').dirty)
+                                                                && !settingForm.get('appName').valid }">
+
+                                <label class="control-label">اسم التطبيق</label> &nbsp;
+                                <label class="control-label">(Application name)</label>
+                                <input type="text" class="form-control" placeholder="اسم التطبيق" formControlName="appName"
+                                    />
+
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                    *ngIf="!settingForm.get('appName').valid && (settingForm.get('appName').touched
+                                                                        || settingForm.get('appName').dirty)">
+                                    <div *ngIf="settingForm.get('appName').hasError('required')">اسم التطبيق مطلوب
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" [ngClass]="{'has-error': (settingForm.get('mailAddress').touched || settingForm.get('mailAddress').dirty)
+                                            && !settingForm.get('mailAddress').valid }">
+
+                                <label class="control-label" for="mailAddress">عنوان البريد الالكترونى</label>&nbsp;
+                                <label class="control-label" for="mailAddress">(Mail address)</label>
+                                <input type="text" class="form-control" placeholder=" عنوان البريد الالكترونى"
+                                    formControlName="mailAddress" />
+
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                    *ngIf="!settingForm.get('mailAddress').valid && (settingForm.get('mailAddress').touched
+                                                    || settingForm.get('mailAddress').dirty)">
+                                    <div *ngIf="settingForm.get('mailAddress').hasError('required')">عنوان البريد
+                                        الالكترونى مطلوب
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" [ngClass]="{'has-error': (settingForm.get('mailUserName').touched || settingForm.get('mailUserName').dirty)
+                                            && !settingForm.get('mailUserName').valid }">
+
+                                <label class="control-label" for="mailUserName">اسم المستخدم</label>&nbsp;
+                                <label class="control-label" for="mailUserName">(Username)</label>
+                                <input type="text" class="form-control" placeholder="اسم المستخدم" formControlName="mailUserName"
+                                    />
+
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                    *ngIf="!settingForm.get('mailUserName').valid && (settingForm.get('mailUserName').touched
+                                                    || settingForm.get('mailUserName').dirty)">
+                                    <div *ngIf="settingForm.get('mailUserName').hasError('required')">اسم المستخدم
+                                        مطلوب
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" [ngClass]="{'has-error': (settingForm.get('mailPassword').touched || settingForm.get('mailPassword').dirty)
+                                            && !settingForm.get('mailPassword').valid }">
+
+                                <label class="control-label" for="mailPassword">كلمة المرور</label>&nbsp;
+                                <label class="control-label" for="mailPassword">(Password)</label>
+                                <input type="password" class="form-control" placeholder="كلمة المرور" formControlName="mailPassword"
+                                   />
+
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                    *ngIf="!settingForm.get('mailPassword').valid && (settingForm.get('mailPassword').touched
+                                                    || settingForm.get('mailPassword').dirty)">
+                                    <div *ngIf="settingForm.get('mailPassword').hasError('required')">كلمة المرور مطلوب
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" [ngClass]="{'has-error': (settingForm.get('mailServer').touched || settingForm.get('mailServer').dirty)
+                                            && !settingForm.get('mailServer').valid }">
+
+                                <label class="control-label" for="mailServer">عنوان بريد السيرفر</label>&nbsp;
+                                <label class="control-label" for="mailServer">(Mail server)</label>
+                                <input type="text" class="form-control" placeholder="عنوان بريد السيرفر"
+                                    formControlName="mailServer"  />
+
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                    *ngIf="!settingForm.get('mailServer').valid && (settingForm.get('mailServer').touched
+                                                    || settingForm.get('mailServer').dirty)">
+                                    <div *ngIf="settingForm.get('mailServer').hasError('required')">عنوان بريد السيرفر
+                                        مطلوب
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" [ngClass]="{'has-error': (settingForm.get('mailServerPort').touched || settingForm.get('mailServerPort').dirty)
+                            && !settingForm.get('mailServerPort').valid }">
+
+                                <label class="control-label" for="mailServerPort">البورت</label>&nbsp;
+                                <label class="control-label" for="mailServerPort">(Mail port)</label>
+                                <input type="text" class="form-control" placeholder="البورت" formControlName="mailServerPort"
+                                     (keypress)="checkMobilNumber($event)" />
+
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                    *ngIf="!settingForm.get('mailServerPort').valid && (settingForm.get('mailServerPort').touched
+                                    || settingForm.get('mailServerPort').dirty)">
+                                    <div *ngIf="settingForm.get('mailServerPort').hasError('required')">البورت او
+                                        المنفذ مطلوب
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- bottons -->
+                            <div class="form-group">
+                                <button [disabled]="!settingForm.valid" class="btn btn-radius btn-sm btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px;"
+                                    type="submit">&nbsp;
+                                    <span>حفظ
+                                        &nbsp;<span class="fa fa-save"></span>
+                                    </span>
+                                    &nbsp;
+                                    <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loading"></i>
+                                </button>
+                                <!-- &nbsp;
+                                <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="clear()">الغاء
+                                    &nbsp;<span class="fa fa-times"></span></button> -->
+                            </div>
+
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- logos -->
+    <div class="col-md-4">
+        <div class="card widget-user">
+            <div class="card-body" style="padding:15px;">
+                <div class="col-sm-12">
+
+
+                    <div class="text-center"> <label for="exampleInputEmail1">لوجو التطبيق</label></div>
+                    <div style="margin-right: 47px;margin-bottom: 5px;margin-top: 2px">
+                        <img [src]="appLogo"  style="width:210px;height:170px;" class="card-img-top img-thumbnail">
+
+                        <input type="file" style="padding-top: 15px" id="ImageFile" name="ImageFile" class="form-control-file"
+                            value="اختار اللوجو" accept="image/*" (change)="uploadImage($event.target.files,'AppLogo')" />
+
+                        <div style="text-align: center;margin-top: 3px">
+                            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#a1a234;" *ngIf="loadingAppImage"></i>
+                           <div *ngIf="isUpload">
+                                <p>تم رفع الصورة</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <hr>
+                    </div>
+
+                    <div class="text-center"> <label for="exampleInputEmail1">لوجو لوحة التحكم</label></div>
+                    <div style="margin-right: 47px;margin-bottom: 5px;margin-top: 2px">
+                            <img [src]="cPanelLogo"  style="width:210px;height:170px; " class="card-img-top img-thumbnail">
+
+                        <input type="file" style="padding-top: 15px" id="ImageFile" name="ImageFile" class="form-control-file"
+                            value="اختار اللوجو" accept="image/*" (change)="uploadImage($event.target.files,'CPanelLogo')"/>
+
+                        <div style="text-align: center;margin-top: 3px">
+                            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#a1a234;" *ngIf="loadingImage"></i>
+                            <div *ngIf="isUpload">
+                                <p>تم رفع الصورة</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <hr>
+                    </div>
+
+                    <div class="text-center"> <label for="exampleInputEmail1">لوجو صفحة الدخول</label></div>
+                    <div style="margin-right: 47px;margin-bottom: 5px;margin-top: 2px">
+                            <img [src]="loginLogo"  style="width:210px;height:170px; " class="card-img-top img-thumbnail">
+
+                        <input type="file" style="padding-top: 15px" id="ImageFile" name="ImageFile" class="form-control-file"
+                            value="اختار اللوجو" accept="image/*"  (change)="uploadImage($event.target.files,'LoginLogo')"/>
+
+                        <div style="text-align: center;margin-top: 3px">
+                            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#a1a234;" *ngIf="loadingImage"></i>
+                            <div *ngIf="isUpload">
+                                <p>تم رفع الصورة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>

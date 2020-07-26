@@ -1,0 +1,437 @@
+
+<div style="padding-right:20px;padding-left: 20px;">
+<div class="float-right" style="margin-top:0px;">
+        <div style="width: 270px;margin-bottom: 10px;text-align: left">
+            <button type="button" class="btn btn-radius btn-sm btn-bgcolor" style="width: 30%;"
+                (click)="showAdd(addChildersTemplate)">إضافة
+                &nbsp;<span class="fa fa-plus"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div style="padding:20px;">
+        <table class="table table-hover table-bordered m-0 align-middle" *ngIf="userChildren?.length > 0">
+                <thead>
+                    <tr style="text-align: center">
+                        <!-- <th>م</th> -->
+                        <th style="width: 190px;">الاسم</th>
+                        <th style="width: 120px;"> رقم الجوال</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let userChild of userChildren;let i = index" class="align-middle" style="text-align: center">
+                        <!-- <td class="align-middle" style="text-align: center">
+                            <div class="inbox-item-img" >
+                                <img src="../../../assets/users/user.png" class="rounded-circle" 
+                                style="width:70px;height:45px; border: 1px solid rgb(180, 180, 192)"
+                                    alt="user">
+                            </div>
+                        </td> -->
+                        <!-- <td class="align-middle" style="text-align: center;">{{i + 1}}</td>              -->
+                        <td class="align-middle" style="text-align: center;">{{userChild?.fullName}}</td>             
+                        <td class="align-middle" style="text-align: center;">{{userChild?.phoneNumber}}</td>
+                        <td class="align-middle" style="text-align: center">
+                            
+                            <!-- <a class="icon-table" style="padding-left:10px;color:green">
+                                <i class="fa fa-list"></i>
+                            </a> 
+                            &nbsp;
+                            <a class="icon-table" style="padding-left:10px;color:green">
+                                <i class="fas fa-edit"></i>
+                            </a>    
+                            &nbsp;
+                            <a class="icon-table" style="color:red;">
+                                <i class="fa fa-trash" style="font-size: 10;"></i>
+                            </a>     -->
+                            
+                            <!-- <button  class="btn btn-sm btn-radius btn-bgcolor"
+                                style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                type="button">
+                                تفاصيل 
+                                &nbsp;<i class="fa fa-list"></i>
+                            </button> &nbsp; -->
+                                                                          
+                            <button  class="btn btn-sm btn-radius btn-bgcolor"
+                            style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                            type="button">
+                            تعديل 
+                            &nbsp;<i class="fas fa-edit"></i>
+                        </button> &nbsp;                    
+
+                         <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 21, 15);color:white;" type="button">
+                                حذف
+                                &nbsp;<i class="fas fa-trash"></i>&nbsp; 
+                            </button> &nbsp;
+                        </td>
+                    </tr>
+
+                </tbody>
+        </table>
+
+         <!-- no data -->
+  <div *ngIf="userChildren?.length == 0" style="border-radius: 5px;text-align: center;font-size: 16px;padding: 20px;margin-bottom: 10px">
+    لا يوجد ابناء
+  </div>
+<!-- 
+        <table class="table table-hover table-bordered m-0 align-middle">
+            <thead>
+                <tr style="text-align: center">
+                    <th  style="width:350px">الاسم </th>
+                    <th style="width: 100px;">العنوان</th>
+                    <th style="width: 350px;">اسم المستخدم</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let userChild of userChildren" class="align-middle" style="text-align: center">          
+                    <td class="align-middle" style="text-align: center;">{{userChild?.fullName}}</td>
+                    <td class="align-middle" style="text-align: center;">{{userChild?.address}}</td>
+                    <td class="align-middle" style="text-align: center;">{{userChild?.userName}}</td>
+                    <td class="align-middle" style="text-align: center">
+                        <button (click)="editWife(wife.id)" class="btn btn-sm btn-radius btn-bgcolor"
+                            style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                            type="button">
+                            تعديل 
+                            &nbsp;<i class="fas fa-edit"></i>
+                        </button> &nbsp;</td>
+                </tr>
+        
+            </tbody>
+        </table>
+         -->
+</div>
+
+
+
+<ng-template #addChildersTemplate>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">إضافة ابناء</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    
+        <div class="modal-body">
+            <form [formGroup]="addUserForm" id="addUserForm" (ngSubmit)="addChildren(addUserForm.value)">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                                    <label class="control-label">  الحالة (حى/ متوفى)</label>
+                                    <ng-select [items]="status" formControlName="statusId" bindLabel="statusName"
+                                        [virtualScroll]="true" bindValue="id" placeholder="--- اختر الحالة  ---" appendTo="body"
+                                        class="custom custom2">
+                                    </ng-select>
+    
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!addUserForm.get('statusId').valid &&  addUserForm.get('statusId').touched">
+                                        <div *ngIf="addUserForm.get('statusId').errors?.required"> اختر الحالة</div>
+                                    </div>
+                        </div>            
+    
+                        <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('familyId').touched || addUserForm.get('familyId').dirty) && !addUserForm.get('familyId').valid }">
+                                            <label class="control-label"> الجد </label>
+                                            <ng-select 
+                                                [items]="family" 
+                                                formControlName="familyId" 
+                                                bindLabel="familyName"
+                                                [virtualScroll]="true" 
+                                                bindValue="id" 
+                                                placeholder="--- اختر الجد  ---" 
+                                                appendTo="body"
+                                                class="custom custom2">
+                                            </ng-select>
+            
+                                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                *ngIf="!addUserForm.get('familyId').valid &&  addUserForm.get('familyId').touched">
+                                                <div *ngIf="addUserForm.get('familyId').errors?.required"> اختر الجد</div>
+                                            </div>
+                                    </div>
+                                    <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('motherId').touched || addUserForm.get('motherId').dirty) && !addUserForm.get('motherId').valid }">
+                                            <label class="control-label"> الوالدة </label>
+                                            <ng-select [items]="wifes" formControlName="motherId" bindLabel="wName"
+                                                [virtualScroll]="true" bindValue="id" placeholder="--- اختر الوالدة  ---" appendTo="body"
+                                                class="custom custom2">
+                                            </ng-select>
+            
+                                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                *ngIf="!addUserForm.get('motherId').valid &&  addUserForm.get('motherId').touched">
+                                                <div *ngIf="addUserForm.get('motherId').errors?.required"> اختر الوالدة</div>
+                                            </div>
+                                    </div>
+                                </div>
+                        </div>                      
+    
+                        <div class="form-group">
+                                <label class="control-label"> الاسم بالكامل</label>
+                                <input class="form-control" formControlName="fullName" type="text" placeholder="الاسم بالكامل" />
+    
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                    *ngIf="!addUserForm.get('fullName').valid && (addUserForm.get('fullName').touched || addUserForm.get('fullName').dirty)">
+                                    <div *ngIf="addUserForm.get('fullName').hasError('required')">الاسم
+                                        بالكامل مطلوب </div>
+                                </div>
+                        </div>
+    
+                        <div class="form-group">
+                                <div class="row">
+                                        <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('userName').touched || addUserForm.get('userName').dirty) && !addUserForm.get('userName').valid }">
+                                                <label class="control-label"> اسم المستخدم</label>
+                                                <input class="form-control" formControlName="userName" type="text" placeholder="اسم المستخدم">
+                
+                
+                                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                    *ngIf="!addUserForm.get('userName').valid &&
+                                                    addUserForm.get('userName').touched">
+                                                    <div *ngIf="addUserForm.get('userName').errors?.required">اسم
+                                                        المستخدم مطلوب</div>
+                
+                                                </div>
+                                            </div>
+                                            <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('password').touched || addUserForm.get('password').dirty) && !addUserForm.get('password').valid }">
+                                                    <label class="control-label">  كلمة المرور</label>
+                                                    <input class="form-control" formControlName="password" type="password" placeholder="كلمة المرور">
+                    
+                    
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                        *ngIf="!addUserForm.get('password').valid &&
+                                                        addUserForm.get('password').touched">
+                                                        <div *ngIf="addUserForm.get('password').errors?.required">كلمة المرور مطلوبة</div>
+                    
+                                                    </div>
+                                                </div>
+                                </div>
+        
+                        </div>
+    
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('email').touched || addUserForm.get('email').dirty) && !addUserForm.get('email').valid }">
+    
+                                    <label class="control-label"> البريد الاكترونى</label>
+                                    <input class="form-control" formControlName="email" type="text" placeholder="البريد الاكترونى">
+    
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!addUserForm.get('email').valid &&
+                                                                                                                                                                    addUserForm.get('email').touched">
+                                        <div *ngIf="addUserForm.get('email').pending">جار فحص البريد
+                                            الاكترونى ......</div>
+                                        <div *ngIf="addUserForm.get('email').errors?.required">البريد
+                                            الاكترونى مطلوب</div>
+                                        <div *ngIf="addUserForm.get('email').errors?.pattern">صيغة
+                                            البريد الاكترونى غير صحيحة</div>
+                                        <!-- <div *ngIf="addUserForm.get('email').errors?.emailUnique">البريد
+                                                    الاكترونى موجود مسبقا</div> -->
+                                    </div>
+                                </div>
+    
+                                <div class="col-6" [ngClass]="{'has-error': (addUserForm.controls.phoneNumber.touched ||
+                                                                                                addUserForm.get('phoneNumber').dirty) &&
+                                                                                                !addUserForm.get('phoneNumber').valid }">
+    
+    
+    
+                                    <label class="control-label"> رقم الجوال</label>
+                                    <input class="form-control" formControlName="phoneNumber" type="text" placeholder="رقم الجوال"
+                                        (keypress)="checkMobilNumber($event)">
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!addUserForm.get('phoneNumber').valid &&
+                                                                                                                addUserForm.get('phoneNumber').touched">
+                                        <div *ngIf="addUserForm.get('phoneNumber').errors?.required">
+                                            رقم الجوال مطلوب </div>
+                                        <div *ngIf="addUserForm.get('phoneNumber').errors?.maxlength">رقم
+                                            الجوال لا يزيد عن 10 رقم</div>
+                                        <div *ngIf="addUserForm.get('phoneNumber').errors?.minlength">رقم
+                                            الجوال لا يقل عن 10 رقم</div>
+                                    </div>
+    
+                                </div>
+    
+                            </div>
+    
+    
+    
+                        </div>
+    
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('birthDateM').touched || addUserForm.get('birthDateM').dirty) && !addUserForm.get('birthDateM').valid }">
+                                    <label class="control-label"> تاريخ الميلاد</label>
+                                    <input class="form-control" formControlName="birthDateM" 
+                                        type="text" placeholder="تاريخ الميلاد" bsDatepicker [bsConfig]="bsConfig"
+                                        (bsValueChange)="getDateH($event)">
+    
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!addUserForm.get('birthDateM').valid &&  addUserForm.get('birthDateM').touched">
+    
+                                        <div *ngIf="addUserForm.get('birthDateM').errors?.required">تاريخ الميلاد مطلوب</div>
+                                        <div *ngIf="addUserForm.get('birthDateM').errors?.pattern">صيغة
+                                            تاريخ الميلاد غير صحيحة</div>
+                                    </div>
+                                    <i class="fa fa-circle-o-notch fa-spin" style="font-size:16px;color: red;margin-right: 4px;margin-top:3px;" *ngIf="loadingDateH"></i>  
+                                </div>
+                                <div class="col-6" [ngClass]="{'has-error': (addUserForm.controls.birthDateH.touched ||
+                                                                                                        addUserForm.get('birthDateH').dirty) &&
+                                                                                                        !addUserForm.get('birthDateH').valid }">
+    
+                                    <label class="control-label"> تاريخ الميلاد الهجرى</label>
+    
+                                    <input class="form-control" [(ngModel)]="birthDateH" formControlName="birthDateH"
+                                        type="text" placeholder="تاريخ الميلاد الهجرى" readonly>
+    
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!addUserForm.get('birthDateH').valid &&  addUserForm.get('birthDateH').touched">
+    
+                                        <div *ngIf="addUserForm.get('birthDateH').errors?.required">تاريخ الميلاد الهجرى
+                                            مطلوب</div>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <div class="row">
+                                    <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('jobTitle').touched || addUserForm.get('jobTitle').dirty) && !addUserForm.get('jobTitle').valid }">
+    
+                                        <label class="control-label"> الوظيفة</label>
+                                        <input class="form-control" formControlName="jobTitle" type="text" placeholder="الوظيفة">
+    
+                                        <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                            *ngIf="!addUserForm.get('jobTitle').valid &&  addUserForm.get('jobTitle').touched">
+                                            <div *ngIf="addUserForm.get('jobTitle').pending">جار فحص البريد
+                                                الاكترونى ......</div>
+                                            <div *ngIf="addUserForm.get('jobTitle').errors?.required">البريد
+                                                الاكترونى مطلوب</div>
+                                            <div *ngIf="addUserForm.get('jobTitle').errors?.pattern">صيغة
+                                                البريد الاكترونى غير صحيحة</div>
+                                            <div *ngIf="addUserForm.get('jobTitle').errors?.emailUnique">البريد
+                                                الاكترونى موجود مسبقا</div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-6" [ngClass]="{'has-error': (addUserForm.controls.workAddress.touched ||
+                                                                                                            addUserForm.get('workAddress').dirty) &&
+                                                                                                            !addUserForm.get('workAddress').valid }">
+    
+    
+    
+                                        <label class="control-label"> عنوان العمل</label>
+                                        <input class="form-control" formControlName="workAddress" type="text" placeholder="عنوان العمل">
+                                    </div>
+    
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+    
+                            <div class="row">
+                                <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('address').touched || addUserForm.get('address').dirty) && !addUserForm.get('jobTitle').valid }">
+    
+                                    <label class="control-label"> العنوان بالكامل (الاقامة) </label>
+                                    <input class="form-control" formControlName="address" type="text" placeholder="العنوان بالكامل">
+    
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!addUserForm.get('address').valid &&  addUserForm.get('address').touched">
+                                        <div *ngIf="addUserForm.get('address').errors?.required">البريد
+                                            الاكترونى مطلوب</div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('genderId').touched || addUserForm.get('genderId').dirty) && !addUserForm.get('jobTitle').valid }">
+    
+                                    <label class="control-label"> النوع </label>
+                                    <ng-select [items]="genderTypes" formControlName="genderId" bindLabel="genderName"
+                                        [virtualScroll]="true" bindValue="id" placeholder="--- اختر النوع  ---" appendTo="body"
+                                        class="custom custom2">
+                                        <!-- [(ngModel)]="news.newsTypeId" -->
+                                    </ng-select>
+    
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!addUserForm.get('genderId').valid &&  addUserForm.get('genderId').touched">
+                                        <div *ngIf="addUserForm.get('genderId').errors?.required"> النوع مطلوب</div>
+                                    </div>
+                                </div>
+    
+    
+                            </div>
+    
+    
+    
+                        </div>
+    
+                        <div class="form-group">
+    
+                            <div class="row">
+                                <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('faceBookAcc').touched || addUserForm.get('faceBookAcc').dirty) && !addUserForm.get('faceBookAcc').valid }">
+    
+                                    <label class="control-label"> عنوان الفيس بوك</label>
+                                    <input class="form-control" formControlName="faceBookAcc" type="text" placeholder="عنوان الفيس بوك">
+    
+    
+    
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!addUserForm.get('faceBookAcc').valid &&  addUserForm.get('faceBookAcc').touched">
+                                        <div *ngIf="addUserForm.get('faceBookAcc').pending">جار فحص البريد
+                                            الاكترونى ......</div>
+                                        <div *ngIf="addUserForm.get('faceBookAcc').errors?.required">البريد
+                                            الاكترونى مطلوب</div>
+                                        <div *ngIf="addUserForm.get('faceBookAcc').errors?.pattern">صيغة
+                                            البريد الاكترونى غير صحيحة</div>
+                                        <div *ngIf="addUserForm.get('faceBookAcc').errors?.emailUnique">البريد
+                                            الاكترونى موجود مسبقا</div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-6">
+                                    <label class="control-label"> عنوان تويتر</label>
+                                    <input class="form-control" formControlName="twitterAcc" type="text" placeholder="عنوان تويتر">
+    
+                                </div>
+    
+                            </div>
+    
+    
+    
+                        </div>
+                    </div>
+    
+                    <div class="col-4">
+                        <div class="text-center" style="padding-left: 20px;"> <label>الصورة </label></div>
+                        <img [src]="imagePath" class="img-thumbnail p-1 " style="margin-right:30px;width:170px;height:150px; border: 1px solid rgb(180, 180, 192);">
+    
+                        <input type="file" style="padding-top: 15px;padding-right: 65px;" id="ImageFile" name="ImageFile"
+                            class="form-control-file" value="اختر الصورة" accept="image/*" (change)="uploadImage($event.target.files)" />
+    
+                        <div style="text-align: center;margin-top: 10px">
+                            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c0c0b;" *ngIf="loadingImage"></i>
+                            <div *ngIf="isUpload">
+                                <p>تم رفع الصورة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <hr>
+                <div class="row" style="text-align: center">
+                    <div class="col-12">
+                        <button [disabled]="!addUserForm.valid" class="btn btn-radius btn-sm btn-bgcolor" type="submit">
+                            &nbsp; حفظ
+                            &nbsp;<span class="fa fa-save"></span>&nbsp;
+                            <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loading"></i>
+                        </button> &nbsp;
+                        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()"
+                            data-dismiss="modal">اغلاق
+                            &nbsp;<span class="fa fa-times"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+        </div>
+    
+</ng-template>

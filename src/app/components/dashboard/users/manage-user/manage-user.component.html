@@ -1,0 +1,159 @@
+<div class="row" style="padding-left:15px;padding-right:15px;padding-top: 15px">    
+    <div class="col-md-12" style="text-align: center">
+       <div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-search"></i></span>
+            </div>
+            <input type="text" #searchWord class="form-control form-control-sm" placeholder=" بحث بالاسم او الرقم التعريفى "
+                #txtSearch>
+        </div>
+        <button class="btn btn-sm  btn-radius btn-bgcolor" style="margin-top: 11px;"
+            type="button" (click)="filterUsers(searchWord.value,template)"> &nbsp;
+            &nbsp;بحث
+            &nbsp; &nbsp;<span><i class="fa fa-search"></i></span> &nbsp;
+            <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingSearch"></i>
+        </button> &nbsp;
+        <!-- <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="margin-top: 11px;"
+            (click)="decline()">بحث جديد
+            &nbsp;<span class="fa fa-search"></span>&nbsp;
+            <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingCancel"></i>
+        </button> -->
+
+        <button class="btn btn-sm btn-radius btn-bgcolor" 
+            style="margin-top: 11px"
+            type="button" (click)="getUserStatus('all')">
+            عرض الكل
+            &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+            <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingAll"></i>
+        </button> &nbsp;
+
+        <button class="btn btn-sm btn-radius btn-bgcolor" 
+        style="margin-top: 11px"
+        type="button" (click)="getUserStatus('true')">
+        تم الموافقة
+        &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+        <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingAccepted"></i>
+    </button> &nbsp;
+
+    <button class="btn btn-sm btn-radius btn-bgcolor" 
+    style="margin-top: 11px"
+    type="button" (click)="getUserStatus('false')">
+    قيد الانتظار
+    &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+    <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingNotAccepted"></i>
+</button> &nbsp;
+        
+       </div>
+    </div>
+
+</div>
+<br>
+<div class="row" style="padding-left:25px;padding-right:25px;">
+    <table *ngIf="users.data?.length > 0" class="table table-hover table-bordered m-0 align-middle">
+        <thead>
+            <tr style="text-align: center">
+                <th style="width:70px"> الصورة </th>
+                <th style="width: 250px;">الاسم</th>
+                <th style="width: 250px;">البريد الاليكترونى</th>
+                <th style="width: 170px;"> رقم الجوال</th>
+                <th style="width: 150px;"> الحالة</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let userData of users.data | paginate: configUsers " class="align-middle" style="text-align: center">
+                <td class="align-middle" style="text-align: center">
+                    <div class="inbox-item-img">
+                        <img src="../../../assets/users/user.png" class="rounded-circle" style="width:70px;height:45px; border: 1px solid rgb(180, 180, 192)">
+                    </div>
+                </td>
+                <td class="align-middle" style="text-align: right;">{{userData?.fullName}}</td>
+                <td class="align-middle" style="text-align: center">
+                    {{userData?.email}}
+                </td>
+                <td class="align-middle" style="text-align: center">
+                    {{userData?.phoneNumber}}
+                </td>
+                <td class="align-middle" style="text-align: center">
+                  
+                        <div *ngIf="userData.acceptedAdd" style="text-align: center;">
+                            <div>
+                                <span class="badge badge-success" style="font-size: 10px;padding: 6px">تم القبول
+                                </span>
+                            </div>
+                        </div>
+                        <div *ngIf="!userData.acceptedAdd" style="text-align: center;">
+                            <div>
+                                <span class="badge badge-inverse" style="font-size: 10px;padding: 6px">قيد الانتظار
+                                </span>
+                            </div>
+                        </div>
+                    
+                </td>
+
+                <td >
+                    <div *ngIf="!userData.acceptedAdd" style="text-align: center;">
+                        <button (click)="updateUserStatus(userData.id, true)" class="btn btn-sm btn-radius"
+                        style="background-color:rgb(32, 133, 32);color:white;"
+                        type="button">
+                        قبول
+                        &nbsp;<i class="fas fa-edit"></i>&nbsp;
+                        <i class="fa fa-spinner fa-spin" style="font-size:16px;color:#f7f8f7;" *ngIf="loading_AcceptedStatus == userData.id"></i>
+                    </button> &nbsp;
+                    </div>
+
+                    <div *ngIf="userData.acceptedAdd" style="text-align: center;">
+                        <button (click)="updateUserStatus(userData.id, false)" class="btn btn-sm btn-radius"
+                        style="background-color:rgb(185, 21, 15);color:white;"
+                        type="button">
+                     رفض
+                        &nbsp;<i class="fas fa-edit"></i>&nbsp;
+                        <i class="fa fa-spinner fa-spin" style="font-size:16x;color:#f7f7f7;" *ngIf="loading_AcceptedStatus == userData.id"></i>
+                    </button> &nbsp;
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <button  class="btn btn-sm btn-radius btn-bgcolor"
+                        type="button">
+                        تفاصيل
+                        &nbsp;<i class="fas fa-info-circle"></i>
+                    </button> &nbsp;
+                       </div>
+                </td>
+                
+            </tr>
+
+        </tbody>
+    </table>
+  
+
+</div>
+
+<div class="row" *ngIf="users.data?.length > 0"  style="text-align: center;margin-top:18px;margin-bottom: -25px"> 
+        <div class="col-12">
+                <pagination-controls id="paginationUsers" class="my-pagination" (pageChange)="getNextUser($event)"
+                directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
+                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+            </pagination-controls>
+            &nbsp;
+            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingUsersData"></i>
+        </div>
+    </div>       
+
+
+<div class="row" *ngIf="users.data?.length == 0"  style="text-align: center;margin-top:18px"> 
+        <div class="col-12">
+                لا توجد بيانات
+        </div>
+    </div>       
+
+<!-- Confirm search -->
+    <ng-template #template > 
+        <div class="modal-body text-center">
+            <p>ادخل كلمات بحثية</p>
+            <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="width: 50%" (click)="closeModal()">إالغاء</button>
+        </div>
+    </ng-template>

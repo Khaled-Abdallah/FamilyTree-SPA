@@ -1,0 +1,141 @@
+<div style="padding-right:20px;padding-left: 20px;">
+    <div class="float-right" style="margin-top:0px;">
+        <div style="width: 270px;margin-bottom: 10px;text-align: left">
+            <button (click)="showAdd(addWifeTemplate)" type="button" class="btn btn-radius btn-sm btn-bgcolor" style="width: 30%;">إضافة
+                &nbsp;<span class="fa fa-plus"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div style="padding:20px;">
+
+    <table *ngIf="userWifes?.length > 0" class="table table-hover table-bordered m-0 align-middle">
+        <thead>
+            <tr style="text-align: center">
+                <!-- <th>م </th> -->
+                <th style="width:150px">اسم الزوجة </th>
+                <th style="width: 50px;">السن</th>
+                <th style="width: 150px;">العنوان</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let wife of userWifes" class="align-middle" style="text-align: center">
+                <!-- <td class="align-middle" style="text-align: center;">{{i + 1}}</td>       -->
+                <td class="align-middle" style="text-align: center;">{{wife?.wName}}</td>
+                <td class="align-middle" style="text-align: center;">{{wife?.age}}</td>
+                <td class="align-middle" style="text-align: center;">{{wife?.address}}</td>
+                <td class="align-middle" style="text-align: center">
+                    <button (click)="updateWife(wife.id, addWifeTemplate)" class="btn btn-sm btn-radius btn-bgcolor"
+                        style="padding-top: 6px;padding-left: 15px;padding-right: 15px" type="button">
+                        تعديل
+                        &nbsp;<i class="fas fa-edit"></i>
+                    </button> &nbsp;
+
+                    <button (click)="openConfirmDelete(wife.id, deleteWifeTemplate)" 
+                        class="btn btn-sm btn-radius" style="background-color:rgb(185, 21, 15);color:white;" type="button">
+                        حذف
+                        &nbsp;<i class="fas fa-trash"></i>&nbsp;
+                    </button> &nbsp;
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <!-- no data -->
+    <div *ngIf="userWifes?.length == 0" style="border-radius: 5px;text-align: center;font-size: 16px;padding: 20px;margin-bottom: 10px">
+        لا توجد زوجات
+    </div>
+
+</div>
+
+
+
+<ng-template #addWifeTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">{{title}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="wifesForm" id="wifesForm" (ngSubmit)="onSubmit(wifesForm.value)">
+            <div class="row">
+                <div class="col-12">
+                    <input type="hidden" formControlName="id">
+                    <div class="form-group" 
+                        [ngClass]="{'has-error': (wifesForm.get('wName').touched || wifesForm.get('wName').dirty) && !wifesForm.get('wName').valid }">
+                        <label class="control-label"> الاسم </label>
+                        <input class="form-control" formControlName="wName" type="text" placeholder="الاسم "
+                          />
+
+                        <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" *ngIf="!wifesForm.get('wName').valid && (wifesForm.get('wName').touched || wifesForm.get('wName').dirty)">
+                            <div *ngIf="wifesForm.get('wName').hasError('required')">الاسم
+                                مطلوب </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" [ngClass]="{'has-error': (wifesForm.get('age').touched || wifesForm.get('age').dirty) && !wifesForm.get('age').valid }">
+                            <label class="control-label">العمر</label>
+                            <input class="form-control" formControlName="age" type="text" placeholder="العمر"
+                                 (keypress)="checkMobilNumber($event)">
+
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!wifesForm.get('age').valid &&
+                                            wifesForm.get('age').touched">
+                                <div *ngIf="wifesForm.get('age').errors?.required">العمر مطلوب</div>
+                                <div *ngIf="wifesForm.get('age').errors?.maxlength">العمر لايزيد عن 3 ارقام</div>
+                            </div>                     
+                    </div>
+
+                    <div class="form-group" [ngClass]="{'has-error': (wifesForm.get('address').touched || wifesForm.get('address').dirty) && !wifesForm.get('address').valid }">
+                            <label class="control-label"> العنوان</label>
+                            <input class="form-control" formControlName="address" type="text" placeholder="العنوان"
+                                >
+
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!wifesForm.get('address').valid &&
+                                                wifesForm.get('address').touched">
+                                <div *ngIf="wifesForm.get('address').errors?.required">العنوان مطلوبة</div>
+
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr>
+            <div class="row" style="text-align: center">
+                <div class="col-12">
+                    <button [disabled]="!wifesForm.valid" class="btn btn-radius btn-sm btn-bgcolor" type="submit">
+                        &nbsp; حفظ
+                        &nbsp;<span class="fa fa-save"></span>&nbsp;
+                        <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loading"></i>
+                    </button> &nbsp;
+                    <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()"
+                        data-dismiss="modal">اغلاق
+                        &nbsp;<span class="fa fa-times"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+    </div>
+
+</ng-template>
+
+<!-- Confirm delete -->
+<ng-template #deleteWifeTemplate>
+    <div class="modal-body text-center">
+        <p>هل تريد حذف الزوجة</p>
+        <button type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="deleteWife()">موافق
+            <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingDelete"></i></button> &nbsp;
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()">إالغاء</button>
+    </div>
+</ng-template>

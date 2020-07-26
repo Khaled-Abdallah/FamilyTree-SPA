@@ -1,0 +1,95 @@
+<!-- <div class="animated bounceInLeft"> -->
+    <div class="animated fadeIn">
+  <div class="login100-form-avatar">
+    <!-- <img src="../assets/images/logo4.jfif" alt="AVATAR" > -->
+    <img src="{{logoPath + imageLogo}}" style="width: 300px;height: 100px;">
+  </div>
+  <span class="login100-form-title p-t-20 p-b-30">
+    اسرة  الثنيان 
+  </span>
+
+
+  <div class="wrapper-page">
+    <div class="m-t-30 card card-body">
+      <div class="text-center">
+
+        <div *ngIf="!loginStatus" style="padding-right:5px;padding-top:15px;padding-bottom:15px;width:100%;"
+          class="alert alert-danger alert-dismissible">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong style="text-align:center;">خطأ فى اسم المستخدم او كلمة المرور</strong>
+        </div>
+
+        <h4 class="text-uppercase font-bold">تسجيل الدخول</h4>
+      </div>
+      <div class="p-2">
+
+        <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)" class="form-horizontal m-t-10">
+
+          <div class="form-group "
+            [ngClass]="{'has-error': (loginForm.get('username').touched || loginForm.get('username').dirty) && !loginForm.get('username').valid }">
+            <div class="col-12">
+
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-user"></i></span>
+                </div>
+                <input class="form-control" formControlName="username" id="username" type="text" autocomplete="off"
+                  name="username" placeholder="اسم المستخدم" />
+              </div>
+
+              <div style="margin-top:5px;margin-bottom:-5px;color:red;" class="alert"
+                *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched">
+                <div *ngIf="loginForm.get('username').errors?.required" style="font-size: 15px">ادخل اسم المستخدم</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-group"
+            [ngClass]="{'has-error': (loginForm.get('password').touched || loginForm.get('password').dirty) && !loginForm.get('password').valid }">
+            <div class="col-12">
+
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-key"></i></span>
+                </div>
+                <input class="form-control" formControlName="password" id="password" type="password" autocomplete="off"
+                  placeholder="Password" name="password" placeholder="كلمة المرور">
+              </div>
+              <div style="margin-top:5px;color:red;margin-bottom:-5px" class="alert" *ngIf="(loginForm.get('password').touched ||
+                        loginForm.get('password').dirty) &&
+                        loginForm.get('password').errors">
+                <div *ngIf="loginForm.get('password').errors?.required" style="font-size: 15px">ادخل كلمة المرور</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group text-center m-t-30">
+            <div class="col-12">
+              <button [disabled]="!loginForm.valid"  type="submit"
+                class="btn btn-block btn-radius btn-bgcolor"
+                style="font-size:15px; ">
+                &nbsp;  دخـــول 
+                &nbsp;<i class="fa fa-spinner fa-spin" style="font-size:17px;" *ngIf="loading"></i>
+              </button> 
+              <!-- <br><br>
+              <div style="color: black" *ngIf="online$ | async">متصل &nbsp;<img src="../../../assets/online2.png"></div> -->
+            </div>
+          </div>
+
+        </form>
+
+        <!-- <div class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div> -->
+     
+      </div>
+    </div>
+    <!-- end card-box -->
+
+  </div>
+
+ 
+</div> 

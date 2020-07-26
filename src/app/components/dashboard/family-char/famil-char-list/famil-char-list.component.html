@@ -1,0 +1,639 @@
+<div class="row" style="margin-bottom: 7px;margin-top: -8px">
+    <div class="col-sm-12">
+        <h4 class="page-title" style="font-size: 18px;padding-right: 5px; ">شخصيات العائلة</h4>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card">
+            <div style="padding:6px;">
+
+                <div style="padding-top: 15px;margin-bottom: 0px;" class="col-xl-12">
+                    <div class="float-right">
+                      <div style="width: 270px;margin-top: -8px;text-align: left">
+                        <button type="button" class="btn btn-radius btn-sm btn-bgcolor"
+                                        (click)="showAdd(newFCTemplate)">إضافة شخصية
+                                        &nbsp;<span class="fa fa-plus"></span>
+                                    </button>
+                      </div>
+                    </div>
+                </div>
+
+                <tabset class="member-tabset">
+                    <tab heading="قائمة الشخصيات">
+                        <div style="padding-top: 10px;" class="col-xl-12">
+                            <div class="float-left" style="width:500px;margin-bottom: 13px;">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control btn-sm" placeholder="بحث بإسم الشخصية" #txtSearch
+                                        (keydown.enter)="filterFamilyChar(txtSearch.value, template)">
+                                </div>
+                            </div>
+                            <div class="float-left" style="margin-top: 10px;margin-right: 10px;">
+                                <i class="fa fa-spinner fa-spin" style="font-size:22px;color:green" *ngIf="loadingSearch"></i>
+                            </div>
+                            <br>
+                            <div style="padding-top: 10px;">
+                                <hr>
+                            </div>
+                        </div>
+        
+                        <div style="text-align: center;margin-bottom: 15px;margin-top: 20px">
+                            <div style="font-weight: bold">
+                                <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                    type="button" (click)="getFamilyChar_All()">
+                                    عرض الكل
+                                    &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+                                    <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingAll"></i>
+                                </button> &nbsp;
+
+                                <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                    type="button" (click)="getFamilyChar_Accepted(true)">
+                                    تم الموافقة
+                                    &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+                                    <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingAcceptedStatus"></i>
+                                </button> &nbsp;
+
+                                <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                type="button" (click)="getFamilyChar_NotAccepted(false)">
+                                مرفوضة
+                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+                                <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingNotAcceptedStatus"></i>
+                            </button> &nbsp;
+
+                                <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                    type="button" (click)="getFamilyChar_Wattings()">
+                                    قيد الانتظار
+                                    &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+                                    <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingWattingStatus"></i>
+                                </button> &nbsp;
+                            </div>
+                        </div>
+                        <div style="margin-right: 17px;margin-bottom: 8px;">
+                           <strong> {{searchNow}}</strong>
+                        </div>
+                        <!-- fc list -->
+                        <div class="col-xl-12 col-md-12">
+                            <div *ngFor="let familyChar of familyCharacters.data | paginate: config" class="card widget-user"
+                                style="padding-bottom: -40px;border:1px solid #cfd4cf;padding: 20px">
+                                <!-- data -->
+                                <div class="row">
+                                    <div class="col-xl-10 col-md-10">
+                                        <img [src]= "familyChar?.image == null || familyChar?.image == '' ? '../../../assets/users/user.png' : imgUrl + familyChar?.image" 
+                                             class="img-responsive rounded-circle" alt="user"
+                                            style="border:1px solid gray;width: 60px;height: 58px;">
+                                        <div class="wid-u-info" style="width:100%">
+                                            <div>
+                                                <h4 class="m-t-0 m-b-5" style="color:green;font-size:15px;font-weight: bold">{{familyChar?.charName}}</h4>
+                                                <p class="text-muted m-b-5 font-13">
+                                                        {{familyChar?.title }}
+                                                    </p>
+                                                <p class="text-muted m-b-5 font-13">
+                                                        <span style="font-weight: bold;font-size: 12px">تاريخ الميلاد : </span>
+                                               
+                                                    {{familyChar?.birthDateM | date}}  -
+                                                    {{familyChar?.birthDateH | date :'yyyy/MM/dd'}} 
+                                                </p>                                             
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- status -->
+                                    <div class="col-xl-2 col-md-10">
+                                        <div *ngIf="familyChar.isAccepted == true" style="text-align: center;">
+                                            الحالة
+                                            <div>
+                                                <span class="badge badge-success" style="font-size: 11px;padding: 6px">تم
+                                                    القبول
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="familyChar.isAccepted == null" style="text-align: center;">
+                                            الحالة
+                                            <div>
+                                                <span class="badge badge-inverse" style="font-size: 11px;padding: 6px">قيد
+                                                    الانتظار
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="familyChar.isAccepted == false" style="text-align: center;">
+                                                الحالة
+                                                <div>
+                                                    <span class="badge badge-danger" style="font-size: 11px;padding: 6px">مرفوضة
+                                                    </span>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <!-- buttons -->
+                                <div class="row" style="margin-top:-10px;">
+                                    <!-- <div class="row" style="margin-top:-10px;margin-right: 74px;" > -->
+        
+                                    <div class="col-xl-12 col-md-10">
+                                        <div style="padding-top:10px; text-align: center">
+                                            <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                type="button" (click)="getForEdit(editTemplate,familyChar.id)">
+                                                تعديل/ تفاصيل
+                                                &nbsp;<i class="fas fa-edit"></i>&nbsp;
+                                                <!-- <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingAcceptedStatus"></i> -->
+                                            </button> &nbsp;        
+
+                                            <button [disabled]="familyChar.isAccepted == true" class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                type="button" (click)="setAcceptStatus(familyChar.id, true)">
+                                                قبول
+                                                &nbsp;<i class="fas fa-info-circle"></i>&nbsp;
+                                                <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loading_AcceptedStatus == familyChar.id"></i>
+                                            </button> &nbsp;
+
+                                            <button [disabled]="familyChar.isAccepted == false" class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                type="button" (click)="setNotAcceptStatus(familyChar.id, false)">
+                                                رفض
+                                                &nbsp;<i class="fas fa-info-circle"></i>&nbsp;
+                                                <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loading_NotAcceptedStatus == familyChar.id"></i>
+                                            </button> &nbsp;
+                                            
+                                            <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                (click)="openConfirmDelete(deleteTemplate, familyChar.id)">
+                                                حذف
+                                                &nbsp;<i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+        
+        
+                                    </div>
+                                </div>
+        
+                            </div>
+                        </div>
+        
+                        <!-- <div class="float-left" *ngIf="familyCharacters.data?.length > 0">
+                            <label class="control-label"> &nbsp;عدد الشخصيات : </label>&nbsp;
+                            {{familyCharacters.data?.length}}
+                        </div> -->
+        
+                        <!-- paging -->
+                        <div class="row" *ngIf="familyCharacters.data?.length > 0">
+                                <div class="col-7" style="text-align: left;margin-top: 23px;height: 40px">
+                                        <pagination-controls class="my-pagination" (pageChange)="getNextFamilyChar($event)" maxSize="10"
+                                        directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
+                                        screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                                        screenReaderCurrentLabel="You're on page">
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px">
+                                        <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingData"></i>
+                                </div>
+                        </div>              
+                        
+                       <div class="row" *ngIf="familyCharacters.data?.length == 0">
+                           <div class="col-12">
+                            <div  style="text-align: center;font-size: 16px;padding: 20px;margin-top:12px;margin-top:8px;margin-bottom:16px;margin-right: 6px;margin-left: 6px;">
+                                لا توجد شخصيات
+                            </div>
+                           </div>
+                       </div>
+                    </tab>
+                    <tab heading="طلبات قيد الانتظار">
+                        <div class="row" style="padding-left:25px;padding-right:25px;padding-top: 17px" *ngIf="familyCharactersWatting.data?.length > 0">
+                        <!-- <div class="row" style="padding-left:25px;padding-right:25px;padding-top: 17px"> -->
+                            <table class="table table-hover table-bordered m-0">
+                                <thead>
+                                    <tr style="text-align: center">
+                                        <th  style="width:50px">الصورة </th>
+                                        <th style="width: 210px;">الاسم </th>
+                                        <th style="width: 170px;">تاريخ الميلاد</th>
+                                        <!-- <th style="width: 300px;"> عنوان المقال</th> -->
+                                        <th style="width: 200px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <tr></tr> -->
+                                    <tr *ngFor="let fChar of familyCharactersWatting.data | paginate: config2">
+                                        <td class="align-middle" style="text-align: center">
+                                            <div class="inbox-item-img" >
+                                                <img [src]= "fChar?.image == null || fChar?.image == '' ? '../../../assets/users/user.png' : imgUrl + fChar?.image" class="rounded-circle" 
+                                                style="width:50px;height:45px; border: 1px solid rgb(180, 180, 192)"
+                                                    alt="user">
+                                            </div>
+                                        </td>
+                                        <td class="align-middle" style="text-align: right;">{{fChar?.charName}}</td>
+                                        <td class="align-middle" style="text-align: center">
+                                            {{fChar?.birthDateM | date}} -
+                                            {{fChar?.birthDateH | date :'yyyy/MM/dd'}}
+                                          </td>
+                                           <!-- <td class="align-middle" style="text-align: center">
+                                                {{fChar?.title}}
+                                          </td>                                         -->
+                                        <td class="align-middle" style="text-align: center">
+                                            <button (click)="openFcDetails(fcDetailsTemplate,fChar?.id)" class="btn btn-sm btn-radius btn-bgcolor"
+                                                style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                type="button">
+                                                تفاصيل &nbsp;
+                                                <i class="fas fa-info-circle"></i>
+                                            </button> &nbsp;
+
+                                            <button (click)="acceptFamilyCharStatus(fChar?.id, true)" class="btn btn-sm btn-radius btn-bgcolor"
+                                            style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                            type="button">
+                                            قبول
+                                            &nbsp;<i class="fa fa-check" aria-hidden="true"></i>&nbsp;
+                                                <i class="fa fa-spinner fa-spin" style="font-size:15px;color: white" *ngIf="loadingAcceptFcStatus == fChar?.id"></i>
+                                        </button>&nbsp;
+
+                                        <button (click)="refuseFamilyCharStatus(fChar?.id, false)" class="btn btn-sm btn-radius btn-bgcolor"
+                                            style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                            type="button">
+                                            رفض
+                                        &nbsp;<span class="fa fa-times"></span>&nbsp;
+                                            <i class="fa fa-spinner fa-spin" style="font-size:15px;color: white" *ngIf="loadingRefusalFcStatus == fChar?.id"></i>
+                                    </button>
+                                          </td>
+                                    </tr>
+            
+                                </tbody>
+                            </table>
+                           
+                       </div>
+                          
+                           <div class="row" *ngIf="familyCharactersWatting.data?.length > 0">
+                            <div class="col-7" *ngIf="familyCharactersWatting.data?.length > 0" style="text-align: left;margin-top: 23px;height: 40px">
+                                
+                                    <pagination-controls 
+                                        id="familyCharactersWattingId" class="my-pagination" 
+                                        (pageChange)="getNextFcNotAccept($event)" maxSize="10"
+                                        directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
+                                        screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                                        screenReaderCurrentLabel="You're on page">
+                                    </pagination-controls>
+                                    
+                            </div>
+                            <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px" *ngIf="familyCharactersWatting.data?.length > 0">
+                                <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingDataComNotAccepted"></i>
+                            </div>
+                          </div>  
+                          
+                          <br>
+                          <div class="row" *ngIf="familyCharactersWatting.data?.length == 0">
+                            <div class="col-12">
+                                <div  style="text-align: center;font-size: 16px;padding: 20px;margin-top:12px;margin-top:8px;margin-bottom:16px;margin-right: 6px;margin-left: 6px;">
+                                    لا توجد طلبات  قيد الانتظار
+                                  </div>
+                            </div>
+                        </div>
+          
+                        
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- Modal details -->
+<ng-template #detailsTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">تفاصيل الشخصية</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <!-- data -->
+        <div class="row">
+
+
+            <div class="col-xl-2" style="text-align: left;">
+                <img src="../../../assets/users/user.png" class=" rounded-circle" alt="user" style="border:1px solid gray;width: 70px;height:60px;">
+            </div>
+            <div class="col-xl-8">
+                <div class="wid-u-info" style="width:100%">
+                    <div>
+                        <h4 class="m-t-0 m-b-5" style="color:green">{{familyChar?.charName}}</h4>
+                        <p class="text-muted m-b-5 font-14">
+                            بواسطة :
+                            {{familyChar?.addedBy}}</p>
+                        <p class="text-muted m-b-5 font-13">
+                            تاريخ الميلاد :
+                            {{familyChar?.birthDateM | date :'yyyy/MM/dd'}} م -
+                            {{familyChar?.birthDateH | date :'yyyy/MM/dd'}} هـ
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- status -->
+            <div class="col-xl-2 col-md-2">
+                <div *ngIf="familyChar.isAccepted" style="text-align: center;">
+                    الحالة
+                    <div>
+                        <span class="badge badge-success" style="font-size: 11px;padding: 6px">تم القبول
+                        </span>
+                    </div>
+                </div>
+                <div *ngIf="!familyChar.isAccepted" style="text-align: center;">
+                    الحالة
+                    <div>
+                        <span class="badge badge-inverse" style="font-size: 11px;padding: 6px">قيد الانتظار
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- description -->
+        <div class="row" style="margin-top:10px;">
+
+            <div class="col-xl-12">
+                <p style="color:black;font-size: 14px">
+                    {{familyChar?.description}}
+                </p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary waves-effect btn-radius " (click)="closeModal()" data-dismiss="modal">اغلاق
+            &nbsp;<span class="fa fa-times"></span>
+        </button>
+    </div>
+</ng-template>
+
+<!-- Confirm delete -->
+<ng-template #deleteTemplate>
+    <div class="modal-body text-center">
+        <p>هل تريد حذف الشخصية؟</p>
+        <button type="button" class="btn btn-radius btn-sm btn-bgcolor"  (click)="delete()">موافق
+          <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingDel"></i></button> &nbsp;
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="decline()">إالغاء</button>
+    </div>
+</ng-template>
+
+<!-- Confirm search -->
+<ng-template #template>
+    <div class="modal-body text-center">
+        <p> ادخل كلمات بحثية</p>
+        <button type="button" class="btn btn-radius btn-sm btn-bgcolor"  (click)="decline()">موافق
+        </button>
+    </div>
+</ng-template>
+
+<!-- Modal edit -->
+<ng-template #editTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">تفاصيل/تعديل بيانات الشخصية</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <familyChar-edit [familyChar]="familyCharacterForEdit" (fcChanged)="fcUpdated()"></familyChar-edit>
+    </div>
+
+</ng-template>
+
+<!-- Modal new -->
+<ng-template #newFCTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">إضافة شخصية</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body" style="margin-top:7px;" >
+        
+
+        <div class="row" >
+           
+
+                   <div class="col-12">
+                    <input id="filter" #filter (keyup)="tree.treeModel.filterNodes(filter.value)" placeholder="بحث بالإســــم"
+                    class="form-control" />
+                   </div>
+
+                   <div class="col-12" style="margin-top:7px;">
+                        <tree-root [nodes]="familyTree" #tree [focused]="true" >
+                                <ng-template #treeNodeWrapperTemplate let-node let-index="index">
+    
+                                    <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+                                        <div style="margin-top: 3px;">
+                                            <tree-node-expander [node]="node">
+                                                <!-- <div>
+                                                    <fa-icon *ngIf="node?.isCollapsed" [icon]="['fas', 'plus-square']"></fa-icon>
+                                                    <fa-icon *ngIf="node?.isExpanded" [icon]="['fas', 'minus-square']"></fa-icon>
+                                                 </div> -->
+                                                <!-- <div style="color: #6C757D;" (click)="node.toggleExpanded()" *ngIf="node?.data?.children?.length > 0">
+                                                        <fa-icon *ngIf="node?.isCollapsed" [icon]="['fas', 'plus-square']"></fa-icon>
+                                                        <fa-icon *ngIf="node?.isExpanded" [icon]="['fas', 'minus-square']"></fa-icon>
+                                                </div> -->
+                                            </tree-node-expander>
+                                        </div>
+    
+                                        <div class="node-content-wrapper" style="margin: 5px;"
+                                            [class.node-content-wrapper-focused]="node.isFocused" (click)="node.mouseAction('click', $event)">
+                                            <tree-node-content [node]="node" [index]="index" [template]="treeNodeTemplate">
+                                            </tree-node-content>
+                                        </div>
+    
+    
+                                    </div>
+                                </ng-template>
+    
+                                <ng-template #treeNodeTemplate let-node let-index="index">
+                                    <div (click)="getUser(node)" style="border:1px solid #cfd4cf;padding:5px;">
+                                        <span>
+                                            <img src="../../../assets/users/user.png" class="img-responsive rounded-circle"
+                                                style="border:1px solid gray;width: 40px;height: 40px;margin-top: 0px">
+                                        </span>
+                                        <span> {{ node.data.name }}</span>
+                                        <span> ( {{ node.data.identityNum }} )</span>
+                                        <span style="margin-right: 8px;"><i class="fa fa-spinner fa-spin" style="font-size:16px;color:black;"
+                                                *ngIf="loadingUserData == node.data.id"></i></span>
+                                    </div>
+                                </ng-template>
+                        </tree-root>                        
+                   </div>
+
+                   <div class="col-12" *ngIf="fcRequired"  class="col-12"  style="margin-right:6px;color:red;font-weight: bold" class="alert">
+                        اختر شخصية من شجرة العائلة
+                   </div>
+
+                   <div class="col-12" style="margin-top:7px;margin-bottom: 10px">
+                        <div class="row">
+
+                                <div class="col-4">
+                                        <label>الاسم بالكامل</label> &nbsp;:
+                                        {{userData?.fullName}}
+                                </div>
+                                <div class="col-4">
+                                        <label>تاريخ الميلاد</label> &nbsp;:
+                                        {{userData?.birthDateM | date :'yyyy/MM/dd'}}
+                                </div>
+                                <div class="col-4">
+                                        <label>تاريخ الميلاد هجرى</label> &nbsp;:
+                                        {{userData?.birthDateH | date :'yyyy/MM/dd'}}
+                                </div>
+                        </div>
+                        <hr>
+                   </div>
+        </div>
+
+        <div class="row">
+                <div class="col-12">                       
+                    <input type="text" [(ngModel)]="fcTitle" placeholder="عنوان المقال" class="form-control" />
+                </div>   
+                
+                <div *ngIf="titleRequired" class="col-12"  style="margin-right:6px;color:red;font-weight: bold" class="alert">
+                    عنوان المقال مطلوب
+               </div>
+                    <!-- <textarea class="form-control" #description  rows="7" placeholder="تفاصيل الشخصية"></textarea> -->
+                <div class="col-12" style="margin-top:17px;">
+
+                    <!-- <textarea [froalaEditor] 
+                               [(froalaModel)]="fcDescription" rows="10" >
+                     </textarea> -->
+
+                     <ckeditor 
+                        [(ngModel)]="fcDescription" 
+                        name="PageContent" 
+                        required    
+                        [config]="ckeConfig" debounce="500">    
+                     </ckeditor>
+
+                     
+                </div>
+
+                <div *ngIf="descriptionRequired"  class="col-12"  style="margin-right:6px;color:red;font-weight: bold" class="alert">
+                    تفاصيل الشخصية مطلوبة
+               </div>
+                    <!-- <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" *ngIf="!editForm.get('description').valid && (editForm.get('description').touched || editForm.get('description').dirty)">
+                            <div *ngIf="editForm.get('description').hasError('required')">تفاصيل الشخصية مطلوبة </div>
+                        </div> -->
+               
+        </div>
+      
+    </div>
+
+    <div><hr>
+         <div style="text-align: center">           
+            <button class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="save()">
+                &nbsp;   حفظ
+            &nbsp;<i class="fas fa-save"></i>
+            &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingSave"></i>
+        </button>&nbsp;
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()"
+            data-dismiss="modal">اغلاق
+            &nbsp;<span class="fa fa-times"></span>
+        </button>     
+        </div>
+    </div>
+
+    <!-- <div class="modal-footer">
+        <button class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="save()">
+                &nbsp;   حفظ
+            &nbsp;<i class="fas fa-save"></i>
+            &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingSave"></i>
+        </button>
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()"
+            data-dismiss="modal">اغلاق
+            &nbsp;<span class="fa fa-times"></span>
+        </button>
+    </div> -->
+</ng-template>
+
+<ng-template #saveConfimTemplate>
+        <div class="modal-body text-center">
+            <p> عفوا تم بكتابه تفاصيل الشخصية</p>
+            <button type="button" class="btn btn-radius btn-sm btn-bgcolor"  (click)="decline()">اغلاق</button>
+        </div>
+</ng-template>
+
+<!-- Modal edit -->
+<ng-template #fcDetailsTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">تفاصيل الشخصية</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+      
+         <div class="row">
+                <div class="col-xl-2" style="text-align: left;">
+                    <img [src]= "fCharacter?.image == null || fCharacter?.image == '' ? '../../../assets/users/user.png' : imgUrl + fCharacter?.image"
+                         class=" rounded-circle" alt="user" style="border:1px solid gray;width: 70px;height:65px;">
+                </div>
+                <div class="col-xl-8">
+                    <div class="wid-u-info" style="width:100%">
+                        <div>
+                            <h5 class="m-t-0 m-b-5" style="color:green">
+                                {{fCharacter?.charName}}
+                            </h5>                            
+                            <p class="text-muted m-b-5 font-13">
+                                    {{fCharacter?.birthDateM | date }}  -
+                                    {{fCharacter?.birthDateH | date :'yyyy/MM/dd'}} 
+                                </p>
+                                    <span style="font-weight: bold;font-size: 12px">  تاريخ الاضافة  &nbsp;:&nbsp; </span>
+                                    <span class="text-muted m-b-5 font-13">                                    
+                                            {{fCharacter?.createdDateM | date }}  &nbsp;-&nbsp;
+                                            {{fCharacter?.createdDateH | date :'yyyy/MM/dd'}} 
+                                            &nbsp;( &nbsp;{{fCharacter?.createdDateM | amLocale:'ar' | amTimeAgo}}&nbsp;)
+                                        </span>
+                                        <br>
+                                <span style="font-weight: bold;font-size: 12px">  إضافة بواسطة  &nbsp;:&nbsp; </span>
+                                <span class="text-muted m-b-5 font-13">                                    
+                                        {{fCharacter?.addedBy}}
+                                    </span>
+                        </div>
+                    </div>
+                </div>
+                                       
+            </div>
+
+            <br>
+            <!-- description -->
+            <div class="row" style="margin-top:10px;">
+                <div class="col-xl-12">
+                        <div style="margin-right:5px;text-align: center;padding: 6px;color:black;border-radius: 4px;font-weight: bold;margin-bottom: 10px;border: 1px solid #e4ebe4">
+                                {{fCharacter?.title}}
+                        </div>             
+
+                        <div style="margin-right:5px;border: 1px solid #e4ebe4;padding: 6px;color:black;border-radius: 4px"
+                             [innerHTML]="fCharacter?.description"></div>                
+                </div>
+            </div>
+            
+            <div><hr>
+                <div style="text-align: center">           
+                    <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()" data-dismiss="modal">اغلاق
+                        &nbsp;<span class="fa fa-times"></span>
+                    </button>      
+               </div>
+           </div>
+        <!--            
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()" data-dismiss="modal">اغلاق
+                &nbsp;<span class="fa fa-times"></span>
+            </button>                       
+        </div> -->
+        
+
+    </div>
+
+</ng-template>
+
+    

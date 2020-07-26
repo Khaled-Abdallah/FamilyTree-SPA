@@ -1,0 +1,52 @@
+.custom-fa{
+    color:red;
+    font-size: 15px;
+}
+
+.fa-home{
+    font-size: 16px;
+}
+
+.set-color{
+    background-color: red;
+}
+
+
+.table tr.active td {
+    background-color:#efefe8 !important;
+  }
+
+
+.ng-select.custom ::ng-deep .ng-select-container  {
+    padding-right: 20px;
+    
+}
+
+.img-custom{
+    border: 2px solid black;
+    padding: 5px;
+    width: 100px;
+    height: 90px;
+    margin-bottom: 5px;
+}
+
+.select-image{
+    border: 1px solid;
+    height: 98px;
+    width: 122px;
+}
+
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+  }
+
+  /* .custom-btn {   
+    background-color:#a1a234;
+    margin: 5px;
+    height: 27px;
+    width: 30px;
+    text-align: center;
+  } */

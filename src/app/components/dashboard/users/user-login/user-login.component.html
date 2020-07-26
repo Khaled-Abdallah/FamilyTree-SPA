@@ -1,0 +1,94 @@
+<div style="padding-right:8px;padding-left:8px;padding-top:10px;">
+    <form [formGroup]="userLoginForm" id="userLoginForm" (ngSubmit)="updateUserLogin(userLoginForm.value)">
+        <input type="hidden" formControlName="id">
+        <div class="row">
+
+            <div class="col-12">
+                <div class="form-group">
+                    <div class="col-12" [ngClass]="{'has-error': (userLoginForm.get('userName').touched || userLoginForm.get('userName').dirty) && !userLoginForm.get('userName').valid }">
+                        <label class="control-label"> اسم المستخدم</label>
+                        <input class="form-control" formControlName="userName" type="text" placeholder="اسم المستخدم">
+
+
+                        <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" *ngIf="!userLoginForm.get('userName').valid &&
+                                  userLoginForm.get('userName').touched">
+                            <div *ngIf="userLoginForm.get('userName').errors?.required">اسم
+                                المستخدم مطلوب</div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-12" [ngClass]="{'has-error': (userLoginForm.get('oldPassword').touched || userLoginForm.get('oldPassword').dirty) && !userLoginForm.get('oldPassword').valid }">
+                        <label class="control-label"> كلمة المرور الحالية</label>
+                        <input class="form-control" formControlName="oldPassword" type="password" placeholder=" كلمة المرور الحالية">
+
+
+                        <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" *ngIf="!userLoginForm.get('oldPassword').valid &&
+                                      userLoginForm.get('oldPassword').touched">
+                            <div *ngIf="userLoginForm.get('oldPassword').errors?.required">كلمة المرور الحالية</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-12" 
+                        [ngClass]="{'has-error': (userLoginForm.get('newPassword').touched || userLoginForm.get('newPassword').dirty) && !userLoginForm.get('newPassword').valid }">
+                        <label class="control-label"> كلمة المرور الجديدة</label>
+                        <input class="form-control" formControlName="newPassword" type="password" 
+                                
+                                placeholder=" كلمة المرور الجديدة">
+
+
+                        <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" 
+                            *ngIf="!userLoginForm.get('newPassword').valid &&
+                                      userLoginForm.get('newPassword').touched">
+                            <div *ngIf="userLoginForm.get('newPassword').errors?.required"> كلمة المرور الجديدة مطلوبة</div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-12" 
+                    [ngClass]="{'has-error': (userLoginForm.get('confirmNewPassword').touched ||
+                              userLoginForm. get('confirmNewPassword').dirty) &&
+                              !userLoginForm.get('confirmNewPassword').valid }">
+                        <label class="control-label"> تأكيد كلمة المرور الجديدة </label>
+                        <input class="form-control" formControlName="confirmNewPassword"
+                            type="password" placeholder=" تأكيد كلمة المرور الجديدة"
+                            checkMatchingPassword="newPassword">
+
+
+                        <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" 
+                                *ngIf="(userLoginForm.get('confirmNewPassword').touched ||
+                                        userLoginForm.get('confirmNewPassword').dirty) &&
+                                        userLoginForm.get('confirmNewPassword').errors">
+
+                                <div *ngIf="userLoginForm.get('confirmNewPassword').errors?.required">تاكيد كلمة المرور مطلوبة</div>
+
+                                <div *ngIf="userLoginForm.get('confirmNewPassword').errors?.notEqual
+                                            && !userLoginForm.get('confirmNewPassword').errors?.required">
+                                    تأكيد كلمة المرور الجديدة غير متطابقة        
+                                </div>                                
+                        </div>
+                              
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-12">
+                        <button [disabled]="!userLoginForm.valid" class="btn btn-radius btn-sm btn-bgcolor" type="submit">
+                            &nbsp; حفظ
+                            &nbsp;<span class="fa fa-save"></span>&nbsp;
+                            <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingEditing"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>

@@ -1,0 +1,392 @@
+<div class="row" style="margin-bottom: 7px;margin-top: -8px">
+    <div class="col-sm-12">
+        <h4 class="page-title" style="font-size: 18px;padding-right: 5px; ">تعديل الملف الشخصى</h4>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-8">
+        <div class="card">
+            <tabset #productTabs class="member-tabset">
+                <tab heading="البيانات الاساسية">
+                    <div class="row">
+                        <div class="card-body" style="padding:20px;">
+                            <form [formGroup]="profileForm" id="profileForm" (ngSubmit)="update(profileForm.value)">
+
+                                <div class="row" style="margin-right:10px;margin-left: 10px;">
+                                    <div class="col-12">
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label class="control-label"> الرقم التعريفى</label>
+                                                    <input class="form-control" type="text" value="{{user?.identityNumber}}" readonly />
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.get('fullName').touched || profileForm.get('fullName').dirty) && !profileForm.get('fullName').valid }">
+
+
+                                                    <label class="control-label"> الاسم بالكامل</label>
+                                                    <input class="form-control" formControlName="fullName" type="text"
+                                                        placeholder="الاسم بالكامل" />
+
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                                        class="alert" *ngIf="!profileForm.get('fullName').valid && (profileForm.get('fullName').touched || profileForm.get('fullName').dirty)">
+                                                        <div *ngIf="profileForm.get('fullName').hasError('required')">الاسم
+                                                            بالكامل مطلوب </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.get('userName').touched || profileForm.get('userName').dirty) && !profileForm.get('userName').valid }">
+
+
+
+
+                                                    <label class="control-label"> اسم المستخدم</label>
+                                                    <input class="form-control" formControlName="userName" type="text"
+                                                        placeholder="اسم المستخدم">
+
+
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                                        class="alert" *ngIf="!profileForm.get('userName').valid &&
+                                                profileForm.get('userName').touched">
+                                                        <div *ngIf="profileForm.get('userName').errors?.required">اسم
+                                                            المستخدم مطلوب</div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.get('email').touched || profileForm.get('email').dirty) && !profileForm.get('email').valid }">
+
+                                                    <label class="control-label"> البريد الاكترونى</label>
+                                                    <input class="form-control" formControlName="email" type="text"
+                                                        placeholder="البريد الاكترونى">
+
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                                        class="alert" *ngIf="!profileForm.get('email').valid &&
+                                                                                                                                                                            profileForm.get('email').touched">
+                                                        <div *ngIf="profileForm.get('email').pending">جار فحص البريد
+                                                            الاكترونى ......</div>
+                                                        <div *ngIf="profileForm.get('email').errors?.required">البريد
+                                                            الاكترونى مطلوب</div>
+                                                        <div *ngIf="profileForm.get('email').errors?.pattern">صيغة
+                                                            البريد الاكترونى غير صحيحة</div>
+                                                        <!-- <div *ngIf="profileForm.get('email').errors?.emailUnique">البريد
+                                                            الاكترونى موجود مسبقا</div> -->
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.controls.phoneNumber.touched ||
+                                                                                                        profileForm.get('phoneNumber').dirty) &&
+                                                                                                        !profileForm.get('phoneNumber').valid }">
+
+
+
+                                                    <label class="control-label"> رقم الجوال</label>
+                                                    <input class="form-control" formControlName="phoneNumber" type="text"
+                                                        placeholder="رقم الجوال" (keypress)="checkMobilNumber($event)">
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                                        class="alert" *ngIf="!profileForm.get('phoneNumber').valid &&
+                                                                                                                        profileForm.get('phoneNumber').touched">
+                                                        <div *ngIf="profileForm.get('phoneNumber').errors?.required">
+                                                            رقم الجوال مطلوب </div>
+                                                        <div *ngIf="profileForm.get('phoneNumber').errors?.maxlength">رقم
+                                                            الجوال لا يزيد عن 10 رقم</div>
+                                                        <div *ngIf="profileForm.get('phoneNumber').errors?.minlength">رقم
+                                                            الجوال لا يقل عن 10 رقم</div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.get('birthDateM').touched || profileForm.get('birthDateM').dirty) && !profileForm.get('birthDateM').valid }">
+                                                    <label class="control-label"> تاريخ الميلاد</label>
+                                                    <input class="form-control" formControlName="birthDateM" value="{{user?.birthDateM | date:'yyyy/MM/dd'}}" type="text"
+                                                        placeholder="تاريخ الميلاد" 
+                                                         bsDatepicker
+                                                         [bsConfig]="bsConfig" 
+                                                         (bsValueChange)="getDateH($event)">
+
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                                        class="alert" *ngIf="!profileForm.get('birthDateM').valid &&  profileForm.get('birthDateM').touched">
+                                                        
+                                                        <div *ngIf="profileForm.get('birthDateM').errors?.required">تاريخ الميلاد مطلوب</div>
+                                                        <div *ngIf="profileForm.get('birthDateM').errors?.pattern">صيغة
+                                                            تاريخ الميلاد غير صحيحة</div>                                                       
+                                                    </div>
+                                                    <i class="fa fa-circle-o-notch fa-spin" style="font-size:16px;color: red;margin-right: 4px;margin-top:3px;"
+                                                    *ngIf="loadingDateH"></i>
+                                                </div>
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.controls.phoneNumber.touched ||
+                                                                                                                profileForm.get('phoneNumber').dirty) &&
+                                                                                                                !profileForm.get('phoneNumber').valid }">
+
+
+
+                                                    <label class="control-label"> تاريخ الميلاد الهجرى</label>
+                                                    
+                                                    <input class="form-control" 
+                                                            [(ngModel)]="birthDateH"
+                                                            formControlName="birthDateH" 
+                                                            value="{{user?.birthDateH | date:'yyyy/MM/dd'}}" 
+                                                            type="text"
+                                                            placeholder="تاريخ الميلاد الهجرى" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <div class="row">
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.get('jobTitle').touched || profileForm.get('jobTitle').dirty) && !profileForm.get('jobTitle').valid }">
+
+                                                    <label class="control-label"> الوظيفة</label>
+                                                    <input class="form-control" formControlName="jobTitle" type="text"
+                                                        placeholder="الوظيفة">
+
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                                        class="alert" *ngIf="!profileForm.get('jobTitle').valid &&  profileForm.get('jobTitle').touched">
+                                                        <div *ngIf="profileForm.get('jobTitle').pending">جار فحص البريد
+                                                            الاكترونى ......</div>
+                                                        <div *ngIf="profileForm.get('jobTitle').errors?.required">البريد
+                                                            الاكترونى مطلوب</div>
+                                                        <div *ngIf="profileForm.get('jobTitle').errors?.pattern">صيغة
+                                                            البريد الاكترونى غير صحيحة</div>
+                                                        <div *ngIf="profileForm.get('jobTitle').errors?.emailUnique">البريد
+                                                            الاكترونى موجود مسبقا</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.controls.workAddress.touched ||
+                                                                                                                profileForm.get('workAddress').dirty) &&
+                                                                                                                !profileForm.get('workAddress').valid }">
+
+
+
+                                                    <label class="control-label"> عنوان العمل</label>
+                                                    <input class="form-control" formControlName="workAddress" type="text"
+                                                        placeholder="عنوان العمل">                                                    
+
+                                                </div>
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <div class="row">
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.get('address').touched || profileForm.get('address').dirty) && !profileForm.get('jobTitle').valid }">
+
+                                                    <label class="control-label"> العنوان بالكامل </label>
+                                                    <input class="form-control" formControlName="address" type="text"
+                                                        placeholder="العنوان بالكامل">
+
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                                        class="alert" *ngIf="!profileForm.get('address').valid &&  profileForm.get('address').touched">
+                                                        <div *ngIf="profileForm.get('address').errors?.required">البريد
+                                                            الاكترونى مطلوب</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.get('genderId').touched || profileForm.get('genderId').dirty) && !profileForm.get('jobTitle').valid }">
+
+                                                    <label class="control-label"> النوع </label>
+                                                    <ng-select [items]="genderTypes"
+                                                        formControlName="genderId"
+                                                        bindLabel="genderName"
+                                                        [virtualScroll]="true"
+                                                        bindValue="id"
+                                                        placeholder="--- اختر النوع  ---"
+                                                        appendTo="body"
+                                                        class="custom custom2">
+                                                        <!-- [(ngModel)]="news.newsTypeId" -->
+                                                </ng-select>
+
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                                        class="alert" *ngIf="!profileForm.get('genderId').valid &&  profileForm.get('genderId').touched">
+                                                        <div *ngIf="profileForm.get('genderId').errors?.required">النوع مطلوب</div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <div class="row">
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.get('faceBookAcc').touched || profileForm.get('faceBookAcc').dirty) && !profileForm.get('faceBookAcc').valid }">
+
+                                                    <label class="control-label"> عنوان الفيس بوك</label>
+                                                    <input class="form-control" formControlName="faceBookAcc" type="text"
+                                                        placeholder="عنوان الفيس بوك">
+
+
+
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                                        class="alert" *ngIf="!profileForm.get('faceBookAcc').valid &&  profileForm.get('faceBookAcc').touched">
+                                                        <div *ngIf="profileForm.get('faceBookAcc').pending">جار فحص البريد
+                                                            الاكترونى ......</div>
+                                                        <div *ngIf="profileForm.get('faceBookAcc').errors?.required">البريد
+                                                            الاكترونى مطلوب</div>
+                                                        <div *ngIf="profileForm.get('faceBookAcc').errors?.pattern">صيغة
+                                                            البريد الاكترونى غير صحيحة</div>
+                                                        <div *ngIf="profileForm.get('faceBookAcc').errors?.emailUnique">البريد
+                                                            الاكترونى موجود مسبقا</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-6" [ngClass]="{'has-error': (profileForm.controls.phoneNumber.touched ||
+                                                                                                                profileForm.get('phoneNumber').dirty) &&
+                                                                                                                !profileForm.get('phoneNumber').valid }">
+
+
+
+                                                    <label class="control-label"> عنوان تويتر</label>
+                                                    <input class="form-control" formControlName="twitterAcc" type="text"
+                                                        placeholder="عنوان تويتر">
+
+                                                </div>
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <hr>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <button [disabled]="!profileForm.valid" class="btn btn-radius btn-sm btn-bgcolor"
+                                                        type="submit">
+                                                        &nbsp;  حفظ
+                                                        &nbsp;<span class="fa fa-save"></span>&nbsp;
+                                                        <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loading"></i>
+                                                    </button> &nbsp;
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="تغيير كلمة المرور">
+                    <div class="row">                       
+                            <div class="card-body" style="padding:20px;">
+                                <div class="row" style="margin-right:10px;margin-left: 10px;">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="control-label"> كلمة المرور الحالية</label>
+                                                <input class="form-control" type="password" placeholder="كلمة المرور الحالية" 
+                                                #oldPass/>
+                                            </div>
+                
+                                            <div class="form-group">
+                                                <label class="control-label">كلمة المرور الجديدة </label>
+                                                <input class="form-control" type="password" placeholder="كلمة المرور الجديدة" 
+                                                #newPass/>
+                                            </div>
+                
+                                            <div class="form-group">
+                                                <label class="control-label">تأكيد كلمة المرور الجديدة </label>
+                                                <input class="form-control" type="password" placeholder="تأكيد كلمة المرور الجديدة" 
+                                                #confirmNewPass/>
+                                            </div>
+                
+                                            <div class="form-group">
+                                                <button class="btn btn-radius btn-sm btn-bgcolor" type="button"
+                                                 (click)="updateUserPassword(oldPass.value, newPass.value, confirmNewPass.value,confirmMessage,confirm2Message,confirm3Message)">
+                                                 &nbsp; حفظ
+                                                    &nbsp;<span class="fa fa-save"></span>&nbsp;
+                                                    <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingPass"></i>
+                                                </button> &nbsp;
+                
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+
+    <!-- logos -->
+    <div class="col-md-4" style="position: fixed; right: 71%;width: 28%;margin-bottom: 6px;">
+        <div class="card widget-user">
+            <div class="card-body" style="padding:15px;">
+                <div class="col-sm-12">
+                    <div class="text-center" style="padding-left: 20px;"> <label>الصورة الشخصية</label></div>
+                    <img [src]="imagePath" class="img-thumbnail p-1 " style="margin-right:30px;width:230px;height:200px; border: 1px solid rgb(180, 180, 192);">
+
+                    <input type="file" style="padding-top: 15px;padding-right: 85px;" id="ImageFile" name="ImageFile"
+                        class="form-control-file" value="اختر الصورة" accept="image/*" (change)="uploadImage($event.target.files)" />
+
+                    <div style="text-align: center;margin-top: 10px">
+                        <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c0c0b;" *ngIf="loadingImage"></i>
+                        <div *ngIf="isUpload">
+                            <p>تم رفع الصورة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<ng-template #confirmMessage>
+    <div class="modal-body text-center">
+      <p>تأكيد كلمة المرور غير متطابقة</p>    
+      <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="width:40%"  (click)="closeModal()" >اغلاق
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #confirm2Message>
+    <div class="modal-body text-center">
+      <p>اكمل البيانات</p>    
+      <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="width:40%"  (click)="closeModal()" >اغلاق
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #confirm3Message>
+    <div class="modal-body text-center">
+      <p>كلمة المرور لا تقل عن 6 خانات</p>    
+      <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="width:40%"  (click)="closeModal()" >اغلاق
+        </button>
+    </div>
+</ng-template>

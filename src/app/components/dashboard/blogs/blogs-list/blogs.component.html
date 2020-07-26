@@ -1,0 +1,366 @@
+<div class="row" style="margin-bottom: 7px;margin-top: -8px">
+    <div class="col-sm-12">
+        <h4 class="page-title" style="font-size: 18px;padding-right: 5px; ">إدارة المدونات</h4>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-7">
+        <div class="card">
+            <div style="padding:6px;">
+                <!-- Search  -->
+                <div style="padding-top: 10px;" class="col-xl-12">
+                    <div style="text-align: center;margin-bottom: 15px;margin-top: 3px">
+                        <div style="font-weight: bold">
+
+                            <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                type="button" (click)="getBlogs_All()">
+                             الكل
+                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+                                <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingAll"></i>
+                            </button> &nbsp;
+
+                            <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                type="button" (click)="getBlogs_Accepted('1')">
+                                تم القبول
+                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+                                <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingAcceptedStatus"></i>
+                            </button> &nbsp;
+
+                            <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                type="button" (click)="getBlogs_NotAccepted('0')">
+                                مرفوضة
+                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+                                <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingNotAcceptedStatus"></i>
+                            </button> &nbsp;
+
+                            <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                type="button" (click)="getBlogs_Watting('null')">
+                                قيد الانتظار
+                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
+                                <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingWattingStatus"></i>
+                            </button> &nbsp;
+                        </div>
+                    </div>
+                    <div style="text-align: center">
+
+                    </div>
+
+                    <div class="row" style="margin-bottom: 18px;text-align: center;">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                </div>
+                                <input type="text" [(ngModel)]="searchWord" class="form-control form-control-sm"
+                                    placeholder=" بحث بأسم المدون / عنوان المدونة">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col">
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">من تاريخ</span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="من تاريخ" [(ngModel)]="dateFrom"
+                                            bsDatepicker [bsConfig]="bsConfig" [bsValue]="bsInlineRangeValue">
+                                    </div>
+
+
+                                </div>
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">الى تاريخ</span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="الى تاريخ" [(ngModel)]="dateTo"
+                                            bsDatepicker [bsConfig]="bsConfig">
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-12" style="text-align: center">
+                            <button class="btn btn-sm  btn-radius btn-bgcolor" type="button" (click)="filterBlogs()">
+                                &nbsp; &nbsp;بحث
+                                &nbsp; &nbsp;<span><i class="fa fa-search"></i></span> &nbsp;
+                                <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingSearch"></i>
+                            </button>&nbsp;
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- <div style="padding-top: 5px;" class="col-xl-12">
+                    <hr>
+                </div> -->
+
+                <!-- blogs list -->
+                <div class="col-xl-12 col-md-12">
+                   <div style="margin-bottom: 10px;margin-right: 7px;"> <strong>{{searchNow}}</strong></div>
+                    <div *ngFor="let blog of blogs.data | paginate: config" class="card widget-user" 
+                    style="border:1px solid #cfd4cf">
+                        <div class="card-body" style="padding-bottom: -40px">
+                            <div class="row">
+                                <div class="col-xl-10">
+                                    <!-- <img [src]="blog?.image == null || blog?.image == '' ? '../../../assets/users/user.png' : imgUrl + blog?.image"
+                                        class="img-responsive rounded-circle" alt="user" style="border:1px solid gray;width: 60px;height: 58px;">
+                                         -->
+                                    <!-- <div class="wid-u-info"> -->
+                                        <div>
+                                            <h4 class="m-t-0 m-b-5" style="color:green;font-size:15px;">{{blog?.title}}</h4>
+                                            <!-- <p class=" m-b-5 font-13" style="color:black">{{blog?.title}}</p> -->
+                                            <p class="text-muted m-b-5 font-13">
+                                                  <!-- {{blog?.createdDateM | amLocale:'ar' | amDateFormat: 'DD/MM/YYYY HH:mm'}}  - -->
+                                                {{blog?.createdDateM | date}}  &nbsp;- &nbsp;
+                                                {{blog?.createdDateH | date :'yyyy/MM/dd'}} 
+                                                &nbsp;( &nbsp;{{blog?.createdDateM | amLocale:'ar' | amTimeAgo}}&nbsp;)
+                                            </p>
+                                            <!-- <p class="text-muted m-b-5 font-13">
+                                                    {{blog?.createdDateM | amLocale:'ar' | amTimeAgo}}
+                                                </p> -->
+                                            <p class="text-muted m-b-5 font-13">
+                                                <!-- عدد التعليقات ( {{ blog?.commentCount }} ) -->
+                                                <i class="fas fa-comments" style="font-size: 15px"></i>
+                                                <b>
+                                                    ( {{ blog?.commentCount }} )
+                                                </b>
+                                            </p>
+                                            <!-- <p class="text-muted m-b-5 font-13">
+                                                السماح بالتعليقات (
+                                                <span *ngIf="blog?.allowComment"> <i class="fa fa-check" style="color:#1aaf2e"></i></span>
+                                                <span *ngIf="!blog?.allowComment"> <span class="fa fa-times" style="color:black"></span></span>
+                                                )
+                                            </p> -->
+                                        </div>
+                                    <!-- </div> -->
+                                </div>
+                                <div class="col-xl-2 col-md-10">
+                                    <div *ngIf="blog.isAccepted == true" style="text-align: center;">
+                                        <div>
+                                            <span class="badge badge-success" style="font-size: 10px;padding: 6px">تم
+                                                القبول
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="blog.isAccepted == false" style="text-align: center;">
+                                        <div>
+                                            <span class="badge badge-danger" style="font-size: 10px;padding: 6px">مرفوضة
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="blog.isAccepted == null" style="text-align: center;">
+                                        <div>
+                                            <span class="badge badge-inverse" style="font-size: 10px;padding: 6px">قيد
+                                                الانتظار
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top:15px;margin-bottom: -10px;">
+                                    <!-- border-top: 1px solid #f0f1f0 -->
+                                <div class="col-xl-12 col-md-10" style="text-align: center; ">
+                                    <div style="padding-top:10px;">
+                                        <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                            type="button" (click)="showBlogDetails(blog.id)">
+                                            تفاصيل
+                                            &nbsp;<i class="fas fa-info-circle"></i>&nbsp;
+                                            <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingDetails"></i>
+                                        </button> &nbsp;
+                                        <button (click)="showBlog(blog.id,editTemplate)" class="btn btn-sm btn-radius btn-bgcolor"
+                                            style="padding-top: 6px;padding-left: 15px;padding-right: 15px" type="button">
+                                            تعديل
+                                            &nbsp;<i class="fas fa-edit"></i>
+                                        </button> &nbsp;
+
+                                        <button class="btn btn-sm btn-radius " style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                            type="submit" (click)="openConfirmDelete(deleteTemplate, blog.id)">
+                                            حذف
+                                            &nbsp;<i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- <div class="float-left" *ngIf="blogs.data?.length > 0">
+                        <label class="control-label"> &nbsp;عدد المدونات : </label>&nbsp;
+                        {{blogs.data?.length}}
+                    </div> -->
+                </div>
+
+                <!-- paging -->
+                <div class="row" *ngIf="blogs.data?.length > 0">
+                        <div class="col-8" style="text-align: left;margin-top: 23px;height: 40px" >
+                                <pagination-controls class="my-pagination" (pageChange)="getNextBlogs($event)" maxSize="10"
+                                directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
+                                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                                screenReaderCurrentLabel="You're on page">
+                            </pagination-controls>
+                         </div>
+                         <div class="col-4" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px">
+                                <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingData"></i>
+                        </div>
+                </div>                
+
+                <br>
+                <div *ngIf="blogs.data?.length == 0" style="text-align: center;font-size: 16px;padding: 20px;margin-bottom: 10px;margin-top:12px;margin-top:12px;margin-bottom:16px;margin-right: 6px;margin-left: 6px;">
+                    لا توجد مدونات
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div class="col-md-5" style="position: fixed; right: 64%;width: 35%;margin-bottom: 6px;"> -->
+    <div class="col-md-5">
+        <div class="card widget-user">
+            <div class="card-body" style="padding:6px;">
+                <div class="col-sm-12">
+                    <h4 class="page-title" style="font-size: 18px;margin-bottom: -5px ">{{title}}</h4>
+                    <hr>
+                </div>
+
+                <form [formGroup]="blogForm" id="blogForm" (ngSubmit)="onSubmit(blogForm.value)" class="form-horizontal">
+                    <div class="col-12">
+                        <input type="hidden" formControlName="id">
+
+                        <div *ngIf="editMode">
+                            <div class="form-group">
+                                <strong>إضافة بواسطة :</strong> &nbsp; {{blog?.byUser}}
+                            </div>
+
+                            <div class="form-group">
+                                <strong>تاريخ الاضافة :</strong> &nbsp;
+                                {{blog?.createdDateM | date}} م -
+                                {{blog?.createdDateH | date :'yyyy/MM/dd'}} هـ
+                            </div>
+                            <div class="form-group">
+                                <strong>حالة المدونة :</strong> &nbsp;
+                                <span *ngIf="blog.isAccepted == true" class="badge badge-success" style="font-size: 10px;padding: 6px">تم
+                                    القبول
+                                </span>
+
+                                <span *ngIf="blog.isAccepted == false" class="badge badge-danger" style="font-size: 10px;padding: 6px">مرفوضة
+                                </span>
+                             
+                                <span *ngIf="blog.isAccepted == null" class="badge badge-inverse" style="font-size: 10px;padding: 6px">قيد
+                                    الانتظار
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" [ngClass]="{'has-error': (blogForm.get('title').touched || blogForm.get('title').dirty)
+                                            && !blogForm.get('title').valid }">
+
+                            <label class="control-label" for="title">عنوان المدونة</label>
+                            <input type="text" class="form-control" placeholder="عنوان المدونة" formControlName="title"
+                                 />
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!blogForm.get('title').valid && (blogForm.get('title').touched
+                                                    || blogForm.get('title').dirty)">
+                                <div *ngIf="blogForm.get('title').hasError('required')">عنوان المدونة مطلوب
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" [ngClass]="{'has-error': (blogForm.get('description').touched || blogForm.get('description').dirty)
+                                            && !blogForm.get('description').valid }">
+
+                            <label class="control-label" for="description">تفاصيل المدونة </label>
+                            <textarea class="form-control" id="description" formControlName="description" id="description"
+                                rows="6" placeholder="تفاصيل المدونة"></textarea>
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!blogForm.get('description').valid && (blogForm.get('description').touched
+                                                        || blogForm.get('description').dirty)">
+                                <div *ngIf="blogForm.get('description').hasError('required')">تفاصيل المدونة مطلوب
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="checkbox1" type="checkbox" formControlName="allowComment" 
+                                class="checkbox checkbox-success">&nbsp;
+                            <label for="checkbox1">
+                                السماح بالتعليقات
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <button [disabled]="!blogForm.valid" class="btn btn-radius btn-sm btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px;"
+                                type="submit">
+                                <span *ngIf="showSave">حفظ
+                                    &nbsp;<span class="fa fa-save"></span>
+                                </span>
+                                <span *ngIf="showEdit">تعديل
+                                    &nbsp;<i class="fas fa-edit"></i>
+                                </span>&nbsp;
+                                <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loading"></i>
+                            </button>
+                            &nbsp;
+                            <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="clear()">الغاء
+                                &nbsp;<span class="fa fa-times"></span></button>
+                        </div>
+
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- Modal details -->
+<ng-template #editTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">إضافة</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        Bodyyyyyyyyyyyyy
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary waves-effect btn-radius" (click)="closeModal()" data-dismiss="modal">اغلاق
+            &nbsp;<span class="fa fa-times"></span>
+        </button>
+    </div>
+</ng-template>
+
+<!-- Confirm delete -->
+<ng-template #deleteTemplate>
+    <div class="modal-body text-center">
+        <p>هل تريد حذف المدونة؟</p>
+        <button type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="delete()">موافق
+            <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingDel"></i></button> &nbsp;
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="decline()">إالغاء</button>
+    </div>
+</ng-template>

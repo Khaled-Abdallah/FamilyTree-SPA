@@ -1,0 +1,4 @@
+.ng-select.custom ::ng-deep .ng-select-container  {
+    padding-right: 12px;
+    
+}

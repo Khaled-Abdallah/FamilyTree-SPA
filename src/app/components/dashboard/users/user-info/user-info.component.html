@@ -1,0 +1,338 @@
+<div style="padding:20px;">
+    <form [formGroup]="userInfoForm" id="userInfoForm" (ngSubmit)="updateUserInfo(userInfoForm.value)">
+            <input type="hidden" formControlName="id">
+        <div class="row">
+            <div class="col-12">
+                    <div class="text-center" > 
+                            <img [src]="imagePath" class="rounded-circle" 
+                                 style="width:130px;height:120px; border: 1px solid rgb(180, 180, 192);">
+    
+                            <input type="file" style="padding-top: 15px;margin-right:160px" id="ImageFile" name="ImageFile" class="form-control-file"
+                                value="اختر الصورة" accept="image/*" (change)="uploadImage($event.target.files)" />
+            
+                            <div style="text-align: center;margin-top: 10px">
+                                <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c0c0b;" *ngIf="loadingImage"></i>
+                                <div *ngIf="isUpload">
+                                    <p>تم رفع الصورة</p>
+                                </div>
+                            </div>
+                    </div>
+                    <br>
+            </div>
+
+            <div class="col-12">
+                
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.controls.fullName.touched ||
+                                userInfoForm.get('fullName').dirty) &&
+                                !userInfoForm.get('fullName').valid }">
+
+                            <label class="control-label"> الاسم بالكامل</label>
+                            <input class="form-control" formControlName="fullName" type="text" placeholder="الاسم بالكامل" [value]="userInfo.fullName" />
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('fullName').valid && (userInfoForm.get('fullName').touched || userInfoForm.get('fullName').dirty)">
+                                <div *ngIf="userInfoForm.get('fullName').hasError('required')">الاسم
+                                    بالكامل مطلوب </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+
+                            <label class="control-label">الرقم التعريفى</label>
+
+                            <input class="form-control" formControlName="identityNumber" type="text" placeholder="الرقم التعريفى" [value]="userInfo.identityNumber"
+                                readonly>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <!-- <div class="form-group">
+                    <div class="row">
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('userName').touched || userInfoForm.get('userName').dirty) && !userInfoForm.get('userName').valid }">
+                            <label class="control-label"> اسم المستخدم</label>
+                            <input class="form-control" formControlName="userName" type="text" placeholder="اسم المستخدم">
+
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('userName').valid &&
+                                      userInfoForm.get('userName').touched">
+                                <div *ngIf="userInfoForm.get('userName').errors?.required">اسم
+                                    المستخدم مطلوب</div>
+
+                            </div>
+                        </div>
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('password').touched || userInfoForm.get('password').dirty) && !userInfoForm.get('password').valid }">
+                            <label class="control-label"> كلمة المرور</label>
+                            <input class="form-control" formControlName="password" type="password" placeholder="كلمة المرور">
+
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('password').valid &&
+                                          userInfoForm.get('password').touched">
+                                <div *ngIf="userInfoForm.get('password').errors?.required">كلمة المرور مطلوبة</div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div> -->
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('email').touched || userInfoForm.get('email').dirty) && !userInfoForm.get('email').valid }">
+
+                            <label class="control-label"> البريد الاكترونى</label>
+                            <input class="form-control" formControlName="email" type="text" placeholder="البريد الاكترونى">
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('email').valid &&
+                                                                                                                                                      userInfoForm.get('email').touched">
+                                <div *ngIf="userInfoForm.get('email').pending">جار فحص البريد
+                                    الاكترونى ......</div>
+                                <div *ngIf="userInfoForm.get('email').errors?.required">البريد
+                                    الاكترونى مطلوب</div>
+                                <div *ngIf="userInfoForm.get('email').errors?.pattern">صيغة
+                                    البريد الاكترونى غير صحيحة</div>
+                                <!-- <div *ngIf="userInfoForm.get('email').errors?.emailUnique">البريد
+                                      الاكترونى موجود مسبقا</div> -->
+                            </div>
+                        </div>
+
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.controls.phoneNumber.touched ||
+                                                                                  userInfoForm.get('phoneNumber').dirty) &&
+                                                                                  !userInfoForm.get('phoneNumber').valid }">
+
+
+
+                            <label class="control-label"> رقم الجوال</label>
+                            <input class="form-control" formControlName="phoneNumber" type="text" placeholder="رقم الجوال"
+                                (keypress)="checkMobilNumber($event)">
+                                
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('phoneNumber').valid &&
+                                     userInfoForm.get('phoneNumber').touched">
+                                <div *ngIf="userInfoForm.get('phoneNumber').errors?.required">
+                                    رقم الجوال مطلوب </div>
+                                <div *ngIf="userInfoForm.get('phoneNumber').errors?.maxlength">رقم
+                                    الجوال لا يزيد عن 10 رقم</div>
+                                <div *ngIf="userInfoForm.get('phoneNumber').errors?.minlength">رقم
+                                    الجوال لا يقل عن 10 رقم</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('birthDateM').touched || userInfoForm.get('birthDateM').dirty) && !userInfoForm.get('birthDateM').valid }">
+                            <label class="control-label"> تاريخ الميلاد</label>
+                            <input class="form-control" formControlName="birthDateM"
+                                type="text" placeholder="تاريخ الميلاد" 
+                                value="{{userInfo.birthDateM | date:'yyyy/MM/dd'}}"
+                                (bsValueChange)="getDateH($event)"
+                                bsDatepicker [bsConfig]="bsConfig">
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('birthDateM').valid &&  userInfoForm.get('birthDateM').touched">
+
+                                <div *ngIf="userInfoForm.get('birthDateM').errors?.required">تاريخ الميلاد مطلوب</div>
+                                <div *ngIf="userInfoForm.get('birthDateM').errors?.pattern">صيغة
+                                    تاريخ الميلاد غير صحيحة</div>
+                            </div>
+                            <i class="fa fa-circle-o-notch fa-spin" style="font-size:16px;color: red;margin-right: 4px;margin-top:3px;"
+                                *ngIf="loadingDateH"></i>
+                        </div>
+
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.controls.birthDateH.touched ||
+                                                                                          userInfoForm.get('birthDateH').dirty) &&
+                                                                                          !userInfoForm.get('birthDateH').valid }">
+
+                            <label class="control-label"> تاريخ الميلاد الهجرى</label>
+
+                            <input class="form-control" [(ngModel)]="birthDateH" formControlName="birthDateH" value="{{userInfo?.birthDateH | date:'yyyy/MM/dd'}}"
+                                type="text" placeholder="تاريخ الميلاد الهجرى" readonly>
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('birthDateH').valid &&  userInfoForm.get('birthDateH').touched">
+
+                                <div *ngIf="userInfoForm.get('birthDateH').errors?.required">تاريخ الميلاد الهجرى
+                                    مطلوب</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('jobTitle').touched || userInfoForm.get('jobTitle').dirty) && !userInfoForm.get('jobTitle').valid }">
+
+                            <label class="control-label"> الوظيفة</label>
+                            <input class="form-control" formControlName="jobTitle" type="text" placeholder="الوظيفة">
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('jobTitle').valid &&  userInfoForm.get('jobTitle').touched">
+                                <div *ngIf="userInfoForm.get('jobTitle').pending">جار فحص البريد
+                                    الاكترونى ......</div>
+                                <div *ngIf="userInfoForm.get('jobTitle').errors?.required">البريد
+                                    الاكترونى مطلوب</div>
+                                <div *ngIf="userInfoForm.get('jobTitle').errors?.pattern">صيغة
+                                    البريد الاكترونى غير صحيحة</div>
+                                <div *ngIf="userInfoForm.get('jobTitle').errors?.emailUnique">البريد
+                                    الاكترونى موجود مسبقا</div>
+                            </div>
+                        </div>
+
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.controls.workAddress.touched ||
+                                                                                              userInfoForm.get('workAddress').dirty) &&
+                                                                                              !userInfoForm.get('workAddress').valid }">
+
+
+
+                            <label class="control-label"> عنوان العمل</label>
+                            <input class="form-control" formControlName="workAddress" type="text" placeholder="عنوان العمل">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <div class="row">
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('address').touched || userInfoForm.get('address').dirty) && !userInfoForm.get('jobTitle').valid }">
+
+                            <label class="control-label"> العنوان بالكامل (الاقامة) </label>
+                            <input class="form-control" formControlName="address" type="text" placeholder="العنوان بالكامل">
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('address').valid &&  userInfoForm.get('address').touched">
+                                <div *ngIf="userInfoForm.get('address').errors?.required">البريد
+                                    الاكترونى مطلوب</div>
+                            </div>
+                        </div>
+
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('genderId').touched || userInfoForm.get('genderId').dirty) && !userInfoForm.get('jobTitle').valid }">
+
+                            <label class="control-label"> النوع </label>
+                            <ng-select [items]="genderTypes" formControlName="genderId" bindLabel="genderName"
+                                [virtualScroll]="true" bindValue="id" placeholder="--- اختر النوع  ---" appendTo="body"
+                                class="custom custom2">
+                                <!-- [(ngModel)]="news.newsTypeId" -->
+                            </ng-select>
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('genderId').valid &&  userInfoForm.get('genderId').touched">
+                                <div *ngIf="userInfoForm.get('genderId').errors?.required"> النوع مطلوب</div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+
+                
+                <div class="form-group">
+                        <label class="control-label"> الحالة (حى/ متوفى)</label>
+                        <ng-select [items]="status" formControlName="statusId" bindLabel="statusName" [virtualScroll]="true"
+                            bindValue="id" placeholder="--- اختر الحالة  ---" appendTo="body" class="custom custom2">
+                        </ng-select>
+    
+                        <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" *ngIf="!userInfoForm.get('statusId').valid &&  userInfoForm.get('statusId').touched">
+                            <div *ngIf="userInfoForm.get('statusId').errors?.required"> اختر الحالة</div>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('familyId').touched || userInfoForm.get('familyId').dirty) && !userInfoForm.get('familyId').valid }">
+                                <label class="control-label"> الجد </label>
+                                <ng-select [items]="family" formControlName="familyId" bindLabel="familyName"
+                                    [virtualScroll]="true" bindValue="id" placeholder="--- اختر الجد  ---" appendTo="body"
+                                    class="custom custom2">
+                                </ng-select>
+    
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                    *ngIf="!userInfoForm.get('familyId').valid &&  userInfoForm.get('familyId').touched">
+                                    <div *ngIf="userInfoForm.get('familyId').errors?.required"> اختر الجد</div>
+                                </div>
+                            </div>
+                            <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('motherId').touched || userInfoForm.get('motherId').dirty) && !userInfoForm.get('motherId').valid }">
+                                <label class="control-label"> الوالدة </label>
+                                <ng-select [items]="wifes" formControlName="motherId" bindLabel="wifeName" [virtualScroll]="true"
+                                    bindValue="id" placeholder="--- اختر الوالدة  ---" appendTo="body" class="custom custom2">
+                                </ng-select>
+    
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                    *ngIf="!userInfoForm.get('motherId').valid &&  userInfoForm.get('motherId').touched">
+                                    <div *ngIf="userInfoForm.get('motherId').errors?.required"> اختر الوالدة</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="form-group">
+
+                    <div class="row">
+                        <div class="col-6" [ngClass]="{'has-error': (userInfoForm.get('faceBookAcc').touched || userInfoForm.get('faceBookAcc').dirty) && !userInfoForm.get('faceBookAcc').valid }">
+
+                            <label class="control-label"> عنوان الفيس بوك</label>
+                            <input class="form-control" formControlName="faceBookAcc" type="text" placeholder="عنوان الفيس بوك">
+
+
+
+                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                *ngIf="!userInfoForm.get('faceBookAcc').valid &&  userInfoForm.get('faceBookAcc').touched">
+                                <div *ngIf="userInfoForm.get('faceBookAcc').pending">جار فحص البريد
+                                    الاكترونى ......</div>
+                                <div *ngIf="userInfoForm.get('faceBookAcc').errors?.required">البريد
+                                    الاكترونى مطلوب</div>
+                                <div *ngIf="userInfoForm.get('faceBookAcc').errors?.pattern">صيغة
+                                    البريد الاكترونى غير صحيحة</div>
+                                <div *ngIf="userInfoForm.get('faceBookAcc').errors?.emailUnique">البريد
+                                    الاكترونى موجود مسبقا</div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <label class="control-label"> عنوان تويتر</label>
+                            <input class="form-control" formControlName="twitterAcc" type="text" placeholder="عنوان تويتر">
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- <hr> -->
+        <div class="row">
+            <div class="col-12">
+                <br>
+                <button [disabled]="!userInfoForm.valid" class="btn btn-radius btn-sm btn-bgcolor" type="submit">
+                    &nbsp; حفظ
+                    &nbsp;<span class="fa fa-save"></span>&nbsp;
+                    <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingEditing"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>

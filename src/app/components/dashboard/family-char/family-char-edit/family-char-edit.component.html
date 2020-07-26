@@ -1,0 +1,117 @@
+<form [formGroup]="editForm" id="editForm" (ngSubmit)="update(editForm.value)">
+    <!-- data -->
+   
+ <!-- data -->
+ <div class="row">
+
+
+        <div class="col-xl-2" style="text-align: left;">
+            <img [src]= "familyChar?.image == null || familyChar?.image == '' ? '../../../assets/users/user.png' : imgUrl + familyChar?.image"
+                 class=" rounded-circle" alt="user" style="border:1px solid gray;width: 70px;height:65px;">
+        </div>
+        <div class="col-xl-8">
+            <div class="wid-u-info" style="width:100%">
+                <div>
+                    <h5 class="m-t-0 m-b-5" style="color:green">{{familyChar?.charName}}</h5>
+                    <p class="text-muted m-b-5 font-14">
+                      <span style="font-weight: bold;font-size: 12px">اضافة بواسطة &nbsp;:&nbsp; </span>
+                        {{familyChar?.addedBy}}</p>
+                    <p class="text-muted m-b-5 font-13">
+                            <span style="font-weight: bold;font-size: 12px">  تاريخ الميلاد &nbsp;:&nbsp; </span>
+                        {{familyChar?.birthDateM | date }}  -
+                        {{familyChar?.birthDateH | date :'yyyy/MM/dd'}} 
+                    </p>
+                    <p class="text-muted m-b-5 font-13">
+                            <span style="font-weight: bold;font-size: 12px">  تاريخ الاضافة &nbsp;:&nbsp; </span>
+                          
+                            {{familyChar?.createdDateM | date}}  &nbsp;-&nbsp;
+                            {{familyChar?.createdDateH | date :'yyyy/MM/dd'}} 
+                            &nbsp;( &nbsp;{{familyChar?.createdDateM | amLocale:'ar' | amTimeAgo}}&nbsp;)
+                        </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- status -->
+        <div class="col-xl-2 col-md-2">
+            <div *ngIf="familyChar.isAccepted" style="text-align: center;">
+                الحالة
+                <div>
+                    <span class="badge badge-success" style="font-size: 11px;padding: 6px">تم القبول
+                    </span>
+                </div>
+            </div>
+            <div *ngIf="!familyChar.isAccepted" style="text-align: center;">
+                الحالة
+                <div>
+                    <span class="badge badge-inverse" style="font-size: 11px;padding: 6px">قيد الانتظار
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- description -->
+    <div class="row" style="margin-top:10px;">
+
+        <div class="col-xl-12">
+
+                <div class="form-group">
+                        <div class="row" style="margin-bottom: 17px;margin-right: 1px;padding-top: 10px;margin-left: 2px;">                                                    
+                                <input type="text" formControlName="title" placeholder="العنوان" class="form-control" />
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" *ngIf="!editForm.get('title').valid && (editForm.get('title').touched || editForm.get('title').dirty)">
+                                        <div *ngIf="editForm.get('title').hasError('required')">العنوان مطلوب </div>
+                                    </div>
+                        </div>
+                </div>
+
+                <div class="form-group" [ngClass]="{'has-error': (editForm.get('description').touched || editForm.get('description').dirty) && !editForm.get('description').valid }">
+                        
+                    <!-- <textarea [froalaEditor] formControlName="description" rows="10" >
+                        </textarea> -->
+
+                        <ckeditor 
+                            formControlName="description"
+                            name="PageContent" 
+                            required    
+                            [config]="ckeConfig" debounce="500"
+                            #defContent>    
+                       </ckeditor>
+    
+                        <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" *ngIf="!editForm.get('description').valid && (editForm.get('description').touched || editForm.get('description').dirty)">
+                            <div *ngIf="editForm.get('description').hasError('required')">تفاصيل الشخصية مطلوبة </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xl-12"><hr>
+            <div style="text-align: center">      
+                <button  [disabled]="!editForm.valid" class="btn btn-radius btn-sm btn-bgcolor"  type="submit">
+                    تعديل
+                    &nbsp;<i class="fas fa-edit"></i> 
+                    &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loading"></i>
+           </button> &nbsp;
+           <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()" data-dismiss="modal">اغلاق
+               &nbsp;<span class="fa fa-times"></span>
+           </button>
+           </div>
+        </div>
+        
+   </div>
+
+ <!-- <div class="modal-footer">
+        <div class="row">
+                <button  [disabled]="!editForm.valid" class="btn btn-radius btn-sm btn-bgcolor"  type="submit">
+                    تعديل
+                    &nbsp;<i class="fas fa-edit"></i> 
+                    &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loading"></i>
+           </button> &nbsp;
+           <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()" data-dismiss="modal">اغلاق
+               &nbsp;<span class="fa fa-times"></span>
+           </button>
+            </div>                                
+</div> -->
+
+</form>

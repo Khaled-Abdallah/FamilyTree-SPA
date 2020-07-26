@@ -1,0 +1,110 @@
+<div class="row" style="margin-bottom: 7px;margin-top: -8px">
+    <div class="col-sm-12">
+        <h4 class="page-title" style="font-size: 18px;padding-right: 5px; ">التعريف والنسب</h4>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <input type="hidden" [(ngModel)]="definitionModel.id" >
+                <ckeditor 
+                      [(ngModel)]="definitionModel.treeDefinition" 
+                      name="PageContent" 
+                      required    
+                      [config]="ckeConfig" debounce="500"
+                      #defContent>    
+                </ckeditor>
+                <div *ngIf="definationRequired" style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert">
+                تفاصيل التعريف والنسب مطلوبة
+                </div>
+                <br><br>
+                  <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button class="btn btn-radius btn-sm btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                    type="button" (click)="onSubmit(definitionModel)">
+                                    <span> حفظ
+                                        &nbsp;<span class="fa fa-save"></span>
+                                    </span>                                 
+                                    &nbsp;<i class="fa fa-spinner fa-spin" style="font-size:14px;color:white" *ngIf="loading"></i>
+                                </button>                               
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- <form [formGroup]="definitionForm" (ngSubmit)="onSubmit(definitionForm.value)">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="hidden" formControlName="id">
+
+                            <div class="form-group" [ngClass]="{'has-error': (definitionForm.get('treeDefinition').touched || definitionForm.get('treeDefinition').dirty)
+                                        && !definitionForm.get('treeDefinition').valid }">
+                                <label class="control-label" for="treeDefinition">التفاصيل </label> -->
+
+                                <!-- <textarea [froalaEditor] formControlName="treeDefinition" 
+                                            rows="10" >
+                                </textarea> -->
+                                
+                                <!-- <ngx-text-editor [placeholder]="'Enter text here...'" 
+                                                [spellcheck]="true" 
+                                                [(ngModel)]="htmlContent"
+                                                formControlName="treeDefinition"></ngx-text-editor> -->
+
+                                                <br>
+                               <!-- <ckeditor [editor]="Editor" 
+                                        formControlName="treeDefinition" 
+                                        [config]="config">
+                              </ckeditor> -->
+
+                                <!-- <ngx-editor formControlName="treeDefinition"></ngx-editor> -->
+
+                                <!-- <textarea [froalaEditor] formControlName="treeDefinition" 
+                                        [(froalaModel)]="definitionModel.treeDefinition" rows="10" >
+                                 </textarea> -->
+
+                                <!-- <textarea formControlName="treeDefinition" class="form-control"
+                                [(ngModel)]="definitionForm.treeDefinition" rows="10" >
+                                </textarea>  -->
+
+                                <!-- <ckeditor 
+                                    [(ngModel)]="definitionModel.treeDefinition" 
+                                    formControlName="treeDefinition" 
+                                    name="PageContent" 
+                                    required    
+                                    [config]="ckeConfig" debounce="200"
+                                    #defContent>    
+                                </ckeditor>  
+
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                class="alert" *ngIf="!definitionForm.get('treeDefinition').valid && (definitionForm.get('treeDefinition').touched
+                                             || definitionForm.get('treeDefinition').dirty)">
+                                <div *ngIf="definitionForm.get('treeDefinition').hasError('required')">تفاصيل التعريف والنسب مطلوب
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button class="btn btn-radius btn-sm btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                    type="submit" [disabled]="!definitionForm.valid">
+                                    <span> حفظ
+                                        &nbsp;<span class="fa fa-save"></span>
+                                    </span>                                 
+                                    &nbsp;<i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loading"></i>
+                                </button>                               
+                            </div>
+                        </div>
+                    </div> -->
+
+                <!-- </form> -->
+                
+            </div>
+        </div>
+    </div>
+</div>

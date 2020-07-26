@@ -1,0 +1,109 @@
+
+<div class="row">
+    <div class="col-12">
+
+    </div>
+</div>
+<div class="row">
+        <div class="col-12" style="margin-top: 10px;">
+            <div class="myScroll">
+                <div class="tree" *ngIf="familyTree">
+
+                        <!-- <p-organizationChart [value]="data"></p-organizationChart> -->
+                        <!-- <p-organizationChart [value]="data"
+                        styleClass="company">
+                        <ng-template let-node pTemplate="leaf">
+                            <span style="font-weight:bold">{{node.label}}</span>
+                        </ng-template>
+                        <ng-template let-node pTemplate="default">
+                            {{node.label}}
+                        </ng-template>
+                    </p-organizationChart> -->
+
+                    <ng-template #familyTreeTemplate let-node>
+                        <li>
+                            <span (click)="printNode(node)" [ngClass] ="{'rounded-circle ' :  node.children?.length === 0  , 'maleClass' : node.gender === 1, 'femaleClass' : node.gender === 2, 'status' : node.status === 2}">
+                                <!-- <img [src]="node.userImage == null ? '../../../assets/users/user.png' : imgUrl + node.userImage"
+                                         class="img-responsive rounded-circle custom-image"><br> -->
+                                <!-- ( {{ node.identityNum }}) -->
+                                {{ node.name }}                              
+                            </span>
+                            <ul *ngIf="node.children?.length">
+                                <ng-template *ngIf="node.children?.length" ngFor [ngForOf]="node.children" [ngForTemplate]="familyTreeTemplate">                                    
+                                </ng-template>
+                            </ul>
+                        </li>
+                    </ng-template>
+                    <figure>
+                        <ul class="tree">
+                            <ng-template [ngTemplateOutlet]="familyTreeTemplate" [ngTemplateOutletContext]="{ $implicit: familyTree[0] }">
+                            </ng-template>
+                        </ul>
+                    </figure>
+                </div>
+            </div>
+        </div>    
+</div>
+
+<!-- <div class="tree">
+    
+    <ul class="pf">
+        <li class="parent">
+            <a  class="f_nolink">
+                <div class="person">Claudia<br>Avila<span>(1961 - )</span></div> 
+            </a>
+        </li>
+        <li class="divorce">
+            <ul class="c">              
+                <li>
+                    <a  class="m_nolink">
+                        <div class="person">Sebastian<br>Berdichevsky<span>(1981 - )</span></div> 
+                    </a>
+                </li>
+                <li>
+                    <a href="@F62327212@.html" class="f">
+                        <div class="person">Sara<br>Berdichevsky<span>(1986 - )</span></div> 
+                    </a>
+                </li>
+                <li>
+                    <a  class="m_nolink">
+                        <div class="person">Manuel<br>Berdichevsky<span>(1987 - )</span></div> 
+                    </a>
+                </li>
+                <li>
+                    <a  class="m_nolink">
+                        <div class="person">Sergio<br>Berdichevsky<span>(1989 - )</span></div> 
+                    </a>
+                </li>
+            </ul>                                   
+         </li>
+        <li class="parentWithAncestor">
+            <a href="@F62638334@.html" class="m">
+                <div class="person">Eduardo<br>Berdichevsky<span>(1961 - )</span></div> 
+            </a>
+        </li>
+        <li class="marriage">
+            <ul class="c">              <li>
+                    <a  class="f_nolink">
+                        <div class="person">Abigail<br>Berdichevsky<span>(2001 - )</span></div> 
+                    </a>
+                </li>
+                <li>
+                    <a  class="m_nolink">
+                        <div class="person">Tobias<br>Berdichevsky<span>(2003 - )</span></div> 
+                    </a>
+                </li>
+                <li>
+                    <a  class="m_nolink">
+                        <div class="person">Iamin<br>Berdichevsky<span>(2007 - )</span></div> 
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="parent">
+            <a  class="f_nolink">
+                <div class="person">Carolina<br>Overlar<span>(1978 - )</span></div> 
+            </a>
+        </li>
+    </ul>
+</div> -->
