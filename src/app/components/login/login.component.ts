@@ -19,7 +19,6 @@ import { environment } from '../../../environments/environment';
 })
 
 export class LoginComponent implements OnInit {
-  //test
   loginForm: FormGroup;
   loginStatus: boolean = true;
   user: User;
