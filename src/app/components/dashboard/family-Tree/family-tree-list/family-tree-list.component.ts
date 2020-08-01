@@ -8,11 +8,12 @@ import { environment } from '../../../../../environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FileUploadService } from '../../../../services/file-upload.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
-import { UserProfile } from '../../../../models/userProfile';
-import { AuthService } from '../../../../services/auth.service';
-import { Chilred } from '../../../../models/chilred';
-declare var $ : any;
+//declare var $ : any;
 //import fs = require('fs');
+
+import * as d3 from 'd3';
+import { I18nSelectPipe } from '@angular/common';
+import { VirtualTimeScheduler } from 'rxjs';
 
 @Component({
   selector: 'family-tree-list',
@@ -24,7 +25,240 @@ export class FamilyTreeListComponent implements OnInit {
   options:any;
   files: any;
   nodes: any;
-  familyTree: any;
+  familyTree = [
+        {
+            "id": 1,
+            "name": "مدير التطبيق",
+            "identityNum": "H-031044",
+            "userImage": null,
+            "gender": 1,
+            "status": 2,
+            "children": [
+                {
+                    "id": 2,
+                    "name": "ثويني",
+                    "identityNum": "H-031045",
+                    "userImage": null,
+                    "gender": 1,
+                    "status": 1,
+                    "children": [
+                        {
+                            "id": 3,
+                            "name": "ثنيان",
+                            "identityNum": "H-031046",
+                            "userImage": null,
+                            "gender": 1,
+                            "status": 1,
+                            "children": [
+                                {
+                                    "id": 4,
+                                    "name": "محمد",
+                                    "identityNum": "H-031047",
+                                    "userImage": null,
+                                    "gender": 1,
+                                    "status": 1,
+                                    "children": [
+                                        {
+                                            "id": 5,
+                                            "name": "عبدالرحمن",
+                                            "identityNum": "H-031048",
+                                            "userImage": null,
+                                            "gender": 1,
+                                            "status": 1,
+                                            "children": [
+                                                {
+                                                    "id": 6,
+                                                    "name": "عبدالله1",
+                                                    "identityNum": "H-031049",
+                                                    "userImage": null,
+                                                    "gender": 1,
+                                                    "status": 1,
+                                                    "children": []
+                                                },
+                                                {
+                                                    "id": 7,
+                                                    "name": "محمد",
+                                                    "identityNum": "H-031050",
+                                                    "userImage": null,
+                                                    "gender": 1,
+                                                    "status": 1,
+                                                    "children": []
+                                                },
+                                                {
+                                                    "id": 8,
+                                                    "name": "ثنيان",
+                                                    "identityNum": "H-031051",
+                                                    "userImage": null,
+                                                    "gender": 1,
+                                                    "status": 1,
+                                                    "children": []
+                                                },
+                                                {
+                                                    "id": 9,
+                                                    "name": "صالح",
+                                                    "identityNum": "H-031044",
+                                                    "userImage": null,
+                                                    "gender": 1,
+                                                    "status": 1,
+                                                    "children": []
+                                                },
+                                                {
+                                                    "id": 10,
+                                                    "name": "عبدالله2",
+                                                    "identityNum": "H-031044",
+                                                    "userImage": null,
+                                                    "gender": 1,
+                                                    "status": 1,
+                                                    "children": []
+                                                },
+                                                {
+                                                    "id": 11,
+                                                    "name": "سلمى",
+                                                    "identityNum": "H-031044",
+                                                    "userImage": null,
+                                                    "gender": 2,
+                                                    "status": 1,
+                                                    "children": []
+                                                },
+                                                {
+                                                    "id": 12,
+                                                    "name": "ابراهيم",
+                                                    "identityNum": "H-031044",
+                                                    "userImage": null,
+                                                    "gender": 1,
+                                                    "status": 1,
+                                                    "children": []
+                                                },
+                                                {
+                                                    "id": 13,
+                                                    "name": "عبدالعزيز",
+                                                    "identityNum": "H-031044",
+                                                    "userImage": null,
+                                                    "gender": 1,
+                                                    "status": 1,
+                                                    "children": []
+                                                },
+                                                {
+                                                    "id": 14,
+                                                    "name": "فهد",
+                                                    "identityNum": "H-031044",
+                                                    "userImage": null,
+                                                    "gender": 1,
+                                                    "status": 1,
+                                                    "children": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": 15,
+                                            "name": "عبدالله",
+                                            "identityNum": "H-031044",
+                                            "userImage": null,
+                                            "gender": 1,
+                                            "status": 1,
+                                            "children": []
+                                        },
+                                        {
+                                            "id": 19,
+                                            "name": "خالد",
+                                            "identityNum": "H-031044",
+                                            "userImage": null,
+                                            "gender": 1,
+                                            "status": 1,
+                                            "children": [
+                                                {
+                                                    "id": 21,
+                                                    "name": "ابن خالد",
+                                                    "identityNum": "H-031044",
+                                                    "userImage": null,
+                                                    "gender": 1,
+                                                    "status": 1,
+                                                    "children": [
+                                                        {
+                                                            "id": 22,
+                                                            "name": "ابن ابن خالد",
+                                                            "identityNum": "H-031044",
+                                                            "userImage": null,
+                                                            "gender": 1,
+                                                            "status": 1,
+                                                            "children": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 17,
+                                    "name": "صالح",
+                                    "identityNum": "H-031044",
+                                    "userImage": null,
+                                    "gender": 1,
+                                    "status": 1,
+                                    "children": []
+                                },
+                                {
+                                    "id": 18,
+                                    "name": "عبدالله",
+                                    "identityNum": "H-031044",
+                                    "userImage": null,
+                                    "gender": 1,
+                                    "status": 1,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 24,
+                    "name": "خالد عبدالله",
+                    "identityNum": "H-279588",
+                    "userImage": null,
+                    "gender": 1,
+                    "status": 1,
+                    "children": []
+                },
+                {
+                    "id": 25,
+                    "name": "adadad",
+                    "identityNum": "H-473163",
+                    "userImage": null,
+                    "gender": 2,
+                    "status": 1,
+                    "children": []
+                },
+                {
+                    "id": 26,
+                    "name": "ererere",
+                    "identityNum": "H-890926",
+                    "userImage": null,
+                    "gender": 2,
+                    "status": 1,
+                    "children": []
+                },
+                {
+                    "id": 27,
+                    "name": "qqqq",
+                    "identityNum": "H-147698",
+                    "userImage": "04c082c0-f52b-4242-b9a1-a2d510c2ce57.jpg",
+                    "gender": 2,
+                    "status": 1,
+                    "children": []
+                },
+                {
+                    "id": 28,
+                    "name": "صثصثص",
+                    "identityNum": "T-333339",
+                    "userImage": "e5d7aa89-78c7-4b0c-aa76-0aa626ab2e5d.jpg",
+                    "gender": 1,
+                    "status": 1,
+                    "children": []
+                }
+            ]
+        }
+    ];
   userData: any;
   fatherData: any;
   loadingUserData: any;
@@ -57,6 +291,15 @@ export class FamilyTreeListComponent implements OnInit {
   loadingDateH: boolean;
   treeTitle: string = "";
 
+  depthLimit = 4;
+  treeId="ftree";
+  treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
+  width=window.innerWidth;
+  height=window.innerHeight;
+  vertical=true; //if false tree will be hidden
+  res=null;
+  searchText = "";
+
   constructor(private fb: FormBuilder,
     private route: ActivatedRoute,
     private userService: UserService,
@@ -66,9 +309,79 @@ export class FamilyTreeListComponent implements OnInit {
     private fileUploadService: FileUploadService) 
     { }
 
+  
+  //click event handle with clicked node data injected.
+  nodeClick(nodeData) {
+    console.log(nodeData.data);
+  };
+
+  emptyData(){
+    this.treeData = { id: -1, name: "", identityNum: "", userImage: "", gender: -1, status: -1, children: []};
+  }
+
+  copyObj(obj){
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  limitTreeDepth(tree, depthLimit,depth=0){
+    if(depth == depthLimit-1) {
+      tree.children = [];
+    }
+    let newTree = this.copyObj(tree);
+    let hasChildren = [];
+    newTree.children = [];
+    for(let i = 0; i < tree.children.length; i++){
+      if(tree.children[i].children){
+        hasChildren.push(tree.children[i]);
+      } else {
+        newTree.children.push(tree.children[i]);
+      }
+    }
+    depth+=1;
+    hasChildren.forEach((subTree)=>{
+      newTree.children.push(this.limitTreeDepth(subTree,depthLimit,depth));
+    });
+    return newTree;
+  }
+
+  showMore(numLevels){
+    this.depthLimit += numLevels;
+    this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
+    if(this.searchText != ""){
+      this.find(this.searchText);
+    }
+  }
+
+  findNode(object, nodeId) {
+    if(this.res) {
+      this.res.found=false;
+      this.res = null;
+    }
+    //search by desired parameter by changing the below line
+    if (object.identityNum === nodeId) return object;
+ 
+    var result;
+    for (var i = 0; i < object.children.length; i++) {
+       result = this.findNode(object.children[i], nodeId);
+       if (result !== undefined) return result;
+    }
+  }
+
+  find(text){
+    this.searchText = text;
+    if(text == ""){
+      this.res.found = false
+    } else {
+      this.res = this.findNode(this.treeData, text);
+      if(this.res){
+        this.res["found"] = true;
+      } 
+    }
+  }
+  //=================================================================
   ngOnInit() {
     this.route.data.subscribe(data => {
-      this.familyTree = data['treeList'];
+      //this.familyTree = data['treeList'];
       //console.log(this.familyTree);
     });
 
@@ -89,7 +402,31 @@ export class FamilyTreeListComponent implements OnInit {
       isAnimated: true
     };
   }
+  
+  getUserData(node){
+    this.spinner.show();
+    this.userService.getUserInfo(node.id)
+        .subscribe(_userData => {
+          this.userData = _userData;
+          this.treeTitle = "- تفاصيل الشخصية";
+          this.showUserDetails = true;
+          this.showFamilyTree = false;  
+        },() => {
+          setTimeout(() => {
+            this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
+            this.spinner.hide();
+          }, 100);       
+        }
+        ,() => {
+            setTimeout(() => {          
+              this.spinner.hide();     
+            }, 100);                   
+        });
+  }
 
+  getNext(pageNo: Number) {
+    
+  }
     
   getDateH(date: Date){
     if(date != null){
@@ -159,30 +496,6 @@ export class FamilyTreeListComponent implements OnInit {
           
     });
 
-  }
-
- 
-  printNode(node){
-    this.spinner.show();
-    this.userService.getUserInfo(node.id)
-        .subscribe(_userData => {
-          this.userData = _userData;
-          //console.log(this.userData);
-          this.treeTitle = "- تفاصيل الشخصية";
-
-          this.showUserDetails = true;
-          this.showFamilyTree = false;  
-        },() => {
-          setTimeout(() => {
-            this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
-            this.spinner.hide();
-          }, 100);       
-          }
-          ,() => {
-            setTimeout(() => {          
-              this.spinner.hide();     
-            }, 100);                   
-          });
   }
 
   returnToFamilyTree(){

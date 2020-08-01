@@ -79,6 +79,8 @@ import {OrganizationChartModule} from 'primeng/organizationchart';
 import { UserLoginComponent } from './components/dashboard/users/user-login/user-login.component';
 import { MatchingPasswordDirective } from './helper/matching-password.directive';
 import { ValidateEqualModule } from 'ng-validate-equal';
+import { VerticalTreeComponent } from './components/dashboard/vertical-tree/vertical-tree.component';
+
 
 export function getToken() {
   return localStorage.getItem('token');
@@ -86,6 +88,7 @@ export function getToken() {
 
 @NgModule({
   declarations: [
+    VerticalTreeComponent,
     AppComponent,
     LoginComponent,
     HomeComponent,

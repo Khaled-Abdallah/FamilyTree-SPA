@@ -23,25 +23,28 @@
 
                 <tabset class="member-tabset">
                     <tab heading="قائمة الشخصيات">
-                        <div style="padding-top: 10px;" class="col-xl-12">
-                            <div class="float-left" style="width:500px;margin-bottom: 13px;">
-                                <div class="input-group">
+                        <div class="row">
+                            <div style="padding-top: 10px;" class="col-12">
+                                <div class="input-group text-search">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-search"></i></span>
                                     </div>
-                                    <input type="text" class="form-control btn-sm" placeholder="بحث بإسم الشخصية" #txtSearch
+                                    <input type="text" class="form-control" placeholder="بحث بإسم الشخصية" #txtSearch
                                         (keydown.enter)="filterFamilyChar(txtSearch.value, template)">
                                 </div>
                             </div>
-                            <div class="float-left" style="margin-top: 10px;margin-right: 10px;">
-                                <i class="fa fa-spinner fa-spin" style="font-size:22px;color:green" *ngIf="loadingSearch"></i>
+                            <div class="col-12">
+                                <div class="loading-search">
+                                    <i class="fa fa-spinner fa-spin" style="font-size:17px;color:green" *ngIf="loadingSearch"></i>
+                                    <br>
+                                </div>
+                                <!-- <div style="padding-top: 10px;">
+                                    <hr>
+                                </div> -->
                             </div>
-                            <br>
-                            <div style="padding-top: 10px;">
-                                <hr>
-                            </div>
-                        </div>
+                        </div>                      
         
+                        <!-- buttons -->
                         <div style="text-align: center;margin-bottom: 15px;margin-top: 20px">
                             <div style="font-weight: bold">
                                 <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
@@ -76,13 +79,15 @@
                         <div style="margin-right: 17px;margin-bottom: 8px;">
                            <strong> {{searchNow}}</strong>
                         </div>
+
+
                         <!-- fc list -->
                         <div class="col-xl-12 col-md-12">
                             <div *ngFor="let familyChar of familyCharacters.data | paginate: config" class="card widget-user"
                                 style="padding-bottom: -40px;border:1px solid #cfd4cf;padding: 20px">
                                 <!-- data -->
                                 <div class="row">
-                                    <div class="col-xl-10 col-md-10">
+                                    <div class="col-10">
                                         <img [src]= "familyChar?.image == null || familyChar?.image == '' ? '../../../assets/users/user.png' : imgUrl + familyChar?.image" 
                                              class="img-responsive rounded-circle" alt="user"
                                             style="border:1px solid gray;width: 60px;height: 58px;">
@@ -102,9 +107,8 @@
                                         </div>
                                     </div>
                                     <!-- status -->
-                                    <div class="col-xl-2 col-md-10">
-                                        <div *ngIf="familyChar.isAccepted == true" style="text-align: center;">
-                                            الحالة
+                                    <div class="col-2">
+                                        <div *ngIf="familyChar.isAccepted == true" class="status-align">                                       
                                             <div>
                                                 <span class="badge badge-success" style="font-size: 11px;padding: 6px">تم
                                                     القبول
@@ -112,15 +116,13 @@
                                             </div>
                                         </div>
                                         <div *ngIf="familyChar.isAccepted == null" style="text-align: center;">
-                                            الحالة
                                             <div>
                                                 <span class="badge badge-inverse" style="font-size: 11px;padding: 6px">قيد
                                                     الانتظار
                                                 </span>
                                             </div>
                                         </div>
-                                        <div *ngIf="familyChar.isAccepted == false" style="text-align: center;">
-                                                الحالة
+                                        <div *ngIf="familyChar.isAccepted == false" style="text-align: center;">                                            
                                                 <div>
                                                     <span class="badge badge-danger" style="font-size: 11px;padding: 6px">مرفوضة
                                                     </span>
@@ -177,18 +179,18 @@
         
                         <!-- paging -->
                         <div class="row" *ngIf="familyCharacters.data?.length > 0">
-                                <div class="col-7" style="text-align: left;margin-top: 23px;height: 40px">
+                                <div class="col-12" style="text-align: center;margin-top: 23px;height: 40px">
                                         <pagination-controls class="my-pagination" (pageChange)="getNextFamilyChar($event)" maxSize="10"
                                         directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
                                         screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
                                         screenReaderCurrentLabel="You're on page">
                                     </pagination-controls>
                                 </div>
-                                <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px">
-                                        <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingData"></i>
+                                <div class="col-12" style="text-align: center;">
+                                    <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingData"></i>
                                 </div>
-                        </div>              
-                        
+                        </div>                      
+                        <!-- no data -->
                        <div class="row" *ngIf="familyCharacters.data?.length == 0">
                            <div class="col-12">
                             <div  style="text-align: center;font-size: 16px;padding: 20px;margin-top:12px;margin-top:8px;margin-bottom:16px;margin-right: 6px;margin-left: 6px;">
@@ -229,14 +231,16 @@
                                                 {{fChar?.title}}
                                           </td>                                         -->
                                         <td class="align-middle" style="text-align: center">
-                                            <button (click)="openFcDetails(fcDetailsTemplate,fChar?.id)" class="btn btn-sm btn-radius btn-bgcolor"
+                                            <button (click)="openFcDetails(fcDetailsTemplate,fChar?.id)" 
+                                                class="btn btn-sm btn-radius btn-bgcolor btn-mob"
                                                 style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                 type="button">
                                                 تفاصيل &nbsp;
                                                 <i class="fas fa-info-circle"></i>
                                             </button> &nbsp;
 
-                                            <button (click)="acceptFamilyCharStatus(fChar?.id, true)" class="btn btn-sm btn-radius btn-bgcolor"
+                                            <button (click)="acceptFamilyCharStatus(fChar?.id, true)" 
+                                            class="btn btn-sm btn-radius btn-bgcolor btn-mob"
                                             style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                             type="button">
                                             قبول
@@ -244,7 +248,8 @@
                                                 <i class="fa fa-spinner fa-spin" style="font-size:15px;color: white" *ngIf="loadingAcceptFcStatus == fChar?.id"></i>
                                         </button>&nbsp;
 
-                                        <button (click)="refuseFamilyCharStatus(fChar?.id, false)" class="btn btn-sm btn-radius btn-bgcolor"
+                                        <button (click)="refuseFamilyCharStatus(fChar?.id, false)" 
+                                            class="btn btn-sm btn-radius btn-bgcolor btn-mob"
                                             style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                             type="button">
                                             رفض
@@ -260,23 +265,21 @@
                        </div>
                           
                            <div class="row" *ngIf="familyCharactersWatting.data?.length > 0">
-                            <div class="col-7" *ngIf="familyCharactersWatting.data?.length > 0" style="text-align: left;margin-top: 23px;height: 40px">
-                                
+                            <div class="col-12" *ngIf="familyCharactersWatting.data?.length > 0" style="text-align: center;margin-top: 20px;">                                
                                     <pagination-controls 
                                         id="familyCharactersWattingId" class="my-pagination" 
                                         (pageChange)="getNextFcNotAccept($event)" maxSize="10"
                                         directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
                                         screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
                                         screenReaderCurrentLabel="You're on page">
-                                    </pagination-controls>
-                                    
+                                    </pagination-controls>                                    
                             </div>
-                            <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px" *ngIf="familyCharactersWatting.data?.length > 0">
+                            <div class="col-12" style="text-align: center;" 
+                                *ngIf="familyCharactersWatting.data?.length > 0">
                                 <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingDataComNotAccepted"></i>
                             </div>
                           </div>  
-                          
-                          <br>
+                                                   
                           <div class="row" *ngIf="familyCharactersWatting.data?.length == 0">
                             <div class="col-12">
                                 <div  style="text-align: center;font-size: 16px;padding: 20px;margin-top:12px;margin-top:8px;margin-bottom:16px;margin-right: 6px;margin-left: 6px;">

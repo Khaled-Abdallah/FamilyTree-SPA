@@ -1,0 +1,42 @@
+
+@media all and (max-width: 767px){
+    .f-char-btns .btn{
+        margin-top: 5px;
+    }
+    .status{
+        text-align: right;
+    }
+
+    .loading-search{
+        margin-top: 10px;
+        margin-right: 10px;
+        text-align: center;
+    }
+
+    .text-search{
+        margin-bottom: 13px;
+        padding-left: 10px;
+    }
+    .status-align{
+        text-align: right
+    }
+    .btn-mob{
+        width: 100%;
+    }
+}
+
+/* ===================================================== */
+.text-search{
+    /* width:500px; */
+    margin-bottom: 13px;
+}
+
+.loading-search{
+    margin-top: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.status-align{
+    text-align: center
+}

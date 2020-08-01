@@ -73,8 +73,11 @@ export class LoginComponent implements OnInit {
     initialData(){
       this.authService.getLoginLogo()
         .subscribe(result => {
-          debugger
-          this.imageLogo = result.loginLogo;
+          if(result == ""){
+            this.imageLogo = "defLogo3.png";
+          }else{
+            this.imageLogo = result.loginLogo;
+          }
         }, () => {
           this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى المحاولة مرة اخرى");
         });
