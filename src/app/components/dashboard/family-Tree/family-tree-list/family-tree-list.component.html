@@ -16,37 +16,42 @@
                             <div style="padding:6px;">
                                 
                                 <!-- search --> 
-                                <div style="padding-top: 10px;" class="col-xl-12">
+                                <div class="col-xl-12" style="padding-top: 10px;">
                                     <div class="float-left" style="width:500px;margin-bottom: 13px;">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                                             </div>
                                             <!-- <input id="filter" placeholder="بحث بالإســــم" class="form-control" /> -->
-                                            <input #box (keyup)="find(box.value)" class="form-control">
+                                            <input #box (keyup)="find(box.value)" class="form-control" placeholder="بحث بالرقم التعريفى">
                                         </div>
                                     </div>
                                     <div class="float-left" style="margin-top: 10px;margin-right: 10px;">
                                         <i class="fa fa-spinner fa-spin" style="font-size:22px;color:green" *ngIf="loadingSearch"></i>
                                     </div>
                                     <br>
-                                    <div style="padding-top: 10px;">
-                                        <hr>
+                                    <div style="padding-top: 10px;padding-bottom: 10px">                                      
                                     </div>
                                 </div>
 
-                                <!-- tree -->
-                                <div class="row">
-                                     <div class="col-12" style="margin-top: 10px;">
-                                        <app-vertical-tree [data]="treeData" [width]="width" [height]="height" [nodeClick]="nodeClick"
-                                            [search]="searchText" [id]="treeId" *ngIf="vertical"></app-vertical-tree>
+                                <!-- tree -->                               
+                                     <div class="col-12" style="margin-top: 10px;border:1px solid #e4e9e4;padding: 10px;">
+                                        <app-vertical-tree  
+                                            [data]="treeData" 
+                                            [width]="width" 
+                                            [height]="height" 
+                                            [nodeClick]="nodeClick"
+                                            [search]="searchText" 
+                                            [id]="treeId" 
+                                            *ngIf="vertical">
+                                        </app-vertical-tree>
                                     </div>
-                                </div>
-                                <div class="row">
-                                     <div class="col-12">
-                                        <button (click)="showMore(2)" class="btn btn-primary">عرض المزيد</button>
+                            
+                              
+                                     <div class="col-12" style="text-align: center;margin-top: 10px">
+                                        <button (click)="showMore(2)" class="btn btn-sm btn-radius btn-bgcolor">عرض المزيد</button>
                                     </div>
-                                </div>
+                          
                             </div>
                         </tab>
 
@@ -159,6 +164,34 @@
                                         style="width: 50%" (click)="closeModal()">إالغاء</button>
                                 </div>
                             </ng-template>
+                        </tab>
+
+                        <tab heading="test">
+                            <div class="myScroll">
+                                <div class="tree" *ngIf="familyTree">
+                                    <ng-template #familyTreeTemplate let-node>
+                                        <li>
+                                            <span (click)="getUserData(node)" 
+                                                 [ngClass]="{'rounded-circle ' :  node.children?.length === 0  , 'maleClass' : node.gender === 1, 'femaleClass' : node.gender === 2, 'status' : node.status === 2}">
+                                                {{ node.name }} <br>
+                                                {{ node.identityNum }}
+                                            </span>
+                                            <ul *ngIf="node.children?.length > 0">
+                                                <ng-template *ngIf="node.children?.length" ngFor [ngForOf]="node.children"
+                                                    [ngForTemplate]="familyTreeTemplate">
+                                                </ng-template>
+                                            </ul>
+                                        </li>
+                                    </ng-template>
+                                    <figure>
+                                        <ul class="tree">
+                                            <ng-template [ngTemplateOutlet]="familyTreeTemplate"
+                                                [ngTemplateOutletContext]="{ $implicit: familyTree[0] }">
+                                            </ng-template>
+                                        </ul>
+                                    </figure>
+                                </div>
+                             </div>
                         </tab>
                        
                     </tabset>
