@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import * as d3 from 'd3';
 import { xml } from 'd3';
 
@@ -8,6 +8,7 @@ import { xml } from 'd3';
   styleUrls: ['./vertical-tree.component.css']
 })
 export class VerticalTreeComponent implements OnInit, OnChanges {
+  @Output() getNodeData: EventEmitter<any> = new EventEmitter();
   @Input('data') data;
   @Input('width') width;
   @Input('height') height;
@@ -18,12 +19,26 @@ export class VerticalTreeComponent implements OnInit, OnChanges {
   duration:number = 0;
   i: number = 0;
   searchText = this.search;
-  constructor() {
-    
+  L = 56;
+  
+  constructor() {    
   }
-  ngOnInit() {
 
-    let draw = (source) => {
+  iter(nodeData) {    
+    if(nodeData['name'].length > this.L/10 + 4){
+      //console.log(this.L)
+      this.L +=5;
+    }
+    for (var i = 0; i < nodeData.children.length; i++) {
+       this.iter(nodeData.children[i]);
+    }
+  }
+
+  ngOnInit() {
+    this.L=55;
+    this.iter(this.data);
+
+    let draw = (source) => {      
       let margin = {top: 20, right: 20, bottom: 30, left: 20};
       let width = this.width - margin.left - margin.right;
       let height = this.height - margin.top - margin.bottom;
@@ -44,9 +59,15 @@ export class VerticalTreeComponent implements OnInit, OnChanges {
         .attr('class', 'node')
         .attr("style", "cursor: pointer")
         .attr("transform", d => "translate(" + source.x0 + "," + source.y0 + ")")
-        .on('click',d=> draw(this.nodeClick(d)));
+        .on('click',(d)=> {
+          //draw(this.nodeClick(d));
+          //draw(this.getNodeData.emit(d.data));
+          //console.log(d["data"]);
+          draw(this.getNodeData.emit(d["data"]));
+          //draw(function(_){this.getNodeData.emit(_)}(d["data"]));
+        });
       
-      let L = 60;
+      let L = this.L;
 
       nodeEnter.append('rect')
         .attr('class', 'node')
@@ -61,7 +82,7 @@ export class VerticalTreeComponent implements OnInit, OnChanges {
       
       nodeEnter.append('text')
         .attr("dy", ".35em")
-        .attr("style", "font: 10px sans-serif")
+        .attr("style", "font: 15px sans-serif")
         .attr("x", 0)
         .attr("text-anchor", "middle")
         .attr("fill", "white")
@@ -134,9 +155,9 @@ export class VerticalTreeComponent implements OnInit, OnChanges {
     }
 
     let zoom = () => {
-    g.attr('transform', d3.event.transform);
+      g.attr('transform', d3.event.transform);
     }
-
+    
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     let zoomListener = d3.zoom().scaleExtent([0.001, 1000]).on("zoom", zoom); 
     
@@ -174,10 +195,14 @@ export class VerticalTreeComponent implements OnInit, OnChanges {
     root.x0 = 0;
     root.y0 = width / 3;
     draw(root);
+
+    //this.zoom();
   }
+
   ngOnChanges(){
     this.searchText = this.search;
     document.querySelector("div.svg-container").remove();
     this.ngOnInit();
   }
+
 }

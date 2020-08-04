@@ -80,42 +80,20 @@ export class FamilyTreeListComponent implements OnInit {
         //console.log(this.familyTree);
       });
 
-      this.depthLimit = 4;
+      this.depthLimit = 6;
       this.treeId="ftree";
       this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
       this.width = window.innerWidth;
       this.height = window.innerHeight;
       this.vertical = true; //if false tree will be hidden
       this.res = null;
-      this.searchText = "";
-
-      
+      this.searchText = "";      
     }
 
   
   //click event handle with clicked node data injected.
-  nodeClick(nodeData) {
-    alert("done");
-    //return;
-    console.log(nodeData.data);
-    this.spinner.show();
-    this.userService.getUserInfo(nodeData.id)
-        .subscribe(_userData => {
-          this.userData = _userData;
-          this.treeTitle = "- تفاصيل الشخصية";
-          this.showUserDetails = true;
-          this.showFamilyTree = false;  
-        },() => {
-          setTimeout(() => {
-            this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
-            this.spinner.hide();
-          }, 100);       
-        }
-        ,() => {
-            setTimeout(() => {          
-              this.spinner.hide();     
-            }, 100);                   
-        });
+  nodeClick(nodeData) {    
+     //console.log(nodeData.data);    
   };
 
   emptyData(){
@@ -203,6 +181,27 @@ export class FamilyTreeListComponent implements OnInit {
   }
   
   getUserData(node){
+    this.spinner.show();
+    this.userService.getUserInfo(node.id)
+        .subscribe(_userData => {
+          this.userData = _userData;
+          this.treeTitle = "- تفاصيل الشخصية";
+          this.showUserDetails = true;
+          this.showFamilyTree = false;  
+        },() => {
+          setTimeout(() => {
+            this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
+            this.spinner.hide();
+          }, 100);       
+        }
+        ,() => {
+            setTimeout(() => {          
+              this.spinner.hide();     
+            }, 100);                   
+        });
+  }
+
+  _showUserDetails(node){
     this.spinner.show();
     this.userService.getUserInfo(node.id)
         .subscribe(_userData => {
@@ -350,8 +349,7 @@ export class FamilyTreeListComponent implements OnInit {
       });
   }  
 
-  showDetails(template: TemplateRef<any>, userId: Number, ParentId: Number){
-    debugger
+  showDetails(template: TemplateRef<any>, userId: Number, ParentId: Number){    
     this.user = this.users.data.find(u => u.id == userId);
     this.getFatherData(ParentId);
     // if(this.fatherData == null){

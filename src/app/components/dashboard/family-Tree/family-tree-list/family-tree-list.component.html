@@ -41,6 +41,7 @@
                                             [width]="width" 
                                             [height]="height" 
                                             [nodeClick]="nodeClick"
+                                            (getNodeData)="_showUserDetails($event)"
                                             [search]="searchText" 
                                             [id]="treeId" 
                                             *ngIf="vertical">
