@@ -19,7 +19,7 @@ export class VerticalTreeComponent implements OnInit, OnChanges {
   duration:number = 0;
   i: number = 0;
   searchText = this.search;
-  L = 56;
+  L = 70;
   
   constructor() {    
   }
@@ -35,7 +35,7 @@ export class VerticalTreeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.L=55;
+    this.L = 70;
     this.iter(this.data);
 
     let draw = (source) => {      

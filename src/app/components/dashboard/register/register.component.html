@@ -4,36 +4,44 @@
             <div class="card">
                 <div class="card-body">
 
-                    <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="addChildren(registerForm.value)">
+                    <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="save(registerForm.value)">
                         <div class="form-group">
-                            <label class="control-label"> الحالة (حى/ متوفى)</label>
-                            <ng-select [items]="status" formControlName="statusId" bindLabel="statusName"
-                                [virtualScroll]="true" bindValue="id" placeholder="--- اختر الحالة  ---" appendTo="body"
-                                class="custom custom2">
-                            </ng-select>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="control-label"> الحالة (حى/ متوفى)</label>
+                                    <ng-select [items]="status" formControlName="statusId" bindLabel="statusName"
+                                        [virtualScroll]="true" bindValue="id" placeholder="--- اختر الحالة  ---" appendTo="body"
+                                        class="custom custom2">
+                                    </ng-select>
+        
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!registerForm.get('statusId').valid &&  registerForm.get('statusId').touched">
+                                        <div *ngIf="registerForm.get('statusId').errors?.required"> اختر الحالة</div>
+                                    </div>
+                                </div>
+                                <div class="col-6"
+                                [ngClass]="{'has-error': (registerForm.get('familyId').touched || registerForm.get('familyId').dirty) && !registerForm.get('familyId').valid }">
+                                <label class="control-label"> الجد </label>
+                                <ng-select [items]="family" formControlName="familyId" bindLabel="familyName"
+                                    [virtualScroll]="true" bindValue="id" placeholder="--- اختر الجد  ---"
+                                    appendTo="body" class="custom custom2">
+                                </ng-select>
 
-                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
-                                *ngIf="!registerForm.get('statusId').valid &&  registerForm.get('statusId').touched">
-                                <div *ngIf="registerForm.get('statusId').errors?.required"> اختر الحالة</div>
+                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
+                                    class="alert"
+                                    *ngIf="!registerForm.get('familyId').valid &&  registerForm.get('familyId').touched">
+                                    <div *ngIf="registerForm.get('familyId').errors?.required"> اختر الجد</div>
+                                </div>
+                         </div>
                             </div>
+                            
+
+                         
                         </div>
 
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-6"
-                                    [ngClass]="{'has-error': (registerForm.get('familyId').touched || registerForm.get('familyId').dirty) && !registerForm.get('familyId').valid }">
-                                    <label class="control-label"> الجد </label>
-                                    <ng-select [items]="family" formControlName="familyId" bindLabel="familyName"
-                                        [virtualScroll]="true" bindValue="id" placeholder="--- اختر الجد  ---"
-                                        appendTo="body" class="custom custom2">
-                                    </ng-select>
-
-                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
-                                        class="alert"
-                                        *ngIf="!registerForm.get('familyId').valid &&  registerForm.get('familyId').touched">
-                                        <div *ngIf="registerForm.get('familyId').errors?.required"> اختر الجد</div>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-6"
                                     [ngClass]="{'has-error': (registerForm.get('parentId').touched || registerForm.get('parentId').dirty) && !registerForm.get('parentId').valid }">
                                     <label class="control-label"> الوالد </label>
@@ -46,6 +54,20 @@
                                         class="alert"
                                         *ngIf="!registerForm.get('parentId').valid &&  registerForm.get('parentId').touched">
                                         <div *ngIf="registerForm.get('parentId').errors?.required"> اختر الوالد</div>
+                                    </div>
+                                </div>
+                                <div class="col-6" [ngClass]="{'has-error': (registerForm.get('genderId').touched || registerForm.get('genderId').dirty) && !registerForm.get('genderId').valid }">
+    
+                                    <label class="control-label"> النوع </label>
+                                    <ng-select [items]="genderTypes" formControlName="genderId" bindLabel="genderName"
+                                        [virtualScroll]="true" bindValue="id" placeholder="--- اختر النوع  ---" appendTo="body"
+                                        class="custom custom2">
+                                        <!-- [(ngModel)]="news.newsTypeId" -->
+                                    </ng-select>
+    
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                        *ngIf="!registerForm.get('genderId').valid &&  registerForm.get('genderId').touched">
+                                        <div *ngIf="registerForm.get('genderId').errors?.required"> النوع مطلوب</div>
                                     </div>
                                 </div>
                             </div>
@@ -209,10 +231,6 @@
                                     &nbsp; حفظ
                                     &nbsp;<span class="fa fa-save"></span>&nbsp;
                                     <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loading"></i>
-                                </button> &nbsp;
-                                <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm"
-                                    (click)="closeModal()" data-dismiss="modal">اغلاق
-                                    &nbsp;<span class="fa fa-times"></span>
                                 </button>
                             </div>
                         </div>

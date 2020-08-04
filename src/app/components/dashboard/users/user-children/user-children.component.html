@@ -342,7 +342,7 @@
                                     </div>
                                 </div>
     
-                                <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('genderId').touched || addUserForm.get('genderId').dirty) && !addUserForm.get('jobTitle').valid }">
+                                <div class="col-6" [ngClass]="{'has-error': (addUserForm.get('genderId').touched || addUserForm.get('genderId').dirty) && !addUserForm.get('genderId').valid }">
     
                                     <label class="control-label"> النوع </label>
                                     <ng-select [items]="genderTypes" formControlName="genderId" bindLabel="genderName"

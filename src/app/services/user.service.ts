@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-
+  private _accounturl = environment.apiUrl + 'account/';
   private _url = environment.apiUrl + 'admin/user/';
   private _urlUser = environment.apiUrl + 'admin/user/';
   private _urlUserWifes = environment.apiUrl + 'Wife/';
@@ -161,6 +161,10 @@ export class UserService {
 
   getParents(): any {
     return this.http.get(this._url + 'getParents' );
+  }
+
+  save(user: any) {
+    return this.http.post(this._accounturl + 'register2' , user)
   }
 
   

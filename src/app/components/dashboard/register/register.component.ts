@@ -20,6 +20,7 @@ export class RegisterComponent implements OnInit {
   loadingDateH: boolean;
   birthDateH: any;
   parents: any;
+  loading: boolean;
 
   constructor(private userService: UserService,
     private modalService: ModalService,
@@ -46,7 +47,7 @@ export class RegisterComponent implements OnInit {
       email: [, [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       phoneNumber: [, [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
       birthDateM: [ ,[Validators.required]],
-      birthDateH: [, [Validators.required]]      
+      birthDateH: [,]      
     });
     this.bsConfig = {
       containerClass: 'theme-green',
@@ -108,5 +109,37 @@ export class RegisterComponent implements OnInit {
       });
   }
   
+   
+  save(model: any) {    
+    this.loading = true;
+    var dateM = new Date(model.birthDateM);
+    model.birthDateM = dateM.toLocaleDateString();
+
+    this.userService.save(model)
+      .subscribe(() => {
+        setTimeout(() => {        
+          this.alertifyService.tSuccess('تم الحفظ بنجاح');
+          this.loading = false;
+          this.getParents();
+        }, 100);
+      }, () => {
+        setTimeout(() => {
+          this.alertifyService.tError('خطأ فى عملية الحفظ ... يرجي المحاولة مرة اخرى ');
+          this.loading = false;
+        }, 100);
+      }, () => {
+        //
+      });
+
+  }
+
+  
+  checkMobilNumber(event: any) {
+    const pattern = /[0-9\+\-\ ]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
 
 }
