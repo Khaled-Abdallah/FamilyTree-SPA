@@ -187,8 +187,12 @@
                                 <span style="font-size: 17px"> الاعدادات </span> 
                             </a>                        
                         </li>
-
-                     
+                        <li class="has_sub">
+                            <a [routerLink]="['/admin','register']"  routerLinkActive="active" class="waves-effect"><i class="fas fa-cogs"></i>
+                                <span style="font-size: 17px"> التسجيل </span> 
+                            </a>                        
+                        </li>
+                        
 
                     <li class="has_sub">
                         <a (click)="logout()"  routerLinkActive="active" class="waves-effect"><i class="fas fa-sign-out-alt"></i>

@@ -159,5 +159,11 @@ export class UserService {
     return this.http.get(this._url + 'getUserChildren/'+ parentId );
   }
 
+  getParents(): any {
+    return this.http.get(this._url + 'getParents' );
+  }
+
+  
+
 
 }

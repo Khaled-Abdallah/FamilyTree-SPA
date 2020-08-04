@@ -80,6 +80,7 @@ import { UserLoginComponent } from './components/dashboard/users/user-login/user
 import { MatchingPasswordDirective } from './helper/matching-password.directive';
 import { ValidateEqualModule } from 'ng-validate-equal';
 import { VerticalTreeComponent } from './components/dashboard/vertical-tree/vertical-tree.component';
+import { RegisterComponent } from './components/dashboard/register/register.component';
 
 
 export function getToken() {
@@ -113,7 +114,8 @@ export function getToken() {
     UserChildrenComponent,
     ChildrenPermissionComponent,
     UserLoginComponent,
-    MatchingPasswordDirective
+    MatchingPasswordDirective,
+    RegisterComponent
   ],
   imports: [
     OrganizationChartModule,

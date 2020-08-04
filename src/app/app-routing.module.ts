@@ -35,6 +35,7 @@ import { BlogCommentsNotAcceptedResolver } from './resolvers/blogCommentsNotAcce
 import { RefusalCommentsResolver } from './resolvers/refusalCommentsResolver.service';
 import { RefusalNewsCommentsResolver } from './resolvers/refusalNewsCommentsResolver.service';
 import { FamilCharWattingResolverService } from './resolvers/FamilCharWattingResolverService.service';
+import { RegisterComponent } from './components/dashboard/register/register.component';
 
 
 
@@ -44,7 +45,8 @@ const appRoutes: Routes = [
     path:'admin' ,component: DashboardComponent,
     canActivate: [AuthGuard],
     children:
-    [     
+    [
+      { path:'register' ,component: RegisterComponent},
       { path: 'home', component: HomeComponent , resolve: { definition: DefinitionResloverDervice} },
       { path: 'blogs', component: BlogsComponent, resolve: { blogsList: BlogsListResolverService} },
       { path: 'blog-details/:id', component: BlogDetailsComponent, 
