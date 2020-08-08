@@ -166,35 +166,10 @@
                                 </div>
                             </ng-template>
                         </tab>
-
-                        <tab heading="test">
-                            <div class="myScroll">
-                                <div class="tree" *ngIf="familyTree">
-                                    <ng-template #familyTreeTemplate let-node>
-                                        <li>
-                                            <span (click)="getUserData(node)" 
-                                                 [ngClass]="{'rounded-circle ' :  node.children?.length === 0  , 'maleClass' : node.gender === 1, 'femaleClass' : node.gender === 2, 'status' : node.status === 2}">
-                                                {{ node.name }} <br>
-                                                {{ node.identityNum }}
-                                            </span>
-                                            <ul *ngIf="node.children?.length > 0">
-                                                <ng-template *ngIf="node.children?.length" ngFor [ngForOf]="node.children"
-                                                    [ngForTemplate]="familyTreeTemplate">
-                                                </ng-template>
-                                            </ul>
-                                        </li>
-                                    </ng-template>
-                                    <figure>
-                                        <ul class="tree">
-                                            <ng-template [ngTemplateOutlet]="familyTreeTemplate"
-                                                [ngTemplateOutletContext]="{ $implicit: familyTree[0] }">
-                                            </ng-template>
-                                        </ul>
-                                    </figure>
-                                </div>
-                             </div>
-                        </tab>
                        
+                        <!-- <tab heading="صلاحيات افراد العائلة">
+                            <app-user-permission></app-user-permission>
+                        </tab> -->
                     </tabset>
 
                 </div>
@@ -356,9 +331,36 @@
 
 
 
+<!-- <tab heading="test">
+    <div class="myScroll">
+        <div class="tree" *ngIf="familyTree">
+            <ng-template #familyTreeTemplate let-node>
+                <li>
+                    <span (click)="getUserData(node)" 
+                         [ngClass]="{'rounded-circle ' :  node.children?.length === 0  , 'maleClass' : node.gender === 1, 'femaleClass' : node.gender === 2, 'status' : node.status === 2}">
+                        {{ node.name }} <br>
+                        {{ node.identityNum }}
+                    </span>
+                    <ul *ngIf="node.children?.length > 0">
+                        <ng-template *ngIf="node.children?.length" ngFor [ngForOf]="node.children"
+                            [ngForTemplate]="familyTreeTemplate">
+                        </ng-template>
+                    </ul>
+                </li>
+            </ng-template>
+            <figure>
+                <ul class="tree">
+                    <ng-template [ngTemplateOutlet]="familyTreeTemplate"
+                        [ngTemplateOutletContext]="{ $implicit: familyTree[0] }">
+                    </ng-template>
+                </ul>
+            </figure>
+        </div>
+     </div>
+</tab> -->
 
 
-
+<!-- //=============================================================== -->
 
 
 

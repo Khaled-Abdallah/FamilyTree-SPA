@@ -87,7 +87,7 @@ export class FamilyTreeListComponent implements OnInit {
       this.height = window.innerHeight;
       this.vertical = true; //if false tree will be hidden
       this.res = null;
-      this.searchText = "";      
+      this.searchText = ""; 
     }
 
   
