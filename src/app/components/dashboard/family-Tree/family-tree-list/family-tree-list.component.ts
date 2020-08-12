@@ -180,45 +180,49 @@ export class FamilyTreeListComponent implements OnInit {
     };
   }
   
-  getUserData(node){
-    this.spinner.show();
-    this.userService.getUserInfo(node.id)
-        .subscribe(_userData => {
-          this.userData = _userData;
-          this.treeTitle = "- تفاصيل الشخصية";
-          this.showUserDetails = true;
-          this.showFamilyTree = false;  
-        },() => {
-          setTimeout(() => {
-            this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
-            this.spinner.hide();
-          }, 100);       
-        }
-        ,() => {
-            setTimeout(() => {          
-              this.spinner.hide();     
-            }, 100);                   
-        });
-  }
+  // getUserData(node){
+  //   this.spinner.show();
+  //   this.userService.getUserInfo(node.id)
+  //       .subscribe(_userData => {
+  //         this.userData = _userData;
+  //         console.log(this.userData);
+  //         this.treeTitle = "- تفاصيل الشخصية";
+  //         this.showUserDetails = true;
+  //         this.showFamilyTree = false;  
+  //       },() => {
+  //         setTimeout(() => {
+  //           this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
+  //           this.spinner.hide();
+  //         }, 100);       
+  //       }
+  //       ,() => {
+  //           setTimeout(() => {          
+  //             this.spinner.hide();     
+  //           }, 100);                   
+  //       });
+  // }
 
   _showUserDetails(node){
     this.spinner.show();
     this.userService.getUserInfo(node.id)
         .subscribe(_userData => {
-          this.userData = _userData;
-          this.treeTitle = "- تفاصيل الشخصية";
-          this.showUserDetails = true;
-          this.showFamilyTree = false;  
+          setTimeout(() => {
+            this.userData = _userData;
+            //console.log(this.userData);
+            this.treeTitle = "- تفاصيل الشخصية";
+            this.showUserDetails = true;
+            this.showFamilyTree = false;  
+          }, 50);  
         },() => {
           setTimeout(() => {
             this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
             this.spinner.hide();
-          }, 100);       
+          }, 50);       
         }
         ,() => {
             setTimeout(() => {          
               this.spinner.hide();     
-            }, 100);                   
+            }, 50);                   
         });
   }
 

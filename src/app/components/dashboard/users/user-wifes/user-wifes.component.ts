@@ -13,6 +13,8 @@ import { AlertifyService } from '../../../../services/alertify.service';
 export class UserWifesComponent implements OnInit {
   editWife: Wife;
   @Input() userWifes: any;  
+  @Input() userId: any;  
+  
   wifesForm: FormGroup;
   loading: any;
   loadingDelete: any;
@@ -58,7 +60,7 @@ export class UserWifesComponent implements OnInit {
   }
   
   onSubmit(model: Wife){
-    model.userId = this.userWifes[0].userId;
+    model.userId = this.userId;
     
     if (model.id == 0 || model.id == undefined) {
       this.loading = true;

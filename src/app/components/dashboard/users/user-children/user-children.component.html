@@ -55,12 +55,14 @@
                                                                           
                             <button  class="btn btn-sm btn-radius btn-bgcolor"
                             style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
-                            type="button">
+                            type="button" (click)="showUpdateUser(userChild?.id, editChildersTemplate)">
                             تعديل 
                             &nbsp;<i class="fas fa-edit"></i>
                         </button> &nbsp;                    
 
-                         <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 21, 15);color:white;" type="button">
+                         <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 21, 15);color:white;" 
+                            (click)="openConfirmDelete(userChild?.id, deleteUserTemplate)" 
+                            type="button">
                                 حذف
                                 &nbsp;<i class="fas fa-trash"></i>&nbsp; 
                             </button> &nbsp;
@@ -74,7 +76,7 @@
   <div *ngIf="userChildren?.length == 0" style="border-radius: 5px;text-align: center;font-size: 16px;padding: 20px;margin-bottom: 10px">
     لا يوجد ابناء
   </div>
-<!-- 
+    <!-- 
         <table class="table table-hover table-bordered m-0 align-middle">
             <thead>
                 <tr style="text-align: center">
@@ -107,7 +109,7 @@
 
 <ng-template #addChildersTemplate>
         <div class="modal-header">
-            <h4 class="modal-title pull-left">إضافة ابناء</h4>
+            <h4 class="modal-title pull-left">{{title}}</h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -115,9 +117,10 @@
     
         <div class="modal-body">
 
-            <form [formGroup]="addUserForm" id="addUserForm" (ngSubmit)="addChildren(addUserForm.value)">
+            <form [formGroup]="addUserForm" id="addUserForm" (ngSubmit)="addUser(addUserForm.value)">
                 <div class="row">
                     <div class="col-8">
+                        <input type="hidden" formControlName="id">
                         <div class="form-group">
                                     <label class="control-label">  الحالة (حى/ متوفى)</label>
                                     <ng-select [items]="status" formControlName="statusId" bindLabel="statusName"
@@ -201,6 +204,8 @@
                                                         *ngIf="!addUserForm.get('password').valid &&
                                                         addUserForm.get('password').touched">
                                                         <div *ngIf="addUserForm.get('password').errors?.required">كلمة المرور مطلوبة</div>
+                                                        <div *ngIf="addUserForm.get('password').errors?.minlength">
+                                                            كلمة المرور لا تقل عن 6 خانات</div>
                     
                                                     </div>
                                                 </div>
@@ -436,4 +441,317 @@
         <div>
         </div>
     
+</ng-template>
+
+<!-- Confirm delete -->
+<ng-template #deleteUserTemplate>
+    <div class="modal-body text-center">
+        <p> هل تريد حذف الابن ؟</p>
+        <button type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="deleteUser()">موافق
+            <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingDelete"></i></button> &nbsp;
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()">إالغاء</button>
+    </div>
+</ng-template>
+
+<ng-template #editChildersTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">تعديل بيانات الابن</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <tabset class="member-tabset tab-container">
+            <tab heading=" البيانات الاساسية">
+               <div class="row">
+                   <div class="col-12">
+                    <form [formGroup]="editUserForm" id="editUserForm" (ngSubmit)="editUser(editUserForm.value)">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="hidden" formControlName="id">
+                                <div class="form-group">
+                                            <label class="control-label">  الحالة (حى/ متوفى)</label>
+                                            <ng-select [items]="status" formControlName="statusId" bindLabel="statusName"
+                                                [virtualScroll]="true" bindValue="id" placeholder="--- اختر الحالة  ---" appendTo="body"
+                                                class="custom custom2">
+                                            </ng-select>
+            
+                                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                *ngIf="!editUserForm.get('statusId').valid &&  editUserForm.get('statusId').touched">
+                                                <div *ngIf="editUserForm.get('statusId').errors?.required"> اختر الحالة</div>
+                                            </div>
+                                </div>            
+            
+                                <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-6" [ngClass]="{'has-error': (editUserForm.get('familyId').touched || editUserForm.get('familyId').dirty) && !editUserForm.get('familyId').valid }">
+                                                    <label class="control-label"> الجد </label>
+                                                    <ng-select 
+                                                        [items]="family" 
+                                                        formControlName="familyId" 
+                                                        bindLabel="familyName"
+                                                        [virtualScroll]="true" 
+                                                        bindValue="id" 
+                                                        placeholder="--- اختر الجد  ---" 
+                                                        appendTo="body"
+                                                        class="custom custom2">
+                                                    </ng-select>
+                    
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                        *ngIf="!editUserForm.get('familyId').valid &&  editUserForm.get('familyId').touched">
+                                                        <div *ngIf="editUserForm.get('familyId').errors?.required"> اختر الجد</div>
+                                                    </div>
+                                            </div>
+                                            <div class="col-6" [ngClass]="{'has-error': (editUserForm.get('motherId').touched || editUserForm.get('motherId').dirty) && !addUserForm.get('motherId').valid }">
+                                                    <label class="control-label"> الوالدة </label>
+                                                    <ng-select [items]="wifes" formControlName="motherId" bindLabel="wName"
+                                                        [virtualScroll]="true" bindValue="id" placeholder="--- اختر الوالدة  ---" appendTo="body"
+                                                        class="custom custom2">
+                                                    </ng-select>
+                    
+                                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                        *ngIf="!editUserForm.get('motherId').valid &&  editUserForm.get('motherId').touched">
+                                                        <div *ngIf="editUserForm.get('motherId').errors?.required"> اختر الوالدة</div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>                      
+            
+                                <div class="form-group">
+                                        <label class="control-label"> الاسم بالكامل</label>
+                                        <input class="form-control" formControlName="fullName" type="text" placeholder="الاسم بالكامل" />
+            
+                                        <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                            *ngIf="!editUserForm.get('fullName').valid && (editUserForm.get('fullName').touched || editUserForm.get('fullName').dirty)">
+                                            <div *ngIf="editUserForm.get('fullName').hasError('required')">الاسم
+                                                بالكامل مطلوب </div>
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-6" [ngClass]="{'has-error': (editUserForm.get('email').touched || editUserForm.get('email').dirty) && !editUserForm.get('email').valid }">
+            
+                                            <label class="control-label"> البريد الاكترونى</label>
+                                            <input class="form-control" formControlName="email" type="text" placeholder="البريد الاكترونى">
+            
+                                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                *ngIf="!editUserForm.get('email').valid &&
+                                                editUserForm.get('email').touched">
+                                                <div *ngIf="editUserForm.get('email').pending">جار فحص البريد
+                                                    الاكترونى ......</div>
+                                                <div *ngIf="editUserForm.get('email').errors?.required">البريد
+                                                    الاكترونى مطلوب</div>
+                                                <div *ngIf="editUserForm.get('email').errors?.pattern">صيغة
+                                                    البريد الاكترونى غير صحيحة</div>
+                                                <!-- <div *ngIf="addUserForm.get('email').errors?.emailUnique">البريد
+                                                            الاكترونى موجود مسبقا</div> -->
+                                            </div>
+                                        </div>
+            
+                                        <div class="col-6" [ngClass]="{'has-error': (editUserForm.controls.phoneNumber.touched ||
+                                        editUserForm.get('phoneNumber').dirty) &&
+                                                                                                        !editUserForm.get('phoneNumber').valid }">
+            
+            
+            
+                                            <label class="control-label"> رقم الجوال</label>
+                                            <input class="form-control" formControlName="phoneNumber" type="text" placeholder="رقم الجوال"
+                                                (keypress)="checkMobilNumber($event)">
+                                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                *ngIf="!editUserForm.get('phoneNumber').valid &&
+                                                editUserForm.get('phoneNumber').touched">
+                                                <div *ngIf="editUserForm.get('phoneNumber').errors?.required">
+                                                    رقم الجوال مطلوب </div>
+                                                <div *ngIf="editUserForm.get('phoneNumber').errors?.maxlength">رقم
+                                                    الجوال لا يزيد عن 10 رقم</div>
+                                                <div *ngIf="editUserForm.get('phoneNumber').errors?.minlength">رقم
+                                                    الجوال لا يقل عن 10 رقم</div>
+                                            </div>
+            
+                                        </div>
+            
+                                    </div>
+            
+            
+            
+                                </div>
+            
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-6" [ngClass]="{'has-error': (editUserForm.get('birthDateM').touched || editUserForm.get('birthDateM').dirty) && !editUserForm.get('birthDateM').valid }">
+                                            <label class="control-label"> تاريخ الميلاد</label>
+                                            <input class="form-control" formControlName="birthDateM" 
+                                                type="text" placeholder="تاريخ الميلاد" bsDatepicker [bsConfig]="bsConfig"
+                                                (bsValueChange)="getDateH($event)">
+            
+                                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                *ngIf="!editUserForm.get('birthDateM').valid &&  editUserForm.get('birthDateM').touched">
+            
+                                                <div *ngIf="editUserForm.get('birthDateM').errors?.required">تاريخ الميلاد مطلوب</div>
+                                                <div *ngIf="editUserForm.get('birthDateM').errors?.pattern">صيغة
+                                                    تاريخ الميلاد غير صحيحة</div>
+                                            </div>
+                                            <i class="fa fa-circle-o-notch fa-spin" style="font-size:16px;color: red;margin-right: 4px;margin-top:3px;" *ngIf="loadingDateH"></i>  
+                                        </div>
+                                        <div class="col-6" [ngClass]="{'has-error': (editUserForm.controls.birthDateH.touched ||
+                                        editUserForm.get('birthDateH').dirty) &&
+                                                                                                                !editUserForm.get('birthDateH').valid }">
+            
+                                            <label class="control-label"> تاريخ الميلاد الهجرى</label>
+            
+                                            <input class="form-control" [(ngModel)]="birthDateH" formControlName="birthDateH"
+                                                type="text" placeholder="تاريخ الميلاد الهجرى" readonly>
+            
+                                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                *ngIf="!editUserForm.get('birthDateH').valid &&  editUserForm.get('birthDateH').touched">
+            
+                                                <div *ngIf="editUserForm.get('birthDateH').errors?.required">تاريخ الميلاد الهجرى
+                                                    مطلوب</div>
+                                            </div>
+            
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="form-group">
+                                    <div class="row">
+                                            <div class="col-6" [ngClass]="{'has-error': (editUserForm.get('jobTitle').touched || editUserForm.get('jobTitle').dirty) && !editUserForm.get('jobTitle').valid }">
+            
+                                                <label class="control-label"> الوظيفة</label>
+                                                <input class="form-control" formControlName="jobTitle" type="text" placeholder="الوظيفة">
+            
+                                                <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                    *ngIf="!editUserForm.get('jobTitle').valid &&  editUserForm.get('jobTitle').touched">
+                                                    <div *ngIf="editUserForm.get('jobTitle').pending">جار فحص البريد
+                                                        الاكترونى ......</div>
+                                                    <div *ngIf="editUserForm.get('jobTitle').errors?.required">البريد
+                                                        الاكترونى مطلوب</div>
+                                                    <div *ngIf="editUserForm.get('jobTitle').errors?.pattern">صيغة
+                                                        البريد الاكترونى غير صحيحة</div>
+                                                    <div *ngIf="editUserForm.get('jobTitle').errors?.emailUnique">البريد
+                                                        الاكترونى موجود مسبقا</div>
+                                                </div>
+                                            </div>
+            
+                                            <div class="col-6" [ngClass]="{'has-error': (editUserForm.controls.workAddress.touched ||
+                                            editUserForm.get('workAddress').dirty) &&
+                                                                                                                    !editUserForm.get('workAddress').valid }">
+            
+            
+            
+                                                <label class="control-label"> عنوان العمل</label>
+                                                <input class="form-control" formControlName="workAddress" type="text" placeholder="عنوان العمل">
+                                            </div>
+            
+                                    </div>
+                                </div>
+            
+                                <div class="form-group">
+            
+                                    <div class="row">
+                                        <div class="col-6" [ngClass]="{'has-error': (editUserForm.get('address').touched || editUserForm.get('address').dirty) && !editUserForm.get('jobTitle').valid }">
+            
+                                            <label class="control-label"> العنوان بالكامل (الاقامة) </label>
+                                            <input class="form-control" formControlName="address" type="text" placeholder="العنوان بالكامل">
+            
+                                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                *ngIf="!editUserForm.get('address').valid &&  editUserForm.get('address').touched">
+                                                <div *ngIf="editUserForm.get('address').errors?.required">البريد
+                                                    الاكترونى مطلوب</div>
+                                            </div>
+                                        </div>
+            
+                                        <div class="col-6" [ngClass]="{'has-error': (editUserForm.get('genderId').touched || editUserForm.get('genderId').dirty) && !editUserForm.get('genderId').valid }">
+            
+                                            <label class="control-label"> النوع </label>
+                                            <ng-select [items]="genderTypes" formControlName="genderId" bindLabel="genderName"
+                                                [virtualScroll]="true" bindValue="id" placeholder="--- اختر النوع  ---" appendTo="body"
+                                                class="custom custom2">
+                                                <!-- [(ngModel)]="news.newsTypeId" -->
+                                            </ng-select>
+            
+                                            <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert"
+                                                *ngIf="!editUserForm.get('genderId').valid &&  editUserForm.get('genderId').touched">
+                                                <div *ngIf="editUserForm.get('genderId').errors?.required"> النوع مطلوب</div>
+                                            </div>
+                                        </div>
+            
+            
+                                    </div>
+            
+            
+            
+                                </div>
+            
+                                <div class="form-group">
+            
+                                    <div class="row">
+                                        <div class="col-6" [ngClass]="{'has-error': (editUserForm.get('faceBookAcc').touched || editUserForm.get('faceBookAcc').dirty) && !editUserForm.get('faceBookAcc').valid }">
+            
+                                            <label class="control-label"> عنوان الفيس بوك</label>
+                                            <input class="form-control" formControlName="faceBookAcc" type="text" placeholder="عنوان الفيس بوك">
+            
+                    
+                                        </div>
+            
+                                        <div class="col-6">
+                                            <label class="control-label"> عنوان تويتر</label>
+                                            <input class="form-control" formControlName="twitterAcc" type="text" placeholder="عنوان تويتر">
+            
+                                        </div>
+            
+                                    </div>
+            
+            
+            
+                                </div>
+                            </div>
+            
+                            <div class="col-4">
+                                <div class="text-center" style="padding-left: 20px;"> <label>الصورة </label></div>
+                                <img [src]="imagePath" class="img-thumbnail p-1 " style="margin-right:30px;width:170px;height:150px; border: 1px solid rgb(180, 180, 192);">
+            
+                                <input type="file" style="padding-top: 15px;padding-right: 65px;" id="ImageFile" name="ImageFile"
+                                    class="form-control-file" value="اختر الصورة" accept="image/*" (change)="uploadImage($event.target.files)" />
+            
+                                <div style="text-align: center;margin-top: 10px">
+                                    <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c0c0b;" *ngIf="loadingImage"></i>
+                                    <div *ngIf="isUpload">
+                                        <p>تم رفع الصورة</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <hr>
+                        <div class="row" style="text-align: center">
+                            <div class="col-12">
+                                <button [disabled]="!editUserForm.valid" class="btn btn-radius btn-sm btn-bgcolor" type="submit">
+                                    &nbsp; حفظ
+                                    &nbsp;<span class="fa fa-save"></span>&nbsp;
+                                    <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loading"></i>
+                                </button> &nbsp;
+                                <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()"
+                                    data-dismiss="modal">اغلاق
+                                    &nbsp;<span class="fa fa-times"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                   </div>
+               </div>
+            </tab>
+
+            <tab heading=" بيانات الدخول">
+                <user-login  [userLogin]="userToEdite"></user-login>
+            </tab>
+        </tabset>
+       
+        
+    </div>
+    <div>
+    </div>
+
 </ng-template>

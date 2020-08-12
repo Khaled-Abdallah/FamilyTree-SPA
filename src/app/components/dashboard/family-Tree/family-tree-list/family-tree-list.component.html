@@ -191,12 +191,12 @@
     <div class="col-7">
         <div class="card">
             <div class="col-12">
-                <tabset #productTabs class="member-tabset">
+                <tabset #productTabs class="member-tabset ">
                     <tab heading=" الزوجات">
-                        <user-wifes [userWifes]="userData.wifes"></user-wifes>
+                        <user-wifes [userWifes]="userData.wifes" [userId]="userData.userInfo.id"></user-wifes>
                     </tab>
                     <tab heading=" الابناء">
-                        <user-children [userChildren]="userData.children"></user-children>
+                        <user-children [userChildren]="userData.children" [userId]="userData.userInfo.id"></user-children>
                     </tab>
                     <tab heading=" بيانات الدخول">
                         <user-login  [userLogin]="userData.userInfo"></user-login>

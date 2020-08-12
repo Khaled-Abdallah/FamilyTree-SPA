@@ -66,7 +66,7 @@ export class UserInfoComponent implements OnInit {
       workAddress: [this.userInfo.workAddress],
       address: [this.userInfo.address, [Validators.required]],
       genderId: [this.userInfo.genderId, [Validators.required]],
-      motherId: [this.userInfo.motherId, [Validators.required]],
+      motherId: [this.userInfo.motherId],
       familyId: [this.userInfo.familyId, [Validators.required]],
       statusId: [this.userInfo.statusId, [Validators.required]]
     });

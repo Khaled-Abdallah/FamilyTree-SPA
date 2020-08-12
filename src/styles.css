@@ -169,6 +169,10 @@ tree-node:last-child > .tree-node > .tree-children::after {
     padding: 10px;
     border-radius: 4px;
   }
+
+  .tab-container{
+    box-shadow: 0px 0px 0pcx 0px;
+  }
   
   .nav-tabs > li.open, .member-tabset > .nav-tabs > li:hover {
     border-bottom: 2px solid rgb(45, 153, 45);

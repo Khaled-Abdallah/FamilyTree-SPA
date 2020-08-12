@@ -35,7 +35,7 @@ export class ModalService {
     const config: ModalOptions = {
       backdrop: 'static',
       keyboard: false,
-      animated: true,
+      animated: false,
       ignoreBackdropClick: true,
       class: 'modal-sm modal-dialog-centered'      
     };

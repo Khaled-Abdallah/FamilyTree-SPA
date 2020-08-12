@@ -167,6 +167,10 @@ export class UserService {
     return this.http.post(this._accounturl + 'register2' , user)
   }
 
+
+  deleteUser(userId: Number) {
+    return this.http.get(this._url + 'deleteUser/' + userId);
+  }
   
 
 

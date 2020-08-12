@@ -2,7 +2,7 @@ import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { UserService } from '../../../../services/user.service';
 import { AlertifyService } from '../../../../services/alertify.service';
 import { ModalService } from '../../../../services/modal.service';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
 import { Chilred } from '../../../../models/chilred';
 import { FileUploadService } from '../../../../services/file-upload.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
@@ -14,7 +14,9 @@ import { BsDatepickerConfig } from 'ngx-bootstrap';
 })
 export class UserChildrenComponent implements OnInit {
   @Input() userChildren: any[];
+  @Input() userId: any;  
   addUserForm: FormGroup;
+  editUserForm: FormGroup;
   loadingDateH: boolean;
   birthDateH: any;
   loading: any;
@@ -28,8 +30,13 @@ export class UserChildrenComponent implements OnInit {
   wifes: any;
   isUpload: any;
   bsConfig: Partial<BsDatepickerConfig>;
+  userIdToDelete: Number;
+  loadingDelete : any;
+  title: any;
+  userToEdite :any;
   
-  constructor(private userService: UserService,private modalService: ModalService,
+  constructor(private userService: UserService,
+    private modalService: ModalService,
     private alertifyService: AlertifyService,
     private fb: FormBuilder,
     private fileUploadService: FileUploadService) { }
@@ -41,10 +48,11 @@ export class UserChildrenComponent implements OnInit {
     this.getwifes(this.userChildren[0].parentId);
 
     this.addUserForm = this.fb.group({
+      id: [0],
       fullName: [, [Validators.required]],
       userName: [, [Validators.required]],
-      password: [, [Validators.required]],
-      email: [, [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      password: [, [Validators.required, Validators.minLength(6)]],
+      email: [, [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       phoneNumber: [, [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
       birthDateM: [ ,[Validators.required]],
       birthDateH: [, [Validators.required]],
@@ -58,13 +66,30 @@ export class UserChildrenComponent implements OnInit {
       familyId: [, [Validators.required]],
       statusId: [, [Validators.required]]
     });
+
+    this.editUserForm = this.fb.group({
+      id: [0],
+      fullName: [, [Validators.required]],
+      email: [, [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      phoneNumber: [, [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
+      birthDateM: [ ,[Validators.required]],
+      birthDateH: [, [Validators.required]],
+      faceBookAcc: [],
+      jobTitle: [],
+      twitterAcc: [],
+      workAddress: [],
+      address: [],
+      genderId: [, [Validators.required]],
+      motherId: [],
+      familyId: [, [Validators.required]],
+      statusId: [, [Validators.required]]
+    });
     this.bsConfig = {
       containerClass: 'theme-green',
       dateInputFormat: 'YYYY/MM/DD' ,
       isAnimated: true
     };
   }
-
   
   getGenderTypes() {
     this.userService.getGenderTypes()
@@ -103,6 +128,7 @@ export class UserChildrenComponent implements OnInit {
   }
 
   showAdd(template: TemplateRef<any>){
+    this.title = "إضافة ابن";
     this.modalService.showModal(template);
   }
         
@@ -135,34 +161,6 @@ export class UserChildrenComponent implements OnInit {
     if (event.keyCode != 8 && !pattern.test(inputChar)) {
       event.preventDefault();
     }
-  }
-  
-  addChildren(model: Chilred) {
-    //return;
-    model.parentId = this.userChildren[0].parentId;
-    this.loading = true;
-    var dateM = new Date(model.birthDateM);
-    model.birthDateM = dateM.toLocaleDateString();
-    model.image = (this.imageName == "") ? null : this.imageName;
-
-    this.userService.addChildren(model)
-      .subscribe(() => {
-        setTimeout(() => {        
-          this.alertifyService.tSuccess('تم الحفظ بنجاح');
-          this.getUserChildren(this.userChildren[0].parentId)
-          this.imageName = "";
-          this.loading = false;
-          this.closeModal();
-        }, 100);
-      }, () => {
-        setTimeout(() => {
-          this.alertifyService.tError('خطأ فى عملية الحفظ ... يرجي المحاولة مرة اخرى ');
-          this.loading = false;
-        }, 100);
-      }, () => {
-        //
-      });
-
   }
 
   closeModal() {
@@ -202,6 +200,84 @@ export class UserChildrenComponent implements OnInit {
 
   }
 
-  
+  openConfirmDelete(id: Number, template: TemplateRef<any>) {
+    debugger;
+    this.userIdToDelete = id;
+    this.modalService.showConfirmModal(template);
+  }
+
+  deleteUser(){
+    this.loadingDelete = true;
+    this.userService.deleteUser(this.userIdToDelete)
+        .subscribe(() => {
+          setTimeout(() => {
+            this.alertifyService.tSuccess("تم الحذف بنجاح");
+            this.getUserChildren(this.userId);
+            this.loadingDelete = false;
+            this.closeModal();
+          }, 100);
+        }, (err) => {
+          setTimeout(() => {
+            this.alertifyService.tError("خطأ فى عملية الحذف .. يرجى مراجعة الدعم الفنى");
+            this.loadingDelete = false;
+          }, 100);
+        }, () => {
+          setTimeout(() => {
+            this.loadingDelete = false;
+          }, 100);
+        });
+  }  
+    
+  addUser(model: Chilred) {
+    model.parentId = this.userId;
+    this.loading = true;
+    var dateM = new Date(model.birthDateM);
+    model.birthDateM = dateM.toLocaleDateString();
+    model.image = (this.imageName == "") ? null : this.imageName;
+
+    this.userService.addChildren(model)
+      .subscribe(() => {
+        setTimeout(() => {        
+          this.alertifyService.tSuccess('تم الحفظ بنجاح');
+          this.getUserChildren(this.userChildren[0].parentId)
+          this.imageName = "";
+          this.loading = false;
+          this.closeModal();
+        }, 100);
+      }, () => {
+        setTimeout(() => {
+          this.alertifyService.tError('خطأ فى عملية الحفظ ... يرجي المحاولة مرة اخرى ');
+          this.loading = false;
+        }, 100);
+      }, () => {
+        //////////
+      });
+  }
+
+  showUpdateUser(id: Number, template: TemplateRef<any>){
+    this.userToEdite = this.userChildren.find(u => u.id == id);
+
+    this.editUserForm.controls['id'].setValue(this.userToEdite.id);
+    this.editUserForm.controls['fullName'].setValue(this.userToEdite.fullName);
+    this.editUserForm.controls['email'].setValue(this.userToEdite.email);
+    this.editUserForm.controls['phoneNumber'].setValue(this.userToEdite.phoneNumber);
+    this.editUserForm.controls['birthDateM'].setValue(this.userToEdite.birthDateM);
+    this.editUserForm.controls['birthDateH'].setValue(this.userToEdite.birthDateH);
+    this.editUserForm.controls['faceBookAcc'].setValue(this.userToEdite.faceBookAcc);
+    this.editUserForm.controls['jobTitle'].setValue(this.userToEdite.jobTitle);
+    this.editUserForm.controls['twitterAcc'].setValue(this.userToEdite.twitterAcc);
+    this.editUserForm.controls['workAddress'].setValue(this.userToEdite.workAddress);
+    this.editUserForm.controls['address'].setValue(this.userToEdite.address);
+    this.editUserForm.controls['genderId'].setValue(this.userToEdite.genderId);
+    this.editUserForm.controls['motherId'].setValue(this.userToEdite.motherId);
+    this.editUserForm.controls['familyId'].setValue(this.userToEdite.familyId);
+    this.editUserForm.controls['statusId'].setValue(this.userToEdite.statusId);
+    
+    this.modalService.showModal(template);
+  }
+
+  editUser(user: any){
+    console.log(user)
+  }
 
 }
