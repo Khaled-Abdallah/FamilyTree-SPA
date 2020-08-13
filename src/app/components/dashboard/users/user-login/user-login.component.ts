@@ -19,7 +19,7 @@ export class UserLoginComponent implements OnInit {
     private alertifyService: AlertifyService) { }
 
   ngOnInit() {
-    
+    //console.log(this.userLogin);
     this.userLoginForm = this.fb.group({
       id: [this.userLogin.id],
       userName: [this.userLogin.userName, [Validators.required]],

@@ -57,6 +57,7 @@ export class FamilyTreeListComponent implements OnInit {
   status: any;
   loadingDateH: boolean;
   treeTitle: string = "";
+  _parentId: Number = 0;
 
   depthLimit;
   treeId="ftree";
@@ -202,13 +203,33 @@ export class FamilyTreeListComponent implements OnInit {
   //       });
   // }
 
-  _showUserDetails(node){
+
+  getUserUpdated(){
+    console.log(this._parentId);
+    this.userService.getUserInfo(this._parentId)
+        .subscribe(_userData => {
+          setTimeout(() => {
+            this.userData = _userData;
+          }, 50);  
+        },() => {
+          setTimeout(() => {
+            this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
+          }, 50);       
+        }
+        ,() => {
+            setTimeout(() => {          
+            }, 50);                   
+        });
+  }
+
+  _showUserDetails(node: any){
     this.spinner.show();
+    this._parentId = node.id;
     this.userService.getUserInfo(node.id)
         .subscribe(_userData => {
           setTimeout(() => {
             this.userData = _userData;
-            //console.log(this.userData);
+            console.log(this.userData);
             this.treeTitle = "- تفاصيل الشخصية";
             this.showUserDetails = true;
             this.showFamilyTree = false;  

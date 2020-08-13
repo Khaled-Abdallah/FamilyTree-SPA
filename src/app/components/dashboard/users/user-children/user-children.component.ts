@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../../../services/user.service';
 import { AlertifyService } from '../../../../services/alertify.service';
 import { ModalService } from '../../../../services/modal.service';
@@ -6,6 +6,8 @@ import { FormGroup, Validators, FormBuilder, FormGroupDirective } from '@angular
 import { Chilred } from '../../../../models/chilred';
 import { FileUploadService } from '../../../../services/file-upload.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { UserInfo } from 'src/app/models/userInfo';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'user-children',
@@ -34,6 +36,8 @@ export class UserChildrenComponent implements OnInit {
   loadingDelete : any;
   title: any;
   userToEdite :any;
+  loadingEditing: any;
+  imgUrl = environment.imageUrl + "UserImages/";
   
   constructor(private userService: UserService,
     private modalService: ModalService,
@@ -42,10 +46,12 @@ export class UserChildrenComponent implements OnInit {
     private fileUploadService: FileUploadService) { }
 
   ngOnInit() {
+    //console.log(this.userChildren);
     this.getFamily();
     this.getStatus();
     this.getGenderTypes();
-    this.getwifes(this.userChildren[0].parentId);
+    if(this.userChildren.length != 0)
+       this.getwifes(this.userChildren[0].parentId);
 
     this.addUserForm = this.fb.group({
       id: [0],
@@ -256,6 +262,7 @@ export class UserChildrenComponent implements OnInit {
 
   showUpdateUser(id: Number, template: TemplateRef<any>){
     this.userToEdite = this.userChildren.find(u => u.id == id);
+    //console.log(this.userToEdite);
 
     this.editUserForm.controls['id'].setValue(this.userToEdite.id);
     this.editUserForm.controls['fullName'].setValue(this.userToEdite.fullName);
@@ -273,11 +280,49 @@ export class UserChildrenComponent implements OnInit {
     this.editUserForm.controls['familyId'].setValue(this.userToEdite.familyId);
     this.editUserForm.controls['statusId'].setValue(this.userToEdite.statusId);
     
+    if(this.userToEdite.image == null){
+      this.imagePath = "../../../assets/users/user.png";
+    }
+    else{
+      this.imagePath = this.imgUrl + this.userToEdite.image;
+    }
+
     this.modalService.showModal(template);
   }
 
-  editUser(user: any){
-    console.log(user)
+  @Output() getUserInfo: EventEmitter<any> = new EventEmitter();
+
+  editUser(model: UserInfo){
+    this.loadingEditing = true;
+    model.parentId = this.userToEdite.parentId;
+    var dateM = new Date(model.birthDateM);
+    model.birthDateM = dateM.toLocaleDateString();
+    model.image = (this.imageName == "") ? this.userToEdite.image : this.imageName;
+    model.userName = this.userToEdite.userName;
+    model.allowAddChildren = this.userToEdite.allowAddChildren;
+    model.allowAddFamilyChar = this.userToEdite.allowAddFamilyChar;
+    model.allowBlog = this.userToEdite.allowBlog;
+    model.allowNews = this.userToEdite.allowNews;
+
+    //console.log(model);
+    //return
+    this.userService.updateUserInfo(model)
+      .subscribe(() => {
+        setTimeout(() => {        
+          this.alertifyService.tSuccess('تم التعديل بنجاح');
+          this.imageName = "";
+          this.loadingEditing = false;
+          this.getUserInfo.emit();
+          this.modalService.hideModal();
+        }, 100);
+      }, (err) => {
+        setTimeout(() => {
+          this.alertifyService.tError('خطأ فى عملية التعديل ... يرجي المحاولة مرة اخرى ');
+          this.loadingEditing = false;
+        }, 100);
+      }, () => {
+       
+      });
   }
 
 }

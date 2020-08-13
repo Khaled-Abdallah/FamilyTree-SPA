@@ -55,7 +55,7 @@ export class UserInfoComponent implements OnInit {
       fullName: [this.userInfo.fullName, [Validators.required]],
       identityNumber: [this.userInfo.identityNumber, [Validators.required]],
       userName: [this.userInfo.userName, [Validators.required]],
-      password: [this.userInfo.passwordHash, [Validators.required]],
+      password: [],
       email: [this.userInfo.email, [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       phoneNumber: [this.userInfo.phoneNumber, [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
       birthDateM: [this.userInfo.birthDateM ,[Validators.required]],
@@ -117,7 +117,6 @@ export class UserInfoComponent implements OnInit {
       event.preventDefault();
     }
   }
-
   
   getDateH(date: any){
     try{

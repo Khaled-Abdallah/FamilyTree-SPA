@@ -132,20 +132,20 @@ export class UserPermissionComponent implements OnInit {
               this.getUserPermissions();
               this.modalService.hideModal();
               this.alertifyService.tSuccess("تم تعديل صلاحيات المستخدم بنجاح");  
-          }, 300);
+          }, 100);
         },() => {
           setTimeout(() => {
             this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى مراجعة الدعم الفنى");  
             this.loadingEdit = false;
             this.modalService.hideModal();
-          }, 300);       
+          }, 100);       
           }
           ,() => {
             setTimeout(() => {          
               this.loadingEdit = false;
               this.modalService.hideModal();
-            }, 300);       
-            
+            }, 100);       
+            //////////////
           });
     }
 
