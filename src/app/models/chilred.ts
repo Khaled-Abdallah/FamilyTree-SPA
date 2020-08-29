@@ -18,4 +18,5 @@ export class Chilred
   genderId: Number;
   statusId: Number;
   image: string;
+  isLouck: Boolean;
 }

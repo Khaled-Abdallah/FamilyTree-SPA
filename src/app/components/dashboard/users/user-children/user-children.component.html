@@ -403,6 +403,14 @@
     
     
                         </div>
+
+                        <div class="form-group">
+                            <input id="checkbox2" type="checkbox" formControlName="isLouck" 
+                                class="checkbox checkbox-success">&nbsp;
+                            <label for="checkbox2">
+                                تنشيط/ايقاف
+                            </label>
+                        </div>
                     </div>
     
                     <div class="col-4">
@@ -707,6 +715,14 @@
             
             
                                 </div>
+
+                                <div class="form-group">
+                                    <input id="checkbox3" type="checkbox" formControlName="isLouck" 
+                                        class="checkbox checkbox-success">&nbsp;
+                                    <label for="checkbox3">
+                                        تنشيط/ايقاف
+                                    </label>
+                                </div>
                             </div>
             
                             <div class="col-4">
@@ -731,7 +747,7 @@
                                 <button [disabled]="!editUserForm.valid" class="btn btn-radius btn-sm btn-bgcolor" type="submit">
                                     &nbsp; حفظ
                                     &nbsp;<span class="fa fa-save"></span>&nbsp;
-                                    <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loading"></i>
+                                    <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingEditing"></i>
                                 </button> &nbsp;
                                 <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()"
                                     data-dismiss="modal">اغلاق

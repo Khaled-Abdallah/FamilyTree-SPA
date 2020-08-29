@@ -70,7 +70,8 @@ export class UserChildrenComponent implements OnInit {
       genderId: [, [Validators.required]],
       motherId: [, [Validators.required]],
       familyId: [, [Validators.required]],
-      statusId: [, [Validators.required]]
+      statusId: [, [Validators.required]],
+      isLouck: [false]
     });
 
     this.editUserForm = this.fb.group({
@@ -88,8 +89,10 @@ export class UserChildrenComponent implements OnInit {
       genderId: [, [Validators.required]],
       motherId: [],
       familyId: [, [Validators.required]],
-      statusId: [, [Validators.required]]
+      statusId: [, [Validators.required]],
+      isLouck: [false]
     });
+
     this.bsConfig = {
       containerClass: 'theme-green',
       dateInputFormat: 'YYYY/MM/DD' ,
@@ -279,6 +282,7 @@ export class UserChildrenComponent implements OnInit {
     this.editUserForm.controls['motherId'].setValue(this.userToEdite.motherId);
     this.editUserForm.controls['familyId'].setValue(this.userToEdite.familyId);
     this.editUserForm.controls['statusId'].setValue(this.userToEdite.statusId);
+    this.editUserForm.controls['isLouck'].setValue(this.userToEdite.isLouck);
     
     if(this.userToEdite.image == null){
       this.imagePath = "../../../assets/users/user.png";
@@ -304,8 +308,6 @@ export class UserChildrenComponent implements OnInit {
     model.allowBlog = this.userToEdite.allowBlog;
     model.allowNews = this.userToEdite.allowNews;
 
-    //console.log(model);
-    //return
     this.userService.updateUserInfo(model)
       .subscribe(() => {
         setTimeout(() => {        

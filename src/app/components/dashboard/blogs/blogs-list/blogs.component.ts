@@ -307,21 +307,6 @@ export class BlogsComponent implements OnInit {
 
   }
 
-  showBlog(id, template: TemplateRef<any>) {
-    this.blog = this.blogs.data.find(b => b.id == id);
-    debugger
-    this.blogForm.controls['id'].setValue(this.blog.id);
-    this.blogForm.controls['title'].setValue(this.blog.title);
-    this.blogForm.controls['description'].setValue(this.blog.description);
-    this.blogForm.controls['allowComment'].setValue(this.blog.allowComment);
-
-    this.showSave = false;
-    this.showEdit = true;
-    this.title = "تعديل المدونة"
-    window.scroll(0, 0);
-    this.editMode = true;
-  }
-
   getBlogs(event) {
     this.loadingData = true;
     //this.spinner.show();
@@ -347,8 +332,22 @@ export class BlogsComponent implements OnInit {
         });
   } 
 
+  showBlog(id, template: TemplateRef<any>) {
+    this.blog = this.blogs.data.find(b => b.id == id);
+    debugger
+    this.blogForm.controls['id'].setValue(this.blog.id);
+    this.blogForm.controls['title'].setValue(this.blog.title);
+    this.blogForm.controls['description'].setValue(this.blog.description);
+    this.blogForm.controls['allowComment'].setValue(this.blog.allowComment);
+
+    this.showSave = false;
+    this.showEdit = true;
+    this.title = "تعديل المدونة"
+    window.scroll(0, 0);
+    this.editMode = true;
+  }
+
   onSubmit(model: Blog) {
-     debugger
     if (model.id == 0 || model.id == undefined) {
       model.allowComment = model.allowComment == null ? false : true;
       this.loading = true;
@@ -395,6 +394,42 @@ export class BlogsComponent implements OnInit {
         });
     }
   }
+  
+  openConfirmDelete(template: TemplateRef<any>, id: number) {
+    this._id = id;
+    this.modalService.showConfirmModal(template);
+  }
+
+  delete() {
+    this.loadingDel = true;
+    this.blogSservice.delete(this._id)
+      .subscribe(() => {
+        setTimeout(() => {
+          this.alertifyService.tSuccess('تم حذف المدونة بنجاح');
+        }, 100);
+      }, () => {
+        setTimeout(() => {
+          this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى المحاولة مرة اخرى");
+          this.loadingDel = false;
+          this.modalService.hideModal();
+        }, 100);
+      }, () => {
+        setTimeout(() => {
+          this.loadingDel = false;
+          this.modalService.hideModal();
+          this.getBlogs(1);
+          this.resetForm();
+        }, 100);
+      });
+  }
+
+  showBlogDetails(id: number) {
+    // this.loadingDetails = true;
+    // setTimeout(() => {
+    //   this.loadingDetails = false;
+    // }, 100);
+    this.router.navigate(['/admin', 'blog-details', id]);
+  }
 
   clear() {
     // this.blog = {
@@ -436,41 +471,5 @@ export class BlogsComponent implements OnInit {
     this.modalService.hideModal();
   }
 
-  openConfirmDelete(template: TemplateRef<any>, id: number) {
-    this._id = id;
-    this.modalService.showConfirmModal(template);
-  }
-
-  delete() {
-    this.loadingDel = true;
-    this.blogSservice.delete(this._id)
-      .subscribe(() => {
-        setTimeout(() => {
-          this.alertifyService.tSuccess('تم حذف المدونة بنجاح');
-        }, 100);
-      }, error => {
-        setTimeout(() => {
-          this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى المحاولة مرة اخرى");
-          this.loadingDel = false;
-          this.modalService.hideModal();
-        }, 100);
-      }, () => {
-        setTimeout(() => {
-          this.loadingDel = false;
-          this.modalService.hideModal();
-          this.getBlogs(1);
-          this.resetForm();
-
-        }, 100);
-      });
-  }
-
-  showBlogDetails(id: number) {
-    // this.loadingDetails = true;
-    // setTimeout(() => {
-    //   this.loadingDetails = false;
-    // }, 100);
-    this.router.navigate(['/admin', 'blog-details', id]);
-  }
 
 }

@@ -24,4 +24,5 @@ export class UserInfo
   allowAddFamilyChar: Boolean;
   allowBlog: Boolean;
   allowNews: Boolean;
+  isLouck: Boolean;
 }

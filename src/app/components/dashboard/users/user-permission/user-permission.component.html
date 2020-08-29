@@ -17,36 +17,43 @@
 
 <div class="row">
     <div class="col-xl-12">
-        <div class="card" >
-            <div class="row" style="text-align: center;padding:15px;">
-                <div class="col-md-12">
-                    <div class="input-group" style="margin-top:10px;">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-search"></i></span>
-                        </div>
-                        <input type="text" class="form-control form-control-sm"
-                            placeholder=" بحث بالاسم او الرقم التعريفى " #txtSearch >
-                    </div>
-                    <button class="btn btn-sm  btn-radius btn-bgcolor" style="margin-top: 11px;"
-                    type="button" (click)="filterUsersPermission(txtSearch.value,templateSearchMessage)"> &nbsp; &nbsp;بحث
-                    &nbsp; &nbsp;<span><i class="fa fa-search"></i></span>  &nbsp;
-                    <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingSearch"></i>
-                </button> &nbsp;
+        <div class="card">
 
-                <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="margin-top: 11px;" 
-                    (click)="decline()">بحث جديد
-                    &nbsp;<span class="fa fa-search"></span>&nbsp;
-                    <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingCancel"></i>
-                </button>
-                </div>
-            </div>
-        
-            <div class="row" style="padding-left:25px;padding-right:25px;" *ngIf="userPermission.data?.length > 0">
-                <div class="col-12">
-                        <table class="table table-hover table-bordered m-0 align-middle">
+            <tabset class="member-tabset ">
+                <tab heading=" صلاحيات افراد العائلة">
+                    <!-- search -->
+                    <div class="row" style="text-align: center;padding:15px;">
+                        <div class="col-md-12">
+                            <div class="input-group" style="margin-top:10px;">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                </div>
+                                <input type="text" class="form-control form-control-sm"
+                                    placeholder=" بحث بالاسم او الرقم التعريفى " #txtSearch>
+                            </div>
+                            <button class="btn btn-sm  btn-radius btn-bgcolor" style="margin-top: 11px;" type="button"
+                                (click)="filterUsersPermission(txtSearch.value,templateSearchMessage)"> &nbsp; &nbsp;بحث
+                                &nbsp; &nbsp;<span><i class="fa fa-search"></i></span> &nbsp;
+                                <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;"
+                                    *ngIf="loadingSearch"></i>
+                            </button> &nbsp;
+
+                            <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm"
+                                style="margin-top: 11px;" (click)="decline()">بحث جديد
+                                &nbsp;<span class="fa fa-search"></span>&nbsp;
+                                <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;"
+                                    *ngIf="loadingCancel"></i>
+                            </button>
+                        </div>                       
+                    </div>
+                    
+                    <!-- list -->
+                    <div class="row" style="padding-left:25px;padding-right:25px;" *ngIf="userPermission.data?.length > 0">
+                        <div class="col-12">
+                            <table class="table table-hover table-bordered m-0 align-middle">
                                 <thead>
                                     <tr style="text-align: center">
-                                        <th  style="width:70px">الصورة </th>
+                                        <th style="width:70px">الصورة </th>
                                         <th style="width: 250px;">الاسم</th>
                                         <th style="width: 130px;">إضافة ابناء</th>
                                         <th style="width: 130px;"> إضافة شخصيات</th>
@@ -56,205 +63,103 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let user of userPermission.data | paginate: config" class="align-middle" style="text-align: center">
+                                    <tr *ngFor="let user of userPermission.data | paginate: config" class="align-middle"
+                                        style="text-align: center">
                                         <td class="align-middle" style="text-align: center">
-                                            <div class="inbox-item-img" >
-                                                <img src="../../../assets/users/user.png" class="rounded-circle" 
-                                                style="width:70px;height:45px; border: 1px solid rgb(180, 180, 192)"
+                                            <div class="inbox-item-img">
+                                                <img src="../../../assets/users/user.png" class="rounded-circle"
+                                                    style="width:70px;height:45px; border: 1px solid rgb(180, 180, 192)"
                                                     alt="user">
                                             </div>
                                         </td>
                                         <td class="align-middle" style="text-align: right;">{{user?.fullName}}</td>
                                         <td class="align-middle" style="text-align: center">
                                             <div *ngIf="user?.isAddChild">
-                                                <i class="fa fa-check" aria-hidden="true" style="color:green;font-size: 22px;"></i>
+                                                <i class="fa fa-check" aria-hidden="true"
+                                                    style="color:green;font-size: 22px;"></i>
                                             </div>
                                             <div *ngIf="!user?.isAddChild" class="align-middle" style="text-align: center">
-                                                <i class="fa fa-times" aria-hidden="true" style="color:red;font-size: 22px;"></i>
+                                                <i class="fa fa-times" aria-hidden="true"
+                                                    style="color:red;font-size: 22px;"></i>
                                             </div>
                                         </td>
                                         <td class="align-middle" style="text-align: center">
                                             <div *ngIf="user?.isAddFamilyChar">
-                                                <i class="fa fa-check" aria-hidden="true" style="color:green;font-size: 22px;"></i>
+                                                <i class="fa fa-check" aria-hidden="true"
+                                                    style="color:green;font-size: 22px;"></i>
                                             </div>
                                             <div *ngIf="!user?.isAddFamilyChar" style="text-align: center;">
-                                                <i class="fa fa-times" aria-hidden="true" style="color:red;font-size: 22px;"></i>
+                                                <i class="fa fa-times" aria-hidden="true"
+                                                    style="color:red;font-size: 22px;"></i>
                                             </div>
                                         </td>
                                         <td class="align-middle" style="text-align: center">
                                             <div *ngIf="user?.isAddBlogs" style="text-align: center;">
-                                                <i class="fa fa-check" aria-hidden="true" style="color:green;font-size: 22px;"></i>
+                                                <i class="fa fa-check" aria-hidden="true"
+                                                    style="color:green;font-size: 22px;"></i>
                                             </div>
                                             <div *ngIf="!user?.isAddBlogs" style="text-align: center;">
-                                                <i class="fa fa-times" aria-hidden="true" style="color:red;font-size: 22px;"></i>
+                                                <i class="fa fa-times" aria-hidden="true"
+                                                    style="color:red;font-size: 22px;"></i>
                                             </div>
                                         </td>
                                         <td class="align-middle" style="text-align: center">
                                             <div *ngIf="user?.isAddNews" style="text-align: center;">
-                                                <i class="fa fa-check" aria-hidden="true" style="color:green;font-size: 22px;"></i>
+                                                <i class="fa fa-check" aria-hidden="true"
+                                                    style="color:green;font-size: 22px;"></i>
                                             </div>
                                             <div *ngIf="!user?.isAddNews" style="text-align: center;">
-                                                <i class="fa fa-times" aria-hidden="true" style="color:red;font-size: 22px;"></i>
+                                                <i class="fa fa-times" aria-hidden="true"
+                                                    style="color:red;font-size: 22px;"></i>
                                             </div>
                                         </td>
                                         <td class="align-middle" style="text-align: center">
-                                            <button (click)="showEditUserPerm(editUerPermTemplate, user.id)" class="btn btn-sm btn-radius btn-bgcolor"
-                                                style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
-                                                type="button">
+                                            <button (click)="showEditUserPerm(editUerPermTemplate, user.id)"
+                                                class="btn btn-sm btn-radius btn-bgcolor"
+                                                style="padding-top: 6px;padding-left: 15px;padding-right: 15px" type="button">
                                                 تعديل الصلاحيات
                                                 &nbsp;<i class="fas fa-edit"></i>
                                             </button> &nbsp;</td>
                                     </tr>
-            
+
                                 </tbody>
-                        </table>
-                </div>
-            </div>
-        
-            <div class="row" *ngIf="userPermission.data?.length > 0">
-                <div class="col-7" style="text-align: left;margin-top: 23px;height: 40px"  >
-                        <pagination-controls class="my-pagination" (pageChange)="getNextUserPermissions($event)" maxSize="10"
-                        directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
-                        screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
-                        screenReaderCurrentLabel="You're on page">
-                    </pagination-controls>
-                </div>
-                <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px">
-                        <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingData"></i>
-                </div>
-            
-            </div>
-
-            <div class="row" *ngIf="userPermission.data?.length == 0">
-                <div class="col-12">
-                <div  style="text-align: center;font-size: 16px;padding: 20px;margin-top:12px;margin-top:8px;margin-bottom:16px;margin-right: 6px;margin-left: 6px;">
-                    لا توجد بيانات
-                </div>
-                </div>
-            </div> 
-            <!-- <tabset #productTabs class="member-tabset">
-                <tab heading="صلاحيات افراد العائلة">
-                    <div class="row" style="text-align: center;padding:15px;">
-                        <div class="col-md-12">
-                            <div class="input-group" style="margin-top:10px;">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-search"></i></span>
-                                </div>
-                                <input type="text" class="form-control form-control-sm"
-                                    placeholder=" بحث بالاسم او الرقم التعريفى " #txtSearch >
-                            </div>
-                            <button class="btn btn-sm  btn-radius btn-bgcolor" style="margin-top: 11px;"
-                            type="button" (click)="filterUsersPermission(txtSearch.value,templateSearchMessage)"> &nbsp; &nbsp;بحث
-                            &nbsp; &nbsp;<span><i class="fa fa-search"></i></span>  &nbsp;
-                            <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingSearch"></i>
-                        </button> &nbsp;
-
-                        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="margin-top: 11px;" 
-                            (click)="decline()">بحث جديد
-                            &nbsp;<span class="fa fa-search"></span>&nbsp;
-                            <i class="fa fa-spinner fa-spin" style="font-size:15px;color:white;" *ngIf="loadingCancel"></i>
-                        </button>
+                            </table>
                         </div>
                     </div>
-                
-                    <div class="row" style="padding-left:25px;padding-right:25px;" *ngIf="userPermission.data?.length > 0">
-                        <div class="col-12">
-                                <table class="table table-hover table-bordered m-0 align-middle">
-                                        <thead>
-                                            <tr style="text-align: center">
-                                                <th  style="width:70px">الصورة </th>
-                                                <th style="width: 250px;">الاسم</th>
-                                                <th style="width: 130px;">إضافة ابناء</th>
-                                                <th style="width: 130px;"> إضافة شخصيات</th>
-                                                <th style="width: 130px;">إضافة مدونات</th>
-                                                <th style="width: 130px;">إضافة اخبار</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let user of userPermission.data | paginate: config" class="align-middle" style="text-align: center">
-                                                <td class="align-middle" style="text-align: center">
-                                                    <div class="inbox-item-img" >
-                                                        <img src="../../../assets/users/user.png" class="rounded-circle" 
-                                                        style="width:70px;height:45px; border: 1px solid rgb(180, 180, 192)"
-                                                            alt="user">
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle" style="text-align: right;">{{user?.fullName}}</td>
-                                                <td class="align-middle" style="text-align: center">
-                                                    <div *ngIf="user?.isAddChild">
-                                                        <i class="fa fa-check" aria-hidden="true" style="color:green;font-size: 22px;"></i>
-                                                    </div>
-                                                    <div *ngIf="!user?.isAddChild" class="align-middle" style="text-align: center">
-                                                        <i class="fa fa-times" aria-hidden="true" style="color:red;font-size: 22px;"></i>
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle" style="text-align: center">
-                                                    <div *ngIf="user?.isAddFamilyChar">
-                                                        <i class="fa fa-check" aria-hidden="true" style="color:green;font-size: 22px;"></i>
-                                                    </div>
-                                                    <div *ngIf="!user?.isAddFamilyChar" style="text-align: center;">
-                                                        <i class="fa fa-times" aria-hidden="true" style="color:red;font-size: 22px;"></i>
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle" style="text-align: center">
-                                                    <div *ngIf="user?.isAddBlogs" style="text-align: center;">
-                                                        <i class="fa fa-check" aria-hidden="true" style="color:green;font-size: 22px;"></i>
-                                                    </div>
-                                                    <div *ngIf="!user?.isAddBlogs" style="text-align: center;">
-                                                        <i class="fa fa-times" aria-hidden="true" style="color:red;font-size: 22px;"></i>
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle" style="text-align: center">
-                                                    <div *ngIf="user?.isAddNews" style="text-align: center;">
-                                                        <i class="fa fa-check" aria-hidden="true" style="color:green;font-size: 22px;"></i>
-                                                    </div>
-                                                    <div *ngIf="!user?.isAddNews" style="text-align: center;">
-                                                        <i class="fa fa-times" aria-hidden="true" style="color:red;font-size: 22px;"></i>
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle" style="text-align: center">
-                                                    <button (click)="showEditUserPerm(editUerPermTemplate, user.id)" class="btn btn-sm btn-radius btn-bgcolor"
-                                                        style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
-                                                        type="button">
-                                                        تعديل الصلاحيات
-                                                        &nbsp;<i class="fas fa-edit"></i>
-                                                    </button> &nbsp;</td>
-                                            </tr>
-                    
-                                        </tbody>
-                                </table>
-                        </div>
-                    </div>
-                
+
+                    <!-- pagging -->
                     <div class="row" *ngIf="userPermission.data?.length > 0">
-                        <div class="col-7" style="text-align: left;margin-top: 23px;height: 40px"  >
-                                <pagination-controls class="my-pagination" (pageChange)="getNextUserPermissions($event)" maxSize="10"
-                                directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق" nextLabel="التالى"
-                                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                        <div class="col-7" style="text-align: left;margin-top: 23px;height: 40px">
+                            <pagination-controls class="my-pagination" (pageChange)="getNextUserPermissions($event)"
+                                maxSize="10" directionLinks="true" autoHide="false" responsive="true" previousLabel="السابق"
+                                nextLabel="التالى" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
                                 screenReaderCurrentLabel="You're on page">
                             </pagination-controls>
                         </div>
                         <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px">
-                                <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingData"></i>
+                            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingData"></i>
                         </div>
-                    
+
                     </div>
 
+                    <!-- no data -->
                     <div class="row" *ngIf="userPermission.data?.length == 0">
                         <div class="col-12">
-                        <div  style="text-align: center;font-size: 16px;padding: 20px;margin-top:12px;margin-top:8px;margin-bottom:16px;margin-right: 6px;margin-left: 6px;">
-                            لا توجد بيانات
+                            <div
+                                style="text-align: center;font-size: 16px;padding: 20px;margin-top:12px;margin-top:8px;margin-bottom:16px;margin-right: 6px;margin-left: 6px;">
+                                لا توجد بيانات
+                            </div>
                         </div>
-                        </div>
-                    </div>   
-                </tab>
-                
-                <tab heading="صلاحيات المديرين">
+                    </div>
                     
                 </tab>
-            </tabset> -->
-                                          
+                <tab heading=" صلاحيات مستخدمين لوحة التحكم">
+
+                </tab>
+            </tabset>
+
+
+
         </div>
     </div>
 </div>
@@ -276,14 +181,15 @@
 
             <div class="row">
                 <div class="col-xl-10 col-md-10">
-                    <img src="../../../assets/users/user.png" class="img-responsive rounded-circle" alt="user" style="border:1px solid gray">
+                    <img src="../../../assets/users/user.png" class="img-responsive rounded-circle" alt="user"
+                        style="border:1px solid gray">
                     <div class="wid-u-info" style="width:100%">
                         <div>
                             <h4 class="m-t-15 m-b-0" style="color:green">{{userPermi?.fullName}}</h4>
                             <p class="text-muted m-b-5 font-13">
                                 تاريخ الميلاد :
-                                {{userPermi?.birthDateM | date}}  &nbsp;-&nbsp;
-                                {{userPermi?.birthDateH | date :'yyyy/MM/dd'}} 
+                                {{userPermi?.birthDateM | date}} &nbsp;-&nbsp;
+                                {{userPermi?.birthDateH | date :'yyyy/MM/dd'}}
                             </p>
                         </div>
                     </div>
@@ -298,28 +204,29 @@
                             <td class="align-middle" style="text-align: center" colspan="2">
                                 <div class="text-center">
 
-                                    <form [formGroup]="userPerForm" id="userPerForm"
-                                        class="form-horizontal">
+                                    <form [formGroup]="userPerForm" id="userPerForm" class="form-horizontal">
                                         <div class="col-12">
                                             <input type="hidden" formControlName="id" [(ngModel)]="userPermi.id">
-                                            <div class="form-check form-check-inline mr-2" style="padding-top:5px;padding-bottom: 5px;">
+                                            <div class="form-check form-check-inline mr-2"
+                                                style="padding-top:5px;padding-bottom: 5px;">
                                                 <input class="form-check-input" type="checkbox" name="ch1" id="ch1"
-                                                    [(ngModel)]="userPermi.isAddChild" formControlName="isAddChild" >
+                                                    [(ngModel)]="userPermi.isAddChild" formControlName="isAddChild">
                                                 <label class="form-check-label" for="ch1">إضافة ابناء </label>
                                             </div>
                                             <div class="form-check form-check-inline mr-2">
                                                 <input class="form-check-input" type="checkbox" name="ch2" id="ch2"
-                                                    [(ngModel)]="userPermi.isAddFamilyChar" formControlName="isAddFamilyChar" >
+                                                    [(ngModel)]="userPermi.isAddFamilyChar"
+                                                    formControlName="isAddFamilyChar">
                                                 <label class="form-check-label" for="ch2"> إضافة شخصيات </label>
                                             </div>
-                                            <div class="form-check form-check-inline mr-2"  >
+                                            <div class="form-check form-check-inline mr-2">
                                                 <input class="form-check-input" type="checkbox" name="ch3" id="ch3"
                                                     [(ngModel)]="userPermi.isAddBlogs" formControlName="isAddBlogs">
                                                 <label class="form-check-label" for="ch3">إضافة مدونات </label>
                                             </div>
                                             <div class="form-check form-check-inline mr-2">
                                                 <input class="form-check-input" type="checkbox" name="ch4" id="ch4"
-                                                    [(ngModel)]="userPermi.isAddNews" formControlName="isAddNews" >
+                                                    [(ngModel)]="userPermi.isAddNews" formControlName="isAddNews">
                                                 <label class="form-check-label" for="ch4"> إضافة اخبار </label>
                                             </div>
                                         </div>
@@ -338,19 +245,19 @@
         </div>
     </div>
 
-    <div style="text-align: center"> <hr>          
-        <button class="btn btn-radius btn-sm btn-bgcolor" 
-        type="button" (click)="savePermission(userPerForm.value)">
-        حفظ التعديلات
-        &nbsp;<i class="fas fa-edit"></i>
-        &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingEdit"></i>
-    </button> &nbsp;
+    <div style="text-align: center">
+        <hr>
+        <button class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="savePermission(userPerForm.value)">
+            حفظ التعديلات
+            &nbsp;<i class="fas fa-edit"></i>
+            &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingEdit"></i>
+        </button> &nbsp;
 
-    <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()">
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()">
             &nbsp; الغاء
-        &nbsp;<span class="fa fa-times"></span>
-        &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingClose"></i>
-    </button>
+            &nbsp;<span class="fa fa-times"></span>
+            &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingClose"></i>
+        </button>
     </div>
 
     <!-- <div class="modal-footer">
@@ -366,23 +273,25 @@
             &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingClose"></i>
         </button>
     </div> -->
-    
+
 </ng-template>
 
 
 <ng-template #templateSearchMessage2>
     <div class="modal-body text-center">
-      <p>  عفوا... قم بكتابة كلمات بحثية !</p>    
-      <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="width:40%"  (click)="closeSearchModal()" >اغلاق
+        <p> عفوا... قم بكتابة كلمات بحثية !</p>
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="width:40%"
+            (click)="closeSearchModal()">اغلاق
         </button>
     </div>
 </ng-template>
 
 
 <ng-template #templateSearchMessage>
-        <div class="modal-body text-center">
-          <p>أدخل كلمات بحثية</p>    
-          <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="width:40%"  (click)="closeSearchModal()" >اغلاق
-            </button>
-        </div>
-    </ng-template>
+    <div class="modal-body text-center">
+        <p>أدخل كلمات بحثية</p>
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" style="width:40%"
+            (click)="closeSearchModal()">اغلاق
+        </button>
+    </div>
+</ng-template>

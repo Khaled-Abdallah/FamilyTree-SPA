@@ -68,7 +68,8 @@ export class UserInfoComponent implements OnInit {
       genderId: [this.userInfo.genderId, [Validators.required]],
       motherId: [this.userInfo.motherId],
       familyId: [this.userInfo.familyId, [Validators.required]],
-      statusId: [this.userInfo.statusId, [Validators.required]]
+      statusId: [this.userInfo.statusId, [Validators.required]],
+      isLouck: [this.userInfo.isLouck]
     });
     
     this.bsConfig = {

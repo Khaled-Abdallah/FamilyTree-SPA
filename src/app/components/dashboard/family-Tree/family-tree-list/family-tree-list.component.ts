@@ -229,7 +229,7 @@ export class FamilyTreeListComponent implements OnInit {
         .subscribe(_userData => {
           setTimeout(() => {
             this.userData = _userData;
-            console.log(this.userData);
+            //console.log(this.userData);
             this.treeTitle = "- تفاصيل الشخصية";
             this.showUserDetails = true;
             this.showFamilyTree = false;  
