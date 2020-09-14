@@ -10,6 +10,7 @@ import { Observable, fromEvent, merge, of } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import { trigger, transition, style, animation, animate } from '@angular/animations';
 import { environment } from '../../../environments/environment';
+import { SettingsService } from 'src/app/services/settings.service';
 
 
 @Component({
@@ -27,11 +28,14 @@ export class LoginComponent implements OnInit {
   online$: Observable<boolean>;
   logoPath = environment.imageUrl + "Logos/";
   imageLogo:string = "";
+  settings: any;
+  noSettings: boolean ;
   
   constructor(private router: Router ,
               private alertifyService: AlertifyService,
               private fb: FormBuilder,
-              private authService: AuthService) 
+              private authService: AuthService,
+              private settingsService: SettingsService) 
    {
       this.online$ = merge(
         of(navigator.onLine),
@@ -47,25 +51,30 @@ export class LoginComponent implements OnInit {
         password: ['', [Validators.required]]
       });
 
-      
+      this.noSettings = false;
+      this.getSetting();  
     }
 
     login(model){
       this.loading = true;
       this.authService.login(model).subscribe(next => {
         setTimeout(()=> {
-          //this.loading = false;
-          this.router.navigate(['/admin', 'home']);      
+          debugger     
+          if(this.noSettings == true){
+            this.router.navigate(['/first-Settings']);   
+          }
+          else{
+            this.router.navigate(['/admin', 'home']);
+          }
         }, 100); 
       }, error => {
         setTimeout(()=> {
           this.alertifyService.tError('خطأ فى اسم المستخدم او كلمة المرور');          
           this.loading = false;
-          //console.log(error);
        }, 100);        
       }, () => {
         setTimeout(()=> {
-          //this.loading = false;
+          //
        }, 100);         
       });    
     }
@@ -83,7 +92,23 @@ export class LoginComponent implements OnInit {
         });
     }
 
-
+    getSetting() {
+      this.settingsService.getSettings()
+        .subscribe((_setting: any) => {
+          this.settings = _setting;  
+          if(_setting.id == 0){
+            this.noSettings = true;
+          }
+          else{
+            this.noSettings = false;
+          }
+        },() => {
+          this.alertifyService.tError("خطأ فى تحميل البيانات ... حاول مرة اخرى");
+        },() => {
+            //
+        });
+    }
+    
   
 
 }

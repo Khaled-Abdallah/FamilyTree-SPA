@@ -25,12 +25,16 @@ export class HomeComponent implements OnInit {
   }
   ckeConfig: any;
   definationRequired: boolean;
+  userRole: string = "";
 
   constructor(private fb: FormBuilder, private alertifyService: AlertifyService,
     private definitionService: DefinitionService,
     private route: ActivatedRoute) { }
 
   ngOnInit() {
+    
+    this.userRole = localStorage.getItem("userRoleName");
+    
     this.ckeConfig = {
       height :500,
       allowedContent: false,
@@ -60,7 +64,10 @@ export class HomeComponent implements OnInit {
     //this.getData();
 
     this.route.data.subscribe(data => {
-      this.definitionModel = data['definition'];
+      this.definitionModel = data['definition']; 
+      if(this.definitionModel == null){
+        this.definitionModel = new DefinitionLineage();
+      }
     });
     
   }

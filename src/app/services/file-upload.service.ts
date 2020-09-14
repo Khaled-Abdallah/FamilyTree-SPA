@@ -15,7 +15,7 @@ export class FileUploadService {
       var formData: FormData = new FormData();
       formData.append('file',file);
       
-      return this.http.post(this.baseUrl + path, formData, {responseType: 'text'});       
+      return this.http.post(this.baseUrl + path, formData, { responseType: 'text' });       
     }
 
 }

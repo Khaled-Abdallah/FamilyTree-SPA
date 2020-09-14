@@ -88,7 +88,7 @@
     <div class="row">
         <div class="col-xl-12"><hr>
             <div style="text-align: center">      
-                <button  [disabled]="!editForm.valid" class="btn btn-radius btn-sm btn-bgcolor"  type="submit">
+                <button [hidden]="userRole == 'UserAccount'"  [disabled]="!editForm.valid" class="btn btn-radius btn-sm btn-bgcolor"  type="submit">
                     تعديل
                     &nbsp;<i class="fas fa-edit"></i> 
                     &nbsp; <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loading"></i>

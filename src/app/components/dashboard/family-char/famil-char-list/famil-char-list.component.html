@@ -13,7 +13,7 @@
                 <div style="padding-top: 15px;margin-bottom: 0px;" class="col-xl-12">
                     <div class="float-right">
                       <div style="width: 270px;margin-top: -8px;text-align: left">
-                        <button type="button" class="btn btn-radius btn-sm btn-bgcolor"
+                        <button [hidden]="userRole == 'UserAccount'" type="button" class="btn btn-radius btn-sm btn-bgcolor"
                                         (click)="showAdd(newFCTemplate)">إضافة شخصية
                                         &nbsp;<span class="fa fa-plus"></span>
                                     </button>
@@ -135,30 +135,30 @@
                                 <div class="row" style="margin-top:-10px;">
                                     <!-- <div class="row" style="margin-top:-10px;margin-right: 74px;" > -->
         
-                                    <div class="col-xl-12 col-md-10">
+                                    <div class="col-xl-12 col-md-10" >
                                         <div style="padding-top:10px; text-align: center">
                                             <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                 type="button" (click)="getForEdit(editTemplate,familyChar.id)">
-                                                تعديل/ تفاصيل
+                                                تفاصيل
                                                 &nbsp;<i class="fas fa-edit"></i>&nbsp;
                                                 <!-- <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingAcceptedStatus"></i> -->
                                             </button> &nbsp;        
 
-                                            <button [disabled]="familyChar.isAccepted == true" class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                            <button [hidden]="userRole == 'UserAccount'" [disabled]="familyChar.isAccepted == true" class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                 type="button" (click)="setAcceptStatus(familyChar.id, true)">
                                                 قبول
                                                 &nbsp;<i class="fas fa-info-circle"></i>&nbsp;
                                                 <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loading_AcceptedStatus == familyChar.id"></i>
                                             </button> &nbsp;
 
-                                            <button [disabled]="familyChar.isAccepted == false" class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                            <button [hidden]="userRole == 'UserAccount'" [disabled]="familyChar.isAccepted == false" class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                 type="button" (click)="setNotAcceptStatus(familyChar.id, false)">
                                                 رفض
                                                 &nbsp;<i class="fas fa-info-circle"></i>&nbsp;
                                                 <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loading_NotAcceptedStatus == familyChar.id"></i>
                                             </button> &nbsp;
                                             
-                                            <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                            <button [hidden]="userRole == 'UserAccount'" class="btn btn-sm btn-radius" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                 (click)="openConfirmDelete(deleteTemplate, familyChar.id)">
                                                 حذف
                                                 &nbsp;<i class="fas fa-trash"></i>
@@ -209,7 +209,7 @@
                                         <th style="width: 210px;">الاسم </th>
                                         <th style="width: 170px;">تاريخ الميلاد</th>
                                         <!-- <th style="width: 300px;"> عنوان المقال</th> -->
-                                        <th style="width: 200px;"></th>
+                                        <th style="width: 200px;" [hidden]="userRole == 'UserAccount'"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -230,7 +230,7 @@
                                            <!-- <td class="align-middle" style="text-align: center">
                                                 {{fChar?.title}}
                                           </td>                                         -->
-                                        <td class="align-middle" style="text-align: center">
+                                        <td class="align-middle" style="text-align: center" [hidden]="userRole == 'UserAccount'">
                                             <button (click)="openFcDetails(fcDetailsTemplate,fChar?.id)" 
                                                 class="btn btn-sm btn-radius btn-bgcolor btn-mob"
                                                 style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
@@ -422,7 +422,7 @@
         <div class="row" >
            
 
-                   <div class="col-12">
+                   <!-- <div class="col-12">
                     <input id="filter" #filter (keyup)="tree.treeModel.filterNodes(filter.value)" placeholder="بحث بالإســــم"
                     class="form-control" />
                    </div>
@@ -433,15 +433,7 @@
     
                                     <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
                                         <div style="margin-top: 3px;">
-                                            <tree-node-expander [node]="node">
-                                                <!-- <div>
-                                                    <fa-icon *ngIf="node?.isCollapsed" [icon]="['fas', 'plus-square']"></fa-icon>
-                                                    <fa-icon *ngIf="node?.isExpanded" [icon]="['fas', 'minus-square']"></fa-icon>
-                                                 </div> -->
-                                                <!-- <div style="color: #6C757D;" (click)="node.toggleExpanded()" *ngIf="node?.data?.children?.length > 0">
-                                                        <fa-icon *ngIf="node?.isCollapsed" [icon]="['fas', 'plus-square']"></fa-icon>
-                                                        <fa-icon *ngIf="node?.isExpanded" [icon]="['fas', 'minus-square']"></fa-icon>
-                                                </div> -->
+                                            <tree-node-expander [node]="node">                                              
                                             </tree-node-expander>
                                         </div>
     
@@ -468,33 +460,92 @@
                                     </div>
                                 </ng-template>
                         </tree-root>                        
+                   </div> -->
+
+                   <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                            </div>
+                            <input type="text" [(ngModel)]="searchWord" 
+                                    (keyup.enter)="searchUser()"
+                                    class="form-control form-control-sm" placeholder=" بحث فى شجرة العائلة ( بالاسم)">
+                        </div>
+
+                    <div style="padding-left:25px;padding-right:25px;text-align: center;height: 20px;margin-top: 5px;margin-bottom: -5px">
+                            <i class="fa fa-spinner fa-spin" style="font-size:17px;color:#0c6418;" *ngIf="loadingSearchUser"></i>
+                        </div>
+                    <br>
+            
+                    <table class="table table-hover table-bordered m-0 align-middle" *ngIf="showUserTable">
+                        <thead>
+                            <tr style="text-align: center">
+                                <th style="width: 200px;">الاسم</th>
+                                <th style="width: 200x;">البريد الاليكترونى</th>
+                                <th style="width: 200x;"> رقم الجوال</th>
+                                <!-- <th></th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let u of usersData" class="align-middle" style="text-align: center" (click)="getUser(u.id)">
+                                <td class="align-middle" style="text-align: center">
+                                    {{u?.fullName}}
+                                </td>
+                                <td class="align-middle" style="text-align: center">
+                                    {{u?.email}}
+                                </td>
+                                <td class="align-middle" style="text-align: center">
+                                    {{u?.phoneNumber}}
+                                </td>
+                                <!-- <td class="align-middle" style="text-align: center">
+                                    <button type="button" (click)="getUser(u.id)"
+                                    class="btn btn-radius btn-sm btn-bgcolor" >إضف الى المجموعة
+                                    &nbsp;<span class="fa fa-plus"></span>&nbsp;
+                                    <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingAddUser == u?.id"></i>
+                                </button>
+                                </td> -->
+                            </tr>            
+                        </tbody>
+                    </table>
+            
+                    <!-- no data -->
+                    <div class="row" *ngIf="usersData?.length == 0">
+                        <div class="col-12">
+                            <div
+                                style="text-align: center;font-size: 16px;padding: 20px;margin-top:12px;margin-top:8px;margin-bottom:16px;margin-right: 6px;margin-left: 6px;">
+                                لا توجد بيانات
+                            </div>
+                        </div>
+                    </div>
                    </div>
 
                    <div class="col-12" *ngIf="fcRequired"  class="col-12"  style="margin-right:6px;color:red;font-weight: bold" class="alert">
                         اختر شخصية من شجرة العائلة
                    </div>
 
-                   <div class="col-12" style="margin-top:7px;margin-bottom: 10px">
-                        <div class="row">
-
-                                <div class="col-4">
-                                        <label>الاسم بالكامل</label> &nbsp;:
-                                        {{userData?.fullName}}
-                                </div>
-                                <div class="col-4">
-                                        <label>تاريخ الميلاد</label> &nbsp;:
-                                        {{userData?.birthDateM | date :'yyyy/MM/dd'}}
-                                </div>
-                                <div class="col-4">
-                                        <label>تاريخ الميلاد هجرى</label> &nbsp;:
-                                        {{userData?.birthDateH | date :'yyyy/MM/dd'}}
-                                </div>
-                        </div>
-                        <hr>
-                   </div>
         </div>
 
+        <!-- title and description -->
         <div class="row">
+            
+            <div class="col-12" style="margin-top:7px;margin-bottom: 10px">
+                <hr>
+                <div class="row">
+
+                        <div class="col-4">
+                                <label>الاسم بالكامل</label> &nbsp;:
+                                {{userData?.fullName}}
+                        </div>
+                        <div class="col-4">
+                                <label>تاريخ الميلاد</label> &nbsp;:
+                                {{userData?.birthDateM | date :'yyyy/MM/dd'}}
+                        </div>
+                        <div class="col-4">
+                                <label>تاريخ الميلاد هجرى</label> &nbsp;:
+                                {{userData?.birthDateH | date :'yyyy/MM/dd'}}
+                        </div>
+                </div>
+           </div>
                 <div class="col-12">                       
                     <input type="text" [(ngModel)]="fcTitle" placeholder="عنوان المقال" class="form-control" />
                 </div>   
@@ -502,13 +553,7 @@
                 <div *ngIf="titleRequired" class="col-12"  style="margin-right:6px;color:red;font-weight: bold" class="alert">
                     عنوان المقال مطلوب
                </div>
-                    <!-- <textarea class="form-control" #description  rows="7" placeholder="تفاصيل الشخصية"></textarea> -->
                 <div class="col-12" style="margin-top:17px;">
-
-                    <!-- <textarea [froalaEditor] 
-                               [(froalaModel)]="fcDescription" rows="10" >
-                     </textarea> -->
-
                      <ckeditor 
                         [(ngModel)]="fcDescription" 
                         name="PageContent" 
@@ -530,6 +575,7 @@
       
     </div>
 
+    <!-- buttons -->
     <div><hr>
          <div style="text-align: center">           
             <button class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="save()">

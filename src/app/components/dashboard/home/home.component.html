@@ -19,10 +19,11 @@
                 <div *ngIf="definationRequired" style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert">
                 تفاصيل التعريف والنسب مطلوبة
                 </div>
-                <br><br>
-                  <div class="row">
+               
+                  <div class="row" [hidden]="userRole == 'UserAccount'">
                         <div class="col-12">
                             <div class="form-group">
+                                <br><br>
                                 <button class="btn btn-radius btn-sm btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                     type="button" (click)="onSubmit(definitionModel)">
                                     <span> حفظ

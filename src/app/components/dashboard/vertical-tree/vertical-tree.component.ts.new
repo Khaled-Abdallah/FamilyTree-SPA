@@ -1,0 +1,199 @@
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import * as d3 from 'd3';
+import { xml } from 'd3';
+import {FunctionalityService} from './../services/functionality.service';
+@Component({
+  selector: 'app-vertical-tree',
+  templateUrl: './vertical-tree.component.html',
+  styleUrls: ['./vertical-tree.component.css']
+})
+export class VerticalTreeComponent implements OnInit, OnChanges {
+  @Input('data') data;
+  @Input('width') width;
+  @Input('height') height;
+  @Input('nodeClick') nodeClick;
+  @Input('search') search;
+  //@Input('animate') animate;
+  d3: d3.TreeLayout<any>;
+  duration:number = 0;
+  i: number = 0;
+  searchText = this.search;
+  L = 70;
+  depth = 0;
+  constructor(){}
+  ngOnInit() {
+    let data = this.data;
+    let root = d3.hierarchy(data);
+    let width  = this.width;
+    let height = this.height;
+    
+    /* let autoBox = () => {
+      const {x, y, width, height} = this.getBBox();
+      return [x, y, width, height];
+    } */
+    
+    let familyTree = () => {
+      const nodeSeparationScale = 2.5
+      const tree = linearTree(data, nodeSeparationScale, 2, 1);
+      const fontSize = "1.5em"
+      const bubbleSize = 25
+      let margin = {top: 20, right: 20, bottom: 30, left: 20};
+
+/*       let zoom = () => {
+        g.attr('transform', d3.event.transform);
+      }
+    
+      // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+      let zoomListener = d3.zoom().scaleExtent([0.001, 1000]).on("zoom", zoom); 
+ */
+      const svg = d3.select("#container")
+        .append("div")
+        .classed("svg-container", true) //container class to make it responsive
+        .append("svg")
+        .style("max-width", "100%")
+        .style("font", "10px sans-serif")
+        .style("margin", "5px")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        
+
+      let g = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")"); 
+
+      let zoom = d3.zoom()
+      .scaleExtent([1, 8])
+      .on('zoom', function() {
+          svg.append("g").selectAll('path')
+            .attr('transform', d3.event.transform);
+      });
+      
+      svg.call(zoom);
+      /*
+        LINKS
+        Creates a line between nodes
+        Sets data and style attributes for node links
+      */
+      const link = svg.append("g")
+        .attr("fill", "none")
+        .attr("stroke", "#555")
+        .attr("stroke-opacity", 0.4)
+        .attr("stroke-width", 1.5)
+        .selectAll("path")
+        .data(tree.links())
+        .join("path")
+        .attr("d", d => `
+          M${d.target.y},${d.target.x}
+          C${d.source.y + tree["dy"] / 2},${d.target.x}
+          ${d.source.y + tree["dy"] / 2},${d.source.x}
+          ${d.source.y},${d.source.x}
+        `);
+    
+      /*
+        NODES
+        Creates a node for each child item
+        Using SVG `g` elements so other elements (circles, text)
+          can be mounted onto them
+      */
+      const node = svg.append("g")
+          .selectAll("g")
+          .data(tree.descendants())
+          .join("g")
+          .attr("transform", d => `translate(${d.y},${d.x})`);
+    
+      /*
+        BUBBLES
+        adds a circle to each node
+      */
+      /* node.append("circle")
+          .attr("fill", bubbleColor)
+          .attr("opacity", "0.5")
+          .attr("r", bubbleSize); */
+      node.append("rect")
+        .attr("width", bubbleSize)
+        .attr("height", bubbleSize)
+        .attr('rx', d => d.children? 5 : bubbleSize*0.5)
+        .attr('ry', d => d.children? 5 : bubbleSize*0.5)
+        .attr("fill", d =>  d.data["found"] == true ? "black" : d.data["status"] == 2 ? "#dca45a" : (d.data["gender"] == 1 ? "#5eb5bc":"#80b86f"))
+        .attr("opacity", "0.5")
+        .attr("x", -1*bubbleSize/2)
+        .attr("y",-1*bubbleSize/2);
+      /*
+        NAMES
+        Adds "name" text to each node
+          and positions it accordingly
+      */
+      node.append("text")
+          .text(d => d.data["name"])
+          .attr("font-size", fontSize)
+          .attr("font-family", "sans-serif")
+          .attr("text-anchor", "middle")
+          .attr("dy", d => d.data["partner"] ? "-0.5em" : "0em")
+          // these attributes can be used if you want to set
+          // properties differently for elements with and without children
+          // .filter(d => d.children)
+          // .attr("text-anchor", "end")
+      
+      // add the partner's name
+      node.append("text")
+        .text(d => d.data["partner"])
+        .attr("font-size", fontSize)
+        .attr("font-family", "sans-serif")
+        .attr("text-anchor", "middle")
+        .attr("dy", "1em")
+    
+      // Something has to be yielded or returned I guess
+      
+    
+      // makes it fit right
+      svg.attr("viewBox", "-100 "+(-1*(this.width/4))+" "+this.width+" "+this.height+"");
+      return svg.node();
+    }
+    let linearTree = (data, separationScale, xScale, yScale) => {
+      const sortedRoot = root
+          // sorts names alphabetically by full name, not by last name
+          // .sort((a, b) => a.data.name.localeCompare(b.data.name))
+          // sorts names alphabetically by last name
+          .sort((a, b) => {
+            const aLastName = a.data.name.split(" ")[1]
+            const bLastName = b.data.name.split(" ")[1]
+            if (aLastName && bLastName) {
+              return aLastName.localeCompare(bLastName)
+            } else {
+              return a.data.name.localeCompare(b.data.name)
+            }
+          })
+      sortedRoot["dx"] = 10;
+      sortedRoot["dy"] = width / (root.height + 1);
+      return d3.tree()
+          .nodeSize([sortedRoot["dx"] * xScale, sortedRoot["dy"] * yScale])
+          // default separation (?)
+          // .separation((a, b) => (a.parent == b.parent ? 1 : 2) / a.depth)
+          .separation((a, b) => (a.parent == b.parent ? (1 * separationScale) : (2 * separationScale)))(sortedRoot)
+    }
+    let bubbleColor = d => {
+      if (d.depth == 0) {
+        return "#bea7d4"
+      }
+      if (d.depth == 1) {
+        return "#ada7d4"
+      }
+      if (d.depth == 2) {
+        return "#a7b3d4"
+      }
+      if (d.depth == 3) {
+        return "#a7c7d4"
+      }
+      return "#a7d4cc"
+    }
+    
+    //=========================
+    
+    familyTree();
+  }
+  ngOnChanges(){
+    this.searchText = this.search;
+    document.querySelector("div.svg-container").remove();
+    //	this.firstTransition = true;
+    //this.multiplier = 0;
+    this.ngOnInit();
+  }
+}

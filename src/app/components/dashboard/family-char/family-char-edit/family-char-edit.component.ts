@@ -18,6 +18,7 @@ export class FamilyCharEditComponent implements OnInit {
   loading: Boolean;
   imgUrl = environment.imageUrl + "UserImages/";
   ckeConfig: any;
+  userRole: string = "";
 
   constructor(private fb: FormBuilder,
     private authService: AuthService,
@@ -26,7 +27,7 @@ export class FamilyCharEditComponent implements OnInit {
     private familyCharactersService: FamilyCharactersService) { }
 
   ngOnInit() {
-    
+    this.userRole = localStorage.getItem("userRoleName");
     this.ckeConfig = {
       allowedContent: false,
       forcePasteAsPlainText: true,

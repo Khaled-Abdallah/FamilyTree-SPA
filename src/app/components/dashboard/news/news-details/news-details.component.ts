@@ -47,6 +47,7 @@ export class NewsDetailsComponent implements OnInit {
   _commentRefuseId: number = 0;
   _userId: Number = 0;
   reasonRequired: any;
+  userRole: string = "";
 
   // private connectionIsEstablished = false;  
   // private hubConnection: HubConnection;  
@@ -59,6 +60,7 @@ export class NewsDetailsComponent implements OnInit {
     private alertifyService: AlertifyService) { }
 
     ngOnInit() {
+      this.userRole = localStorage.getItem("userRoleName");
       this.route.params.subscribe(params => {
           this.newsDetailsId = +params['id']; 
       });

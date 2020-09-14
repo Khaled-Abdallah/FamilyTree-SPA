@@ -58,15 +58,16 @@ export class FamilyTreeListComponent implements OnInit {
   loadingDateH: boolean;
   treeTitle: string = "";
   _parentId: Number = 0;
+  userRole: string = "";
 
-  depthLimit;
+  depthLimit = 4;
   treeId="ftree";
-  treeData;
-  width ;
-  height ;
-  vertical;
-  res ;
-  searchText;
+  width=window.innerWidth;
+  height=window.innerHeight;
+  vertical=true; //if false tree will be hidden
+  res=null;
+  searchText = "";
+  treeData: any;
 
   constructor(private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -78,91 +79,91 @@ export class FamilyTreeListComponent implements OnInit {
     { 
       this.route.data.subscribe(data => {
         this.familyTree = data['treeList'];
-        //console.log(this.familyTree);
       });
-
-      this.depthLimit = 6;
-      this.treeId="ftree";
-      this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
-      this.vertical = true; //if false tree will be hidden
-      this.res = null;
-      this.searchText = ""; 
+      debugger
+      if(this.familyTree.length > 0)
+        {
+          this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
+        }
     }
-
   
-  //click event handle with clicked node data injected.
-  nodeClick(nodeData) {    
-     //console.log(nodeData.data);    
-  };
-
-  emptyData(){
-    this.treeData = { id: -1, name: "", identityNum: "", userImage: "", gender: -1, status: -1, children: []};
-  }
-
-  copyObj(obj){
-    return JSON.parse(JSON.stringify(obj));
-  }
-
-  limitTreeDepth(tree, depthLimit,depth=0){
-    if(depth == depthLimit-1) {
-      tree.children = [];
+    nodeClick(nodeData) { //click event handle with clicked node data injected.
+      console.log(nodeData.data);
+    };
+  
+    emptyData(){
+      this.treeData = { id: -1, name: "", identityNum: "", userImage: "", gender: -1, status: -1, children: []};
     }
-    let newTree = this.copyObj(tree);
-    let hasChildren = [];
-    newTree.children = [];
-    for(let i = 0; i < tree.children.length; i++){
-      if(tree.children[i].children){
-        hasChildren.push(tree.children[i]);
-      } else {
-        newTree.children.push(tree.children[i]);
+    
+    copyObj(obj){
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    limitTreeDepth(tree, depthLimit,depth=0){
+      if(depth == depthLimit-1) {
+        tree.children = [];
+      }
+      let newTree = this.copyObj(tree);
+      let hasChildren = [];
+      newTree.children = [];
+      for(let i = 0; i < tree.children.length; i++){
+        if(tree.children[i].children){
+          hasChildren.push(tree.children[i]);
+        } else {
+          newTree.children.push(tree.children[i]);
+        }
+      }
+      depth+=1;
+      hasChildren.forEach((subTree)=>{
+        newTree.children.push(this.limitTreeDepth(subTree,depthLimit,depth));
+      });
+      return newTree;
+    }
+    
+    showMore(numLevels){
+      this.depthLimit += numLevels;
+      this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
+      if(this.searchText != ""){
+        this.find(this.searchText);
       }
     }
-    depth+=1;
-    hasChildren.forEach((subTree)=>{
-      newTree.children.push(this.limitTreeDepth(subTree,depthLimit,depth));
-    });
-    return newTree;
-  }
-
-  showMore(numLevels){
-    this.depthLimit += numLevels;
-    this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
-    if(this.searchText != ""){
-      this.find(this.searchText);
+  
+    findNode(object, name, parentName="", grandParentName="") {
+      if(this.res) {
+        this.res.found=false;
+        this.res = null;
+      }
+      if(!object.parentName) object.parentName="";
+      if(!object.grandParentName) object.grandParentName="";
+      //search by desired parameter by changing the below line
+      if (object.name === name && object.parentName === parentName && object.grandParentName === grandParentName){
+        return object;
+      }
+      var result;
+      for (var i = 0; i < object.children.length; i++) {
+          object.children[i].grandParentName = object.parentName || "";
+          object.children[i].parentName = object.name;
+         result = this.findNode(object.children[i], name, parentName, grandParentName);
+         if (result !== undefined) return result;
+      }
     }
-  }
-
-  findNode(object, nodeId) {
-    if(this.res) {
-      this.res.found=false;
-      this.res = null;
+  
+    find(text){
+      text = text.split(" ",3);
+      this.searchText = text;
+      if(text.length <= 1){
+        this.res.found = false
+      } else if(text.length == 3) {
+        this.res = this.findNode(this.treeData, text[0],text[1],text[2]);
+        if(this.res){
+          this.res["found"] = true;
+        } 
+      }
     }
-    //search by desired parameter by changing the below line
-    if (object.identityNum === nodeId) return object;
- 
-    var result;
-    for (var i = 0; i < object.children.length; i++) {
-       result = this.findNode(object.children[i], nodeId);
-       if (result !== undefined) return result;
-    }
-  }
-
-  find(text){
-    this.searchText = text;
-    if(text == ""){
-      this.res.found = false
-    } else {
-      this.res = this.findNode(this.treeData, text);
-      if(this.res){
-        this.res["found"] = true;
-      } 
-    }
-  }
-  //=================================================================
+  //======================================================================================
   ngOnInit() {
-
+    this.userRole = localStorage.getItem("userRoleName");
+    
     this.route.data.subscribe(data => {
       this.users = data['usersNotAccepted'];
     });
@@ -223,9 +224,12 @@ export class FamilyTreeListComponent implements OnInit {
   }
 
   _showUserDetails(node: any){
+    // console.log(node.data);
+    // return;
+
     this.spinner.show();
-    this._parentId = node.id;
-    this.userService.getUserInfo(node.id)
+    this._parentId = node.data.id;
+    this.userService.getUserInfo(node.data.id)
         .subscribe(_userData => {
           setTimeout(() => {
             this.userData = _userData;
@@ -326,6 +330,30 @@ export class FamilyTreeListComponent implements OnInit {
     this.showFamilyTree = true;
     this.userId = 0;
     this.treeTitle = "";
+
+    this.userService.getFamilyTreeForMobile()
+      .subscribe(_users => {
+        this.familyTree = _users;
+        this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
+    },() => {
+        //error
+    });
+
+  }
+
+  ftChanged(){
+    this.showUserDetails = false;
+    this.showFamilyTree = true;
+    this.userId = 0;
+    this.treeTitle = "";
+
+    this.userService.getFamilyTreeForMobile()
+      .subscribe(_users => {
+        this.familyTree = _users;
+        this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
+    },() => {
+        //error
+    });
   }
 
    //for pageing

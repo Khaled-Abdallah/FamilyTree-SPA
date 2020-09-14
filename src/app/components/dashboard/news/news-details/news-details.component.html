@@ -71,21 +71,21 @@
           
         </div>
         <br>
-        <div class="card-footer">
-          <button class="btn btn-sm btn-radius btn-bgcolorCustom" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+        <div  class="card-footer">
+          <button [hidden]="userRole == 'UserAccount'" class="btn btn-sm btn-radius btn-bgcolorCustom" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
             type="button" [disabled]="newsDetails.data?.isAccepted" (click)="setAcceptStatus(true, newsDetails.data.id)">
             قبول
             &nbsp;<i class="fas fa-info-circle"></i>&nbsp;
             <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingAcceptedStatus"></i>
           </button> &nbsp;
 
-          <button [disabled]="newsDetails.data?.isAccepted == false" class="btn btn-sm btn-radius btn-bgcolorCustom" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+          <button [hidden]="userRole == 'UserAccount'" [disabled]="newsDetails.data?.isAccepted == false" class="btn btn-sm btn-radius btn-bgcolorCustom" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
             type="button" (click)="confirmNotAccept(notAcceptTemplate,newsDetails.data.userId, newsDetails.data.id)">
             رفض
             &nbsp;<i class="fas fa-info-circle"></i>&nbsp;
           </button>&nbsp;
 
-          <button class="btn btn-sm btn-radius " (click)="openConfirmDelete(deleteTemplate,newsDetails.data.id)" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px; width:  30%;">
+          <button [hidden]="userRole == 'UserAccount'" class="btn btn-sm btn-radius " (click)="openConfirmDelete(deleteTemplate,newsDetails.data.id)" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px; width:  30%;">
             حذف
             &nbsp;<i class="fas fa-trash"></i>
           </button>
@@ -134,7 +134,7 @@
       <div style="padding-top: 10px;margin-bottom: 0px;" class="col-xl-12">
         <div class="float-right">
           <div style="width: 270px;margin-top: -8px;text-align: left">
-            <button type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="showAdd(newCommentTemplate,newsDetails.data.id )">إضافة
+            <button [hidden]="userRole == 'UserAccount'" type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="showAdd(newCommentTemplate,newsDetails.data.id )">إضافة
               تعليق
               &nbsp;<span class="fa fa-plus"></span>
             </button>
@@ -169,7 +169,7 @@
                               </div>
                           </div>
 
-                          <div class="col-1" style="text-align: left;padding-top: 10px">
+                          <div [hidden]="userRole == 'UserAccount'" class="col-1" style="text-align: left;padding-top: 10px">
                             <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
                             type="submit" (click)="openDelete(deleteCommentTemplate, comment.id)">
                             حذف
@@ -238,7 +238,7 @@
                                           <i class="fas fa-info-circle"></i>
                                       </button> &nbsp;
 
-                                      <button (click)="acceptUserComment(newsDetails.data.id,userCom.id )" class="btn btn-sm btn-radius btn-bgcolor"
+                                      <button [hidden]="userRole == 'UserAccount'" (click)="acceptUserComment(newsDetails.data.id,userCom.id )" class="btn btn-sm btn-radius btn-bgcolor"
                                       style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                       type="button">
                                       قبول
@@ -246,7 +246,7 @@
                                           <i class="fa fa-spinner fa-spin" style="font-size:15px;color: white" *ngIf="loadingAcceptUserCommentData == userCom.id"></i>
                                   </button>&nbsp;
 
-                                  <button  class="btn btn-sm btn-radius btn-bgcolor"
+                                  <button [hidden]="userRole == 'UserAccount'"  class="btn btn-sm btn-radius btn-bgcolor"
                                   style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                   type="button"
                                   (click)="refusalNewsUserComment(newsDetails.data.id, userCom.id)">
@@ -289,7 +289,7 @@
                             <th style="width: 230px;">الاسم</th>
                             <th style="width: 200px;">تاريخ التعليق</th>
                             <th style="width: 400px;"> التعليق</th>
-                            <th style="width: 180px;"></th>
+                            <th style="width: 180px;" [hidden]="userRole == 'UserAccount'" ></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -313,7 +313,7 @@
                               </td>
                             <td>{{ refusComm?.comment }}</td>
                             
-                            <td class="align-middle" style="text-align: center">
+                            <td  [hidden]="userRole == 'UserAccount'" class="align-middle" style="text-align: center">
                             <button class="btn btn-sm btn-radius btn-bgcolor"
                                 (click)="confirmDeleteRefuseComment(deleteRefuseCommentTemplate, refusComm.id )"  
                                 style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"

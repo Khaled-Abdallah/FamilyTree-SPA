@@ -21,11 +21,11 @@ export class AuthGuard implements CanActivate {
 
       this.spinner.show();
       setTimeout(() => {
-        this.alertify.error('عفوا .. قم بتسجيل الدخول');
+        this.alertify.tError('عفوا .. قم بتسجيل الدخول');
         this.router.navigate(['/login']);
         this.spinner.hide();
         return false;
-      }, 1000);
+      }, 100);
 
    
   }

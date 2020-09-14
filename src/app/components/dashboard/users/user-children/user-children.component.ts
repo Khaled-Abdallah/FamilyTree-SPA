@@ -38,6 +38,7 @@ export class UserChildrenComponent implements OnInit {
   userToEdite :any;
   loadingEditing: any;
   imgUrl = environment.imageUrl + "UserImages/";
+  userRole: string = "";
   
   constructor(private userService: UserService,
     private modalService: ModalService,
@@ -46,6 +47,7 @@ export class UserChildrenComponent implements OnInit {
     private fileUploadService: FileUploadService) { }
 
   ngOnInit() {
+    this.userRole = localStorage.getItem("userRoleName");
     //console.log(this.userChildren);
     this.getFamily();
     this.getStatus();

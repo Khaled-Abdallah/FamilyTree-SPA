@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
   hubConnection: signalR.HubConnection;
   url = environment.url;
   appName: any;
-
+  userRole: string = "";
 
   constructor(private router: Router, private authService: AuthService, 
     private spinner: NgxSpinnerService,
@@ -51,9 +51,11 @@ export class DashboardComponent implements OnInit {
     private alertifyService: AlertifyService) { }
   
   ngOnInit() {
+    this.userRole = localStorage.getItem("userRoleName");
     //lodding user image
     this.authService.currentImgUrl.subscribe(imgUrl => 
       {
+        debugger
         this.imgUrl = imgUrl
         this.imgUrl = localStorage.getItem('image');
       });

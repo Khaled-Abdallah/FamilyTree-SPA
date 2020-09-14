@@ -1,7 +1,7 @@
 export const environment = {
   production: true,      
  
-  url:      'http://familytree22-001-site1.gtempurl.com/',
-  apiUrl:   'http://familytree22-001-site1.gtempurl.com/api/',
-  imageUrl: 'http://familytree22-001-site1.gtempurl.com/Images/'
+  url:      'https://api.appalthunayan.com/',
+  apiUrl:   'https://api.appalthunayan.com/api/',
+  imageUrl: 'https://api.appalthunayan.com/Images/'
 };

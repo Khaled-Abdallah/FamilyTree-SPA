@@ -13,47 +13,27 @@
                 <div class="col-12">
                     <tabset #productTabs class="member-tabset">
                         <tab heading="شجرة العائلة">
-                            <div style="padding:6px;">
-                                
-                                <!-- search --> 
-                                <div class="col-xl-12" style="padding-top: 10px;">
-                                    <div class="float-left" style="width:500px;margin-bottom: 13px;">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fa fa-search"></i></span>
-                                            </div>
-                                            <!-- <input id="filter" placeholder="بحث بالإســــم" class="form-control" /> -->
-                                            <input #box (keyup)="find(box.value)" class="form-control" placeholder="بحث بالرقم التعريفى">
-                                        </div>
-                                    </div>
-                                    <div class="float-left" style="margin-top: 10px;margin-right: 10px;">
-                                        <i class="fa fa-spinner fa-spin" style="font-size:22px;color:green" *ngIf="loadingSearch"></i>
-                                    </div>
-                                    <br>
-                                    <div style="padding-top: 10px;padding-bottom: 10px">                                      
-                                    </div>
-                                </div>
+                            <!-- <div style="padding:6px;"> -->
 
                                 <!-- tree -->                               
                                      <div class="col-12" style="margin-top: 10px;border:1px solid #e4e9e4;padding: 10px;">
-                                        <app-vertical-tree  
+                                        <input #box (keyup)="find(box.value)" class="form-control">
+                                            <app-vertical-tree 
                                             [data]="treeData" 
                                             [width]="width" 
-                                            [height]="height" 
-                                            [nodeClick]="nodeClick"
-                                            (getNodeData)="_showUserDetails($event)"
+                                            [height]="height"                                            
                                             [search]="searchText" 
                                             [id]="treeId" 
-                                            *ngIf="vertical">
-                                        </app-vertical-tree>
-                                    </div>
-                            
+                                            *ngIf="vertical"
+                                            (userDetailsChanged)="_showUserDetails($event)"
+                                            ></app-vertical-tree>
+                                    </div>                            
                               
-                                     <div class="col-12" style="text-align: center;margin-top: 10px">
+                                     <div *ngIf="familyTree.length > 0" class="col-12" style="text-align: center;margin-top: 10px">
                                         <button (click)="showMore(2)" class="btn btn-sm btn-radius btn-bgcolor">عرض المزيد</button>
                                     </div>
                           
-                            </div>
+                            <!-- </div> -->
                         </tab>
 
                         <tab heading="طلبات الاضافة">
@@ -92,7 +72,7 @@
                                             <th style="min-width: 320px;">الاسم بالكامل</th>
                                             <th style="min-width: 270px;">البريد الاليكترونى</th>
                                             <th style="min-width: 180px;"> رقم الجوال</th>
-                                            <th></th>
+                                            <th [hidden]="userRole == 'UserAccount' || userRole == 'Admin'"></th>
                                             <!-- <th></th> -->
                                         </tr>
                                     </thead>
@@ -109,7 +89,7 @@
                                             <td class="align-middle" style="text-align: center">
                                                 {{user?.phoneNumber}}
                                             </td>
-                                            <td>
+                                            <td [hidden]="userRole == 'UserAccount' || userRole == 'Admin'">
                                                 <div>
                                                     <button class="btn btn-sm btn-radius btn-bgcolor" type="button"
                                                         (click)="showDetails(detailsTemplate,user?.id, user?.parentId)">
@@ -184,7 +164,7 @@
     <!-- user details data -->
     <div class="col-5">
         <div class="card">
-                <user-info [userInfo]="userData.userInfo"></user-info>
+                <user-info [userInfo]="userData.userInfo"  (changed)="ftChanged()"></user-info>
         </div>
     </div>
 
@@ -214,7 +194,7 @@
 </div>
 
 
-<!-- return  -->
+<!-- return button -->
 <div class="row" *ngIf="showUserDetails" >
        
     <div class="col-12">

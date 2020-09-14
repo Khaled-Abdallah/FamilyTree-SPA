@@ -45,6 +45,7 @@ export class BlogDetailsComponent implements OnInit {
   loadingRefusalCommentStatus: any;
   refusComments: any;
   loadingRefusComments: boolean;
+  userRole: string = "";
   
   constructor(private route: ActivatedRoute,
     private blogSservice: BlogService,
@@ -54,6 +55,8 @@ export class BlogDetailsComponent implements OnInit {
     private alertifyService: AlertifyService) { }
 
     ngOnInit() {
+      this.userRole = localStorage.getItem("userRoleName");
+
       this.route.params.subscribe(params => {
         this.blogDetailsId = +params['id']; 
     });

@@ -103,6 +103,12 @@ export class UserProfileComponent implements OnInit {
   } 
 
   getDateH(date: Date){
+    if(date == null)
+      {
+        this.loadingDateH = false;
+        return;
+      }
+
     this.loadingDateH = true;
     var newDate = date.toLocaleDateString();
     this.userService.getBirthDateH(newDate)

@@ -20,6 +20,7 @@ export class UserWifesComponent implements OnInit {
   loadingDelete: any;
   wifeId: Number = 0;
   title: string = "";
+  userRole: string = "";
 
   constructor(private wifeService: WifeService,private fb: FormBuilder,
     private modalService: ModalService,
@@ -28,6 +29,8 @@ export class UserWifesComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.userRole = localStorage.getItem("userRoleName");
+    
     this.wifesForm = this.fb.group({
       id: [0],
       wName: ['', [Validators.required]],

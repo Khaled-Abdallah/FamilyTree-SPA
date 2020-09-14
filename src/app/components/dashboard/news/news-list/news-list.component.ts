@@ -49,7 +49,7 @@ export class NewsListComponent implements OnInit {
   of: Number = 1;
   searchNow: string = "الكل";
   isLoading:boolean;
-
+  userRole: string = "";
 
   constructor(private alertifyService: AlertifyService,
     private fb: FormBuilder,
@@ -62,6 +62,8 @@ export class NewsListComponent implements OnInit {
      }
 
     ngOnInit() {
+      this.userRole = localStorage.getItem("userRoleName");
+      
       this.getNewsType();
       this.showAdd = false;
       this.showList = true;

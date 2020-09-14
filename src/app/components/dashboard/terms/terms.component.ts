@@ -16,13 +16,14 @@ export class TermsComponent implements OnInit {
   loading: boolean;
   ckeConfig: any;
   definationRequired: boolean;
+  userRole: string = "";
 
   constructor(private fb: FormBuilder, private alertifyService: AlertifyService,
     private settingsService: SettingsService,
     private route: ActivatedRoute) { }
 
     ngOnInit() {
-      
+    this.userRole = localStorage.getItem("userRoleName");
     this.ckeConfig = {
       height :600,
       allowedContent: false,
@@ -48,11 +49,12 @@ export class TermsComponent implements OnInit {
       removeButtons: 'Source,Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Outdent,Indent,CreateDiv,Blockquote,BidiLtr,BidiRtl,Language,Unlink,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,About'
       //removeButtons: 'Save,NewPage,Preview,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,TextField,Textarea,Select,Button,CopyFormatting,Language,Unlink,Table,PageBreak,Maximize'
     };
-
-      //this.getData();
-
+    
       this.route.data.subscribe(data => {
         this.termsModel = data['terms'];
+        if(this.termsModel == null){
+          this.termsModel = new Terms();
+        }
       });
     }
 

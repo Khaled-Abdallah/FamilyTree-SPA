@@ -1,7 +1,7 @@
 <div class="row" style="margin-bottom: 7px;margin-top: -8px">
     <div class="col-sm-12" style="margin-top:7px;">
         <div class="float-right">
-            <button type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="showAddNews()">إضافة خبر
+            <button [hidden]="userRole == 'UserAccount'" type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="showAddNews()">إضافة خبر
                 &nbsp;<span class="fa fa-plus"></span>
             </button>
         </div>
@@ -182,14 +182,14 @@
                                         &nbsp;<i class="fas fa-info-circle"></i>&nbsp;
                                         <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingDetails == _news.id"></i>
                                     </button> &nbsp;
-                                    <button class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                    <button [hidden]="userRole == 'UserAccount'" class="btn btn-sm btn-radius btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                         type="button" (click)="getNewsById(_news.id)">
                                         تعديل
                                         &nbsp;<i class="fas fa-edit"></i>&nbsp;
                                         <i class="fa fa-spinner fa-spin" style="font-size:15px;" *ngIf="loadingEdit == _news.id"></i>
                                     </button>
                                     &nbsp;
-                                    <button class="btn btn-sm btn-radius " style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                    <button [hidden]="userRole == 'UserAccount'" class="btn btn-sm btn-radius " style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                         (click)="openConfirmDelete(deleteTemplate, _news.id)">
                                         حذف
                                         &nbsp;<i class="fas fa-trash"></i>

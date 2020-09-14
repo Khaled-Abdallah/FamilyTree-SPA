@@ -40,7 +40,7 @@
                          <!-- Notification bar -->
                         <li class="list-inline-item">
                             
-                            <div class="notification-box">
+                            <!-- <div class="notification-box">
                                 <ul class="list-inline m-b-0">
                                     <li (click)="showNotifications()">
                                         <a href="javascript:void(0);" class="right-bar-toggle">
@@ -48,15 +48,15 @@
                                         </a>
                                         <div class="noti-dot" >
                                             <span *ngIf="_counter > 0" class="badge" > {{_counter}}</span>
-                                        </div>
+                                        </div> -->
                                         <!-- <div class="noti-dot">
                                             <span class="dot"></span>
                                             <span class="pulse"></span>
                                         </div> -->
-                                    </li>
+                                    <!-- </li>
 
                                 </ul>
-                            </div>
+                            </div> -->
                            
                         </li>
 
@@ -170,9 +170,9 @@
                         </a>                        
                     </li> -->
 
-                    <li class="has_sub">
+                    <li class="has_sub" [hidden]="userRole == 'UserAccount' || userRole == 'Admin'">
                             <a [routerLink]="['/admin','user-management']"  routerLinkActive="active" class="waves-effect"><i class="fa fa-lock"></i>
-                                <span style="font-size: 17px">صلاحيات المستخدمين</span> 
+                                <span style="font-size: 17px">إدارة الصلاحيات</span> 
                             </a>                        
                         </li>
 
@@ -182,12 +182,13 @@
                         </a>                      
                     </li>
 
-                    <li class="has_sub">
+                    <li class="has_sub" [hidden]="userRole == 'UserAccount' || userRole == 'Admin'">
                             <a [routerLink]="['/admin','settings']"  routerLinkActive="active" class="waves-effect"><i class="fas fa-cogs"></i>
                                 <span style="font-size: 17px"> الاعدادات </span> 
                             </a>                        
-                        </li>
-                        <li class="has_sub">
+                        </li>                 
+                        
+                        <li class="has_sub" [hidden]="userRole == 'UserAccount' || userRole == 'Admin'">
                             <a [routerLink]="['/admin','register']"  routerLinkActive="active" class="waves-effect"><i class="fas fa-cogs"></i>
                                 <span style="font-size: 17px"> التسجيل </span> 
                             </a>                        

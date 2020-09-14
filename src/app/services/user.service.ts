@@ -172,6 +172,9 @@ export class UserService {
     return this.http.get(this._url + 'deleteUser/' + userId);
   }
   
+  deleteUserParent(userId: Number): any {
+    return this.http.get(this._url + 'deleteUserParent/'+ userId );
+  }
 
 
 }

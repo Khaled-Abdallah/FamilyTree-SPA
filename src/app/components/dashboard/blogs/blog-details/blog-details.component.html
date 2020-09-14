@@ -76,7 +76,7 @@
                                     </div>
         
                                     <!-- buttons -->
-                                    <div class="row" style="margin-top:-10px;text-align: center">
+                                    <div [hidden]="userRole == 'UserAccount'" class="row" style="margin-top:-10px;text-align: center">
                                         
                                         <div class="col-xl-12 col-md-10;">
                                                 <!-- <div style="padding-top:10px;border-top: 1px solid rgb(206, 202, 202)"> -->
@@ -120,7 +120,7 @@
                         <div style="padding-top: 10px;margin-bottom: 0px;" class="col-xl-12">
                             <div class="float-right">
                               <div style="width: 270px;margin-top: -8px;text-align: left">
-                                <button type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="showAdd(newCommentTemplate)">إضافة
+                                <button [hidden]="userRole == 'UserAccount'" type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="showAdd(newCommentTemplate)">إضافة
                                   تعليق
                                   &nbsp;<span class="fa fa-plus"></span>
                                 </button>
@@ -154,7 +154,7 @@
                                                         </p>
                                                     </div>
                                                 </div> 
-                                                <div class="col-1"  style="text-align: left;padding-top: 10px">
+                                                <div [hidden]="userRole == 'UserAccount'" class="col-1"  style="text-align: left;padding-top: 10px">
                                                     <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                         type="submit" (click)="openConfirmDelete(deleteCommentTemplate, comment.id)">
                                                         حذف
@@ -233,7 +233,7 @@
                                                         <i class="fas fa-info-circle"></i>
                                                     </button> &nbsp;
 
-                                                    <button (click)="acceptBlogUserComment(blogDetailsId, userCom.id, true )" class="btn btn-sm btn-radius btn-bgcolor"
+                                                    <button [hidden]="userRole == 'UserAccount'" (click)="acceptBlogUserComment(blogDetailsId, userCom.id, true )" class="btn btn-sm btn-radius btn-bgcolor"
                                                     style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                     type="button">
                                                     قبول
@@ -241,7 +241,7 @@
                                                         <i class="fa fa-spinner fa-spin" style="font-size:15px;color: white" *ngIf="loadingAcceptUserCommentData == userCom.id"></i>
                                                 </button>&nbsp;
 
-                                                <button (click)="refusalBlogUserComment(blogDetailsId, userCom.id, false )" class="btn btn-sm btn-radius btn-bgcolor"
+                                                <button [hidden]="userRole == 'UserAccount'" (click)="refusalBlogUserComment(blogDetailsId, userCom.id, false )" class="btn btn-sm btn-radius btn-bgcolor"
                                                 style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                 type="button">
                                                 رفض
@@ -288,7 +288,7 @@
                                                 <th style="width: 230px;">الاسم</th>
                                                 <th style="width: 200px;">تاريخ التعليق</th>
                                                 <th style="width: 400px;"> التعليق</th>
-                                                <th style="width: 180px;"></th>
+                                                <th style="width: 180px;" [hidden]="userRole == 'UserAccount'"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -311,7 +311,7 @@
                                                   </td>
                                                 <td>{{ refusComm?.comment }}</td>
                                                 
-                                                <td class="align-middle" style="text-align: center">
+                                                <td [hidden]="userRole == 'UserAccount'" class="align-middle" style="text-align: center">
                                                 <button (click)="confirmDeleteRefuseComment(deleteRefuseCommentTemplate, refusComm.id )" class="btn btn-sm btn-radius btn-bgcolor"
                                                 style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                     type="button">

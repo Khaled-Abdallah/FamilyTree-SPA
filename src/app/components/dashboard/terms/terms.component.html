@@ -21,7 +21,7 @@
                     الشروط والاحكام مطلوبة
                     </div>
                     <br><br>
-                    <div class="row">
+                    <div class="row" [hidden]="userRole == 'UserAccount' || userRole == 'Admin'">
                         <div class="col-12">
                             <div class="form-group">
                                 <button class="btn btn-radius btn-sm btn-bgcolor" style="padding-top: 6px;padding-left: 15px;padding-right: 15px"

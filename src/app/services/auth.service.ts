@@ -35,7 +35,8 @@ export class AuthService {
             const user = response;
             if (user) {
               localStorage.setItem('token', user.token);
-              localStorage.setItem('user', user.user.userName);  
+              localStorage.setItem('user', user.user.userName); 
+              localStorage.setItem('userRoleName', user.roleName);  
 
               this.currenyUser = user.user;                          
               this.changeUserImage(this.currenyUser.image);
@@ -46,14 +47,15 @@ export class AuthService {
     }
 
     changeUserImage(imgUrl: string) {
-       if(imgUrl != null){
-        localStorage.setItem('image', imgUrl);
-        this.imgUrl.next(imgUrl);
-       }
-       else{
+      debugger
+       if(imgUrl == "" || imgUrl == null){
         var imgae = "user.png";
         localStorage.setItem('image', imgae);
         this.imgUrl.next(imgae);
+       }
+       else{
+        localStorage.setItem('image', imgUrl);
+        this.imgUrl.next(imgUrl);
        }
     }
 
@@ -135,6 +137,8 @@ export class AuthService {
           localStorage.removeItem('user');
           localStorage.removeItem('image');
           localStorage.removeItem('cImage');
+          localStorage.removeItem('userRoleName');
+
           this.router.navigate(['/login']);
           this.spinner.hide();
           return !this.jwtHelpler.isTokenExpired(_token);

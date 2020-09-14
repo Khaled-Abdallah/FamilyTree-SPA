@@ -36,11 +36,18 @@ import { RefusalCommentsResolver } from './resolvers/refusalCommentsResolver.ser
 import { RefusalNewsCommentsResolver } from './resolvers/refusalNewsCommentsResolver.service';
 import { FamilCharWattingResolverService } from './resolvers/FamilCharWattingResolverService.service';
 import { RegisterComponent } from './components/dashboard/register/register.component';
+import { FirtSettingsComponent } from './components/dashboard/firt-settings/firt-settings.component';
 
 
 
 const appRoutes: Routes = [
-  { path:'family-tree' ,component: FamilyTreeComponent,resolve:{treeList: TreeListResolverService}},
+  { path:'family-tree' ,component: FamilyTreeComponent, resolve:{ treeList: TreeListResolverService }},
+  { 
+    path:'first-Settings' ,
+    component: FirtSettingsComponent, 
+    resolve:{ settings: SettingsResolverService},
+    canActivate: [AuthGuard]
+  },
   { 
     path:'admin' ,component: DashboardComponent,
     canActivate: [AuthGuard],

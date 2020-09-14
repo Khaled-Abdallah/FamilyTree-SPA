@@ -5,13 +5,13 @@
 export const environment = {
   production: false,
 
-  url:   'http://localhost:53204/',
-  apiUrl:   'http://localhost:53204/api/',
-  imageUrl: 'http://localhost:53204/Images/'
+  url:   'http://localhost:5000/',
+  apiUrl:   'http://localhost:5000/api/',
+  imageUrl: 'http://localhost:5000/Images/'
   
-  // url:      'http://familytree22-001-site1.gtempurl.com/',
-  // apiUrl:   'http://familytree22-001-site1.gtempurl.com/api/',
-  // imageUrl: 'http://familytree22-001-site1.gtempurl.com/Images/'
+  // url:      'https://api.appalthunayan.com/',
+  // apiUrl:   'https://api.appalthunayan.com/api/',
+  // imageUrl: 'https://api.appalthunayan.com/Images/'
  };
 
 /*

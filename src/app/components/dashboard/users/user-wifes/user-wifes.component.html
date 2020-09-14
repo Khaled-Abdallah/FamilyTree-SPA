@@ -33,7 +33,7 @@
                         &nbsp;<i class="fas fa-edit"></i>
                     </button> &nbsp;
 
-                    <button (click)="openConfirmDelete(wife.id, deleteWifeTemplate)" 
+                    <button [hidden]="userRole == 'UserAccount' || userRole == 'Admin'" (click)="openConfirmDelete(wife.id, deleteWifeTemplate)" 
                         class="btn btn-sm btn-radius" style="background-color:rgb(185, 21, 15);color:white;" type="button">
                         حذف
                         &nbsp;<i class="fas fa-trash"></i>&nbsp;

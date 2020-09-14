@@ -60,7 +60,7 @@
                             &nbsp;<i class="fas fa-edit"></i>
                         </button> &nbsp;                    
 
-                         <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 21, 15);color:white;" 
+                         <button [hidden]="userRole == 'UserAccount' || userRole == 'Admin'" class="btn btn-sm btn-radius" style="background-color:rgb(185, 21, 15);color:white;" 
                             (click)="openConfirmDelete(userChild?.id, deleteUserTemplate)" 
                             type="button">
                                 حذف

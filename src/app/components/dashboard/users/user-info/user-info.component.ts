@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../../services/user.service';
@@ -7,6 +7,7 @@ import { AlertifyService } from '../../../../services/alertify.service';
 import { Chilred } from '../../../../models/chilred';
 import { UserInfo } from '../../../../models/userInfo';
 import { FileUploadService } from '../../../../services/file-upload.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'user-info',
@@ -15,6 +16,8 @@ import { FileUploadService } from '../../../../services/file-upload.service';
 })
 export class UserInfoComponent implements OnInit {
   @Input() userInfo: any = {};
+  @Output() changed: EventEmitter<any> = new EventEmitter();
+  
   imgUrl = environment.imageUrl + "UserImages/";
   userInfoForm: FormGroup;
   //userInfo: any;
@@ -31,11 +34,15 @@ export class UserInfoComponent implements OnInit {
   loadingImage: boolean;
   imgToUpload: File = null;
   isUpload: any;
+  loadingDeleteUser: boolean;
+  userRole: string = "";
 
   constructor(private fb: FormBuilder,private userService: UserService,
-    private alertifyService: AlertifyService,private fileUploadService: FileUploadService) { }
+    private alertifyService: AlertifyService,private fileUploadService: FileUploadService,
+    private router: Router) { }
 
   ngOnInit() {
+    this.userRole = localStorage.getItem("userRoleName");
     //console.log(this.userInfo);
 
     if(this.userInfo.image == null){
@@ -205,5 +212,24 @@ export class UserInfoComponent implements OnInit {
 
   }
 
+  deleteUser(userId: Number){
+    this.loadingDeleteUser = true;
+    this.userService.deleteUserParent(userId)
+      .subscribe(() => {
+        setTimeout(() => {
+          this.changed.emit();
+          //this.alertifyService.tSuccess('تم التعديل بنجاح');
+          this.imageName = "";
+          this.loadingDeleteUser = false;
+        }, 100);
+      }, (err) => {
+        setTimeout(() => {
+          this.alertifyService.tError('خطأ فى عملية التعديل ... يرجي المحاولة مرة اخرى ');
+          this.loadingDeleteUser = false;
+        }, 100);
+      }, () => {
+       
+      });
+  }
 
 }

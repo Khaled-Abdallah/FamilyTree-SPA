@@ -50,6 +50,7 @@ export class BlogsComponent implements OnInit {
   imgUrl = environment.imageUrl + "UserImages/";
   blogStatus: string = "all";
   searchNow: string = "الكل";
+  userRole: string = "";
  
 
   constructor(private alertifyService: AlertifyService,
@@ -67,6 +68,7 @@ export class BlogsComponent implements OnInit {
      }
 
   ngOnInit() {
+    this.userRole = localStorage.getItem("userRoleName");
     this.bsConfig = {
       containerClass: 'theme-green',
       dateInputFormat: 'YYYY/MM/DD',

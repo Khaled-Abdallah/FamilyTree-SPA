@@ -9,6 +9,7 @@ import { UserService } from '../../../../services/user.service';
 import { FamilyChar } from '../../../../models/familyChar';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { environment } from '../../../../../environments/environment';
+import { RoleService } from 'src/app/services/role.service';
 
 @Component({
   selector: 'app-famil-char-list',
@@ -50,6 +51,11 @@ export class FamilCharListComponent implements OnInit {
   titleRequired: boolean;
   descriptionRequired: boolean;
   fcRequired: boolean;
+  userRole: string = "";
+  searchWord: string = "";
+  showUserTable: boolean;
+  usersData: [];
+  loadingSearchUser: boolean;
 
   constructor(private alertifyService: AlertifyService,
     private fb: FormBuilder,
@@ -58,10 +64,12 @@ export class FamilCharListComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private modalService: ModalService,
     private router: Router,
-    private userService: UserService) { }
+    private userService: UserService,
+    private roleService: RoleService) { }
 
   ngOnInit() {
-    
+    this.userRole = localStorage.getItem("userRoleName");
+
     this.ckeConfig = {
       allowedContent: false,
       forcePasteAsPlainText: true,
@@ -85,9 +93,12 @@ export class FamilCharListComponent implements OnInit {
       ],
       removeButtons: 'Source,Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Outdent,Indent,CreateDiv,Blockquote,BidiLtr,BidiRtl,Language,Unlink,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,About'
       //removeButtons: 'Save,NewPage,Preview,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,TextField,Textarea,Select,Button,CopyFormatting,Language,Unlink,Table,PageBreak,Maximize'
+    
+    
     };
     
-
+    this.usersData = [];
+    
     this.route.data.subscribe(data => {
       this.familyCharacters = data['familyChars'];
       //console.log(this.familyCharacters);
@@ -119,6 +130,31 @@ export class FamilCharListComponent implements OnInit {
     this.getFamilyTree();
 
   }
+
+  searchUser(){
+    this.loadingSearchUser = true;   
+
+    this.roleService.searchUsers(this.searchWord.trim())
+      .subscribe((_users: any) => {
+        setTimeout(() => {
+          this.usersData = _users.data;
+          if(this.usersData.length == 0)          
+              this.showUserTable = false;
+          else
+            this.showUserTable = true;
+        }, 100);
+      }, (err) => {
+        setTimeout(() => {            
+          this.alertifyService.tError('خطأ فى تحميل البيانات ... يرجى المحاولة مرة اخرى');
+          this.loadingSearchUser = false;
+        }, 100);
+      }, () => {
+        setTimeout(() => {         
+          this.loadingSearchUser = false;
+        }, 100);
+      });
+  }
+
 
   getFamilyTree() {
     this.userService.getFamilyTree()
@@ -191,9 +227,9 @@ export class FamilCharListComponent implements OnInit {
         });
   }
 
-  getUser(node: any) {
-    this.loadingUserData = node.data.id;
-    this.userService.getUser_ById(node.data.id)
+  getUser(userId: Number) {
+    this.loadingUserData = userId;
+    this.userService.getUser_ById(userId)
       .subscribe(_user => {
         setTimeout(() => {
           this.userData = _user;
@@ -588,6 +624,8 @@ export class FamilCharListComponent implements OnInit {
  
   showAdd(template: TemplateRef<any>) {
     this.modalService.showModal(template);
+    this.showUserTable = false;
+    this.searchWord = "";
   }
 
   openFcDetails(template: TemplateRef<any>, fcId: Number) {
