@@ -342,11 +342,10 @@
                 &nbsp;&nbsp;
                 
                 <button [hidden]="userRole == 'UserAccount' || userRole == 'Admin'"  class="btn btn-sm btn-radius" style="background-color:rgb(185, 21, 15);color:white;" 
-                (click)="deleteUser(userInfo.id)" 
+                (click)="showDelete(userInfo.id, deleteUserTemplate)" 
                 type="button">
                     حذف
                     &nbsp;<i class="fas fa-trash"></i>&nbsp; 
-                    <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingDeleteUser"></i>
                 </button> &nbsp;
 
               
@@ -355,3 +354,16 @@
     </form>
 
 </div>
+
+
+
+
+<!-- Confirm delete -->
+<ng-template #deleteUserTemplate>
+    <div class="modal-body text-center">
+        <p>هل تريد الحذف</p>
+        <button type="button" class="btn btn-radius btn-sm btn-bgcolor" (click)="deleteUser()">موافق
+            <i class="fa fa-spinner fa-spin" style="font-size:14px;" *ngIf="loadingDeleteUser"></i></button> &nbsp;
+        <button type="button" class="btn btn-secondary waves-effect btn-radius btn-sm" (click)="closeModal()">إالغاء</button>
+    </div>
+</ng-template>

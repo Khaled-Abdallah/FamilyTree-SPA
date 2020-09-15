@@ -67,9 +67,14 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/admin', 'home']);
           }
         }, 100); 
-      }, error => {
+      }, (err) => {
         setTimeout(()=> {
-          this.alertifyService.tError('خطأ فى اسم المستخدم او كلمة المرور');          
+          if(err.error == "loucked"){
+            this.alertifyService.tError('عفوا... تم ايقاف الحساب');
+          }
+          else{
+            this.alertifyService.tError('خطأ فى اسم المستخدم او كلمة المرور');
+          }         
           this.loading = false;
        }, 100);        
       }, () => {

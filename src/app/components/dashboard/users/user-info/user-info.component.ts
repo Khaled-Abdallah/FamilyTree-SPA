@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, TemplateRef } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../../services/user.service';
@@ -8,6 +8,7 @@ import { Chilred } from '../../../../models/chilred';
 import { UserInfo } from '../../../../models/userInfo';
 import { FileUploadService } from '../../../../services/file-upload.service';
 import { Router } from '@angular/router';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'user-info',
@@ -36,10 +37,12 @@ export class UserInfoComponent implements OnInit {
   isUpload: any;
   loadingDeleteUser: boolean;
   userRole: string = "";
+  private _userId: Number;
 
   constructor(private fb: FormBuilder,private userService: UserService,
     private alertifyService: AlertifyService,private fileUploadService: FileUploadService,
-    private router: Router) { }
+    private router: Router,
+    private modalService: ModalService) { }
 
   ngOnInit() {
     this.userRole = localStorage.getItem("userRoleName");
@@ -212,24 +215,33 @@ export class UserInfoComponent implements OnInit {
 
   }
 
-  deleteUser(userId: Number){
+  showDelete(userId: Number, template: TemplateRef<any>){
+    this._userId = userId;
+    this.modalService.showConfirmModal(template); 
+  }
+
+  deleteUser(){
     this.loadingDeleteUser = true;
-    this.userService.deleteUserParent(userId)
+    this.userService.deleteUserParent(this._userId)
       .subscribe(() => {
         setTimeout(() => {
-          this.changed.emit();
-          //this.alertifyService.tSuccess('تم التعديل بنجاح');
+          this.changed.emit();          
           this.imageName = "";
           this.loadingDeleteUser = false;
+          this.modalService.hideModal();
         }, 100);
       }, (err) => {
         setTimeout(() => {
-          this.alertifyService.tError('خطأ فى عملية التعديل ... يرجي المحاولة مرة اخرى ');
+          this.alertifyService.tError('عفوا لا يمكن حذف مستخدم له ابناء .. قم بحذف ابنائة اولا ثم حذفة ');
           this.loadingDeleteUser = false;
         }, 100);
       }, () => {
        
       });
+  }
+
+  closeModal() {
+    this.modalService.hideModal();
   }
 
 }
