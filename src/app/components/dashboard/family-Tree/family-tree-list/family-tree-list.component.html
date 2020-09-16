@@ -176,7 +176,8 @@
                         <user-wifes [userWifes]="userData.wifes" [userId]="userData.userInfo.id"></user-wifes>
                     </tab>
                     <tab heading=" الابناء">
-                        <user-children [userChildren]="userData.children" [userId]="userData.userInfo.id" 
+                        <user-children [userChildren]="userData.children" 
+                                       [userId]="userData.userInfo.id" 
                                        (getUserInfo)="getUserUpdated($event)"></user-children>
                     </tab>
                     <tab heading=" بيانات الدخول">

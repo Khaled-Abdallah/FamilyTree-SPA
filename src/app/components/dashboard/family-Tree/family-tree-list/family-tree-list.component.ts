@@ -205,7 +205,7 @@ export class FamilyTreeListComponent implements OnInit {
   // }
 
 
-  getUserUpdated(){
+  getUserUpdated(data){
     console.log(this._parentId);
     this.userService.getUserInfo(this._parentId)
         .subscribe(_userData => {

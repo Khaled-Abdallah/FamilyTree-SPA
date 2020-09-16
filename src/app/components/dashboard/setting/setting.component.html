@@ -165,9 +165,9 @@
 
                         <div style="text-align: center;margin-top: 3px">
                             <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#a1a234;" *ngIf="loadingAppImage"></i>
-                           <div *ngIf="isUpload">
+                           <!-- <div *ngIf="isUpload">
                                 <p>تم رفع الصورة</p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -183,10 +183,10 @@
                             value="اختار اللوجو" accept="image/*" (change)="uploadImage($event.target.files,'CPanelLogo')"/>
 
                         <div style="text-align: center;margin-top: 3px">
-                            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#a1a234;" *ngIf="loadingImage"></i>
-                            <div *ngIf="isUpload">
+                            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#a1a234;" *ngIf="loadingcPanelImage"></i>
+                            <!-- <div *ngIf="isUpload">
                                 <p>تم رفع الصورة</p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -202,10 +202,10 @@
                             value="اختار اللوجو" accept="image/*"  (change)="uploadImage($event.target.files,'LoginLogo')"/>
 
                         <div style="text-align: center;margin-top: 3px">
-                            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#a1a234;" *ngIf="loadingImage"></i>
-                            <div *ngIf="isUpload">
+                            <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#a1a234;" *ngIf="loadingLoginImage"></i>
+                            <!-- <div *ngIf="isUpload">
                                 <p>تم رفع الصورة</p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

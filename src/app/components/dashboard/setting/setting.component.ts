@@ -32,10 +32,6 @@ export class SettingComponent implements OnInit {
 
   imgToUpload: File = null;
 
-  loadingAppImage: boolean;
-  loadingcPanelImage: boolean;
-  loadingLoginImage: boolean;
-
   imageName: string = '';
   settingImage: SettingImage = new SettingImage();
 
@@ -169,10 +165,22 @@ export class SettingComponent implements OnInit {
         });
     }
   }
+  loadingAppImage: boolean = false;
+  loadingcPanelImage: boolean = false;
+  loadingLoginImage: boolean = false;
 
   uploadImage(file: FileList, logoName: string){
     try{
-        this.loadingAppImage = true;    
+        if(logoName == 'AppLogo'){
+           this.loadingAppImage = true;
+        }
+        else if(logoName == 'CPanelLogo'){
+          this.loadingcPanelImage = true;
+        }
+        else{
+          this.loadingLoginImage = true;
+        }
+        
         this.imgToUpload = file.item(0);
 
         this.fileUploadService.postFile(this.imgToUpload, "Logos")
@@ -186,31 +194,57 @@ export class SettingComponent implements OnInit {
               this.settingImage.appLogo = imageResult;        
               this.showAppLogoImage();
               this.updateSettingImage(logoName ,this.settingImage);
+
+              this.loadingAppImage = false;
             }
             else if(logoName == 'CPanelLogo'){
               this.settingImage.id = this.settings.id;
               this.settingImage.cPanelLogo = imageResult;  
               this.showCPanelLogoImage();      
               this.updateSettingImage(logoName ,this.settingImage);
+
+              this.loadingcPanelImage = false;
             }
             else{
               this.settingImage.id = this.settings.id;
               this.settingImage.loginLogo = imageResult;
               this.showLoginLogoImage();   
               this.updateSettingImage(logoName ,this.settingImage);
+
+              this.loadingLoginImage = false;
             }
+
+            // if(logoName == 'AppLogo'){
+            //   this.loadingAppImage = false;
+            // }
+            // else if(logoName == 'CPanelLogo'){
+            //   this.loadingcPanelImage = false;
+            // }
+            // else{
+            //   this.loadingLoginImage = false;
+            // }
                   
           }, 100);
         }, 
         () => {
           setTimeout(() => {
-            this.alertifyService.tError("خطأ فى رفع الصوره");      
-            this.loadingAppImage = false; 
+            this.alertifyService.tError("خطأ فى رفع اللوجو");      
+            if(logoName == 'AppLogo'){
+              this.loadingAppImage = false;
+            }
+            else if(logoName == 'CPanelLogo'){
+              this.loadingcPanelImage = false;
+            }
+            else{
+              this.loadingLoginImage = false;
+            }
           }, 100);
             
         },() =>{
           setTimeout(() => {
-            this.loadingAppImage = false;        
+            this.loadingAppImage = false;   
+            this.loadingcPanelImage = false;     
+            this.loadingLoginImage = false;
           }, 100);
               
         });
