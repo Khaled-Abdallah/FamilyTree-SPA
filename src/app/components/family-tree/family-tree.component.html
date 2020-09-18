@@ -1,15 +1,56 @@
 
-<div class="row">
-    <div class="col-12">
 
+
+
+<!doctype html>
+<html>
+<head></head>
+
+<body>
+
+    <div class="row">
+        <div class="col-12"  style="text-align: center;margin-top: 10px;">
+            <input #box (keyup)="find(box.value)" class="form-control" placeholder="بحث بالاسم الثلاثى">
+        </div>
     </div>
-</div>
-<div class="row">
-        <div class="col-12" style="margin-top: 10px;">
-            <div class="myScroll">
-                <div class="tree" *ngIf="familyTree">
+    
+    <div class="row">
+        <div class="col-12">
+            <app-vertical-tree 
+            [data]="treeData" 
+            [width]="width" 
+            [height]="height"                                            
+            [search]="searchText" 
+            [id]="treeId" 
+            *ngIf="vertical"
+            (userDetailsChanged)="showUserDetails($event)">
+        </app-vertical-tree>
+        </div>
+    </div>
+    
+    <div class="row" *ngIf="familyTree.length > 0">
+        <div class="col-12"  style="text-align: center;margin-top: 10px">
+            <button (click)="showMore(2)" style="width: 100%;" class="btn btn-sm btn-radius btn-bgcolor">عرض المزيد</button>
+        </div>
+    </div>
 
-                        <!-- <p-organizationChart [value]="data"></p-organizationChart> -->
+</body>
+
+</html>
+
+
+
+
+
+<!-- ============================= -->
+
+
+
+
+
+
+<!-- ======================================================================================================== -->
+ <!-- <p-organizationChart [value]="data"></p-organizationChart> -->
                         <!-- <p-organizationChart [value]="data"
                         styleClass="company">
                         <ng-template let-node pTemplate="leaf">
@@ -19,13 +60,13 @@
                             {{node.label}}
                         </ng-template>
                     </p-organizationChart> -->
-
+<!-- 
                     <ng-template #familyTreeTemplate let-node>
                         <li>
                             <span (click)="printNode(node)" [ngClass] ="{'rounded-circle ' :  node.children?.length === 0  , 'maleClass' : node.gender === 1, 'femaleClass' : node.gender === 2, 'status' : node.status === 2}">
-                                <!-- <img [src]="node.userImage == null ? '../../../assets/users/user.png' : imgUrl + node.userImage"
+                                <img [src]="node.userImage == null ? '../../../assets/users/user.png' : imgUrl + node.userImage"
                                          class="img-responsive rounded-circle custom-image"><br> -->
-                                <!-- ( {{ node.identityNum }}) -->
+                                <!-- ( {{ node.identityNum }})
                                 {{ node.name }}                              
                             </span>
                             <ul *ngIf="node.children?.length">
@@ -45,7 +86,7 @@
         </div>    
 </div>
 
-<!-- <div class="tree">
+ <div class="tree">
     
     <ul class="pf">
         <li class="parent">

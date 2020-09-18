@@ -160,6 +160,8 @@ export class FamilyTreeListComponent implements OnInit {
         } 
       }
     }
+
+    
   //======================================================================================
   ngOnInit() {
     this.userRole = localStorage.getItem("userRoleName");
