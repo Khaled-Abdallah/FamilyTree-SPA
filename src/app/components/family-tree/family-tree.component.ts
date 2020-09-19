@@ -22,7 +22,7 @@ export class FamilyTreeComponent implements OnInit {
   userData: any;
   userId: Number = 0;
   showUserProfile: Boolean = false;
-  showTree: boolean= true;
+  showTree: boolean;
 
   depthLimit = 4;
   treeId="ftree";
@@ -32,6 +32,7 @@ export class FamilyTreeComponent implements OnInit {
   res=null;
   searchText = "";
   treeData: any;
+  fatherData: any;
   
 
   constructor(private route: ActivatedRoute,
@@ -50,6 +51,7 @@ export class FamilyTreeComponent implements OnInit {
      }
 
   ngOnInit() {
+    this.showTree = true;
     this.route.data.subscribe(data => {
       this.familyTree = data['treeList'];
     });
@@ -57,20 +59,20 @@ export class FamilyTreeComponent implements OnInit {
   
   showUserDetails(node: any){  
     this.userId = node.data.id;
+
     this.showUserProfile = true;
     this.showTree = false;
-    return;
     
     this.spinner.show();
     this._parentId = node.data.id;
-    this.userService.getUserInfo(node.data.id)
+    this.userService.getUserInfoForMob(node.data.id)
         .subscribe(_userData => {
           setTimeout(() => {
             this.userData = _userData;
+            console.log(this.userData);
           }, 50);  
         },() => {
-          setTimeout(() => {
-            this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
+          setTimeout(() => {          
             this.spinner.hide();
           }, 50);       
         }
@@ -79,6 +81,57 @@ export class FamilyTreeComponent implements OnInit {
               this.spinner.hide();     
             }, 50);                   
         });
+  }
+
+  //get father data by current user
+  getFatherData(ParentId: Number) {
+    this.userService.getFatherData(ParentId)
+      .subscribe(_fatherData => {
+        setTimeout(() => {
+          this.fatherData = _fatherData;
+      }, 100);
+    },() => {
+      setTimeout(() => {
+        this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
+      }, 100);       
+      });
+  }
+
+  returnToFamilyTree(){
+    this.userService.getFamilyTreeForMobile()
+    .subscribe(_data => {
+      setTimeout(() => {
+        this.familyTree = _data;
+    }, 50);
+  },() => {
+    setTimeout(() => {      
+    }, 50);       
+    });
+
+
+    // this.userService.getFamilyTreeForMobile().pipe(
+    //   catchError(error => {
+    //     this.alertify.error('خطأ اثناء تحميل البيانات');        
+    //     this.authService.logout();
+    //       return of(null);
+    //   })
+
+    // this.route.data.subscribe(data => {
+    //   this.familyTree = data['treeList'];
+    // });
+
+    debugger
+    if(this.familyTree.length > 0)
+    {
+      this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
+
+      this.showUserProfile = false;
+      this.showTree = true;
+    }
+
+  
+
+   
   }
 
   //===================================================================================

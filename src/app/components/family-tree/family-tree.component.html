@@ -5,8 +5,9 @@
 
 <body>
 
-    <div *ngIf="showTree">
+    <div *ngIf="showTree" class="card">
 
+        <!-- search -->
         <div class="row">
             <div class="col-12" style="text-align: center;margin-top: 10px;">
                 <input #box (keyup)="find(box.value)" class="form-control" placeholder="بحث بالاسم الثلاثى">
@@ -29,8 +30,9 @@
         </div>
     </div>
 
-    <div *ngIf="showUserProfile">
+    <div *ngIf="showUserProfile" class="card">
 
+        <!-- profile -->
         <div class="row">
             <div class="col-12" style="text-align: center;">
                 <h4 class="modal-title">الصفحة الشخصية</h4>
@@ -47,28 +49,35 @@
                             </td>
                             <td style="font-size: 15px" class="icon-table">
                                 <div class="inbox-item-img">
-                                    <img src="../../../assets/users/user.png" class="rounded-circle"
-                                        style="width:55px;height:47px; border: 1px solid rgb(180, 180, 192)" alt="user">
+                                    <img [src]="userData.userInfo.image == null ? '../../../assets/users/user.png' : imgUrl + userData.userInfo.image" 
+                                         class="rounded-circle"
+                                         style="width:55px;height:47px; border: 1px solid rgb(180, 180, 192)" alt="user">
                                 </div>
                             </td>
                         </tr>                       
                         <tr>
                             <td style="font-size: 14px;width: 120px;" class="icon-table"> الاسم بالكامل</td>
-                            <td style="font-size: 15px" class="icon-table">{{fatherData?.fullName}}</td>
+                            <td style="font-size: 15px" class="icon-table">{{userData.userInfo?.fullName}}</td>
                         </tr>
                         <tr>
                             <td style="font-size: 14px;width: 120px;" class="icon-table"> البريد الاليكترونى</td>
-                            <td style="font-size: 15px" class="icon-table">{{fatherData?.email}}</td>
+                            <td style="font-size: 15px" class="icon-table">{{userData.userInfo?.email}}</td>
                         </tr>
                         <tr>
                             <td style="font-size: 14px;width: 120px;" class="icon-table"> رقم الجوال</td>
-                            <td style="font-size: 15px" class="icon-table">{{fatherData?.phoneNumber}}</td>
+                            <td style="font-size: 15px" class="icon-table">{{userData.userInfo?.phoneNumber}}</td>
                         </tr>
                         <tr>
                             <td style="font-size: 14px;width: 120px;" class="icon-table"> تاريخ الميلاد</td>
                             <td style="font-size: 15px" class="icon-table">
-                                {{fatherData?.birthDateM | date :'yyyy/MM/dd'}} - {{fatherData?.birthDateH | date
+                                {{userData.userInfo?.birthDateM | date :'yyyy/MM/dd'}} - {{userData.userInfo?.birthDateH | date
                                     :'yyyy/MM/dd'}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table"> العنوان</td>
+                            <td style="font-size: 15px" class="icon-table">
+                                {{userData.userInfo?.address}}
                             </td>
                         </tr>
                     </tbody>
@@ -82,28 +91,34 @@
                             </td>
                             <td style="font-size: 15px" class="icon-table">
                                 <div class="inbox-item-img">
-                                    <img src="../../../assets/users/user.png" class="rounded-circle"
+                                    <img [src]="userData.father.image == null ? '../../../assets/users/user.png' : imgUrl + userData.father.image" class="rounded-circle"
                                         style="width:55px;height:47px; border: 1px solid rgb(180, 180, 192)" alt="user">
                                 </div>
                             </td>
                         </tr>                       
                         <tr>
                             <td style="font-size: 14px;width: 120px;" class="icon-table"> الاسم بالكامل</td>
-                            <td style="font-size: 15px" class="icon-table">{{fatherData?.fullName}}</td>
+                            <td style="font-size: 15px" class="icon-table">{{userData.father?.fullName}}</td>
                         </tr>
                         <tr>
                             <td style="font-size: 14px;width: 120px;" class="icon-table"> البريد الاليكترونى</td>
-                            <td style="font-size: 15px" class="icon-table">{{fatherData?.email}}</td>
+                            <td style="font-size: 15px" class="icon-table">{{userData.father?.email}}</td>
                         </tr>
                         <tr>
                             <td style="font-size: 14px;width: 120px;" class="icon-table"> رقم الجوال</td>
-                            <td style="font-size: 15px" class="icon-table">{{fatherData?.phoneNumber}}</td>
+                            <td style="font-size: 15px" class="icon-table">{{userData.father?.phoneNumber}}</td>
                         </tr>
                         <tr>
                             <td style="font-size: 14px;width: 120px;" class="icon-table"> تاريخ الميلاد</td>
                             <td style="font-size: 15px" class="icon-table">
-                                {{fatherData?.birthDateM | date :'yyyy/MM/dd'}} - {{fatherData?.birthDateH | date
+                                {{userData.father?.birthDateM | date :'yyyy/MM/dd'}} - {{userData.father?.birthDateH | date
                                     :'yyyy/MM/dd'}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px;width: 120px;" class="icon-table"> العنوان</td>
+                            <td style="font-size: 15px" class="icon-table">
+                                {{userData.father?.address}}
                             </td>
                         </tr>
                     </tbody>
@@ -111,44 +126,83 @@
 
             <br>
                 <label for=""> الابناء</label>
-                <table style="width: 100%" class="table table-bordered m-0">
-                    <tbody>
-                        <tr>
-                            <td style="font-size: 14px;width: 120px;" class="icon-table"> الاسم بالكامل</td>
-                            <td style="font-size: 15px" class="icon-table">{{user?.fullName}}</td>
+                <table class="table table-hover table-bordered m-0 align-middle">
+                    <thead>
+                        <tr style="text-align: center">
+                            <th style="width: 100px;">الصورة</th>
+                            <th style="width: 190px;">الاسم</th>
+                            <th style="width: 100px;"> رقم الجوال</th>
                         </tr>
-                        <tr>
-                            <td style="font-size: 14px;width: 120px;" class="icon-table"> البريد الاليكترونى</td>
-                            <td style="font-size: 15px" class="icon-table">{{user?.email}}</td>
+                    </thead>
+                    <tbody *ngIf="userData.children.length > 0">
+                        <tr *ngFor="let userChild of userData.children"  class="align-middle" style="text-align: center">
+                            <td class="align-middle" style="text-align: center">
+                                <div class="inbox-item-img" >
+                                    <img [src]="userChild.image == null ? '../../../assets/users/user.png' : imgUrl + userChild.image"  
+                                        class="rounded-circle" 
+                                        style="width:55px;height:45px; border: 1px solid rgb(180, 180, 192)"
+                                        alt="user">
+                                </div>
+                            </td>
+                            <td class="align-middle" style="text-align: center;">{{userChild?.fullName}}</td>             
+                            <td class="align-middle" style="text-align: center;">{{userChild?.phoneNumber}}</td>
                         </tr>
-                        <tr>
-                            <td style="font-size: 14px;width: 120px;" class="icon-table"> رقم الجوال</td>
-                            <td style="font-size: 15px" class="icon-table">{{user?.phoneNumber}}</td>
-                        </tr>
+    
                     </tbody>
-                </table>
+            </table>
+            <div class="row" *ngIf="userData.children.length == 0" style="text-align: center;margin-top:18px">
+                <div class="col-12">
+                    لا يوجد ابناء
+                    <br>
+                </div>
+            </div>
+
+            <!-- ===================== -->
             <br>
                 <label for=""> الزوجات</label>
-                <table style="width: 100%" class="table table-bordered m-0">
-                    <tbody>
-                        <tr>
-                            <td style="font-size: 14px;width: 120px;" class="icon-table"> الاسم بالكامل</td>
-                            <td style="font-size: 15px" class="icon-table">{{user?.fullName}}</td>
+                <table class="table table-hover table-bordered m-0 align-middle">
+                    <thead>
+                        <tr style="text-align: center">
+                            <th style="width: 190px;">الاسم</th>
+                            <th style="width: 100px;"> العنوان</th>
+                            <th style="width: 150px;">العمر</th>
                         </tr>
-                        <tr>
-                            <td style="font-size: 14px;width: 120px;" class="icon-table"> البريد الاليكترونى</td>
-                            <td style="font-size: 15px" class="icon-table">{{user?.email}}</td>
+                    </thead>
+                    <tbody *ngIf="userData.wifes.length > 0">
+                        <tr *ngFor="let wife of userData.wifes"  class="align-middle" style="text-align: center">
+                            <td class="align-middle" style="text-align: center;">{{wife?.wName}}</td>             
+                            <td class="align-middle" style="text-align: center;">{{wife?.address}}</td>
+                            <td class="align-middle" style="text-align: center;">{{wife?.age}}</td>
                         </tr>
-                        <tr>
-                            <td style="font-size: 14px;width: 120px;" class="icon-table"> رقم الجوال</td>
-                            <td style="font-size: 15px" class="icon-table">{{user?.phoneNumber}}</td>
-                        </tr>
+    
                     </tbody>
-                </table>
+            </table>
+            <div class="row" *ngIf="userData.wifes.length == 0" style="text-align: center;margin-top:18px">
+                <div class="col-12">
+                    لا توجد زوجات
+                    <br> <br> <br>
+                </div>
+            </div>
 
             </div>
         </div>
 
+
+        
+       <!-- return button -->
+        <div class="row" *ngIf="showUserDetails" >
+            
+            <div class="col-12">
+                <br><br>
+                <button class="btn btn-radius btn-sm btn-bgcolor" type="button" 
+                (click)="returnToFamilyTree()" style="width: 100%;">
+                        رجوع
+                        &nbsp;
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    </button>
+                    <br><br>
+            </div>
+        </div>
    
 
 

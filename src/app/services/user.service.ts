@@ -147,6 +147,10 @@ export class UserService {
     return this.http.get(this._url + 'getUserInfo/'+ userId );
   }
   
+  getUserInfoForMob(userId: Number): any {
+    return this.http.get(this._url + 'getUserInfoForMob/'+ userId );
+  }  
+
   updateUserInfo(user: any) {
     return this.http.post(this._url + 'updateUserInfo' , user)
   }
