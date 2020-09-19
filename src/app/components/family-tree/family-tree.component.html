@@ -4,6 +4,15 @@
 <head></head>
 
 <body>
+   
+    <div class="spinner" *ngIf="showSnipper"> 
+        <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" type="ball-beat"
+            fullScreen="true">
+            <p style="color: white;text-align :center;"> جارِ التحميل... </p>
+        </ngx-spinner>
+    </div>
+
+<!-- <ng-progress id="myProgress"></ng-progress> -->
 
     <div *ngIf="showTree" class="card">
 

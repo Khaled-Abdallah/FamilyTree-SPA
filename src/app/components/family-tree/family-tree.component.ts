@@ -23,6 +23,7 @@ export class FamilyTreeComponent implements OnInit {
   userId: Number = 0;
   showUserProfile: Boolean = false;
   showTree: boolean;
+  showSnipper: boolean = false;
 
   depthLimit = 4;
   treeId="ftree";
@@ -33,8 +34,8 @@ export class FamilyTreeComponent implements OnInit {
   searchText = "";
   treeData: any;
   fatherData: any;
-  
 
+  
   constructor(private route: ActivatedRoute,
     private userService: UserService,
     private modalService: ModalService,
@@ -58,28 +59,27 @@ export class FamilyTreeComponent implements OnInit {
   }
   
   showUserDetails(node: any){  
+    this.showSnipper = true;
     this.userId = node.data.id;
 
     this.showUserProfile = true;
     this.showTree = false;
     
-    this.spinner.show();
     this._parentId = node.data.id;
     this.userService.getUserInfoForMob(node.data.id)
         .subscribe(_userData => {
           setTimeout(() => {
             this.userData = _userData;
-            console.log(this.userData);
-          }, 50);  
+          }, 100);  
         },() => {
           setTimeout(() => {          
-            this.spinner.hide();
-          }, 50);       
+            this.showSnipper = false;
+          }, 100);       
         }
         ,() => {
             setTimeout(() => {          
-              this.spinner.hide();     
-            }, 50);                   
+              this.showSnipper = false;   
+            }, 100);                   
         });
   }
 
@@ -98,27 +98,19 @@ export class FamilyTreeComponent implements OnInit {
   }
 
   returnToFamilyTree(){
+    this.showSnipper = true;
+
     this.userService.getFamilyTreeForMobile()
     .subscribe(_data => {
       setTimeout(() => {
         this.familyTree = _data;
+        this.showSnipper = false;
     }, 50);
   },() => {
     setTimeout(() => {      
+      this.showSnipper = false;
     }, 50);       
     });
-
-
-    // this.userService.getFamilyTreeForMobile().pipe(
-    //   catchError(error => {
-    //     this.alertify.error('خطأ اثناء تحميل البيانات');        
-    //     this.authService.logout();
-    //       return of(null);
-    //   })
-
-    // this.route.data.subscribe(data => {
-    //   this.familyTree = data['treeList'];
-    // });
 
     debugger
     if(this.familyTree.length > 0)
@@ -209,7 +201,5 @@ export class FamilyTreeComponent implements OnInit {
       } 
     }
   }
-
-
 
 }
