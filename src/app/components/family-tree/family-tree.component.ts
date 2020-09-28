@@ -70,6 +70,7 @@ export class FamilyTreeComponent implements OnInit {
         .subscribe(_userData => {
           setTimeout(() => {
             this.userData = _userData;
+            console.log(this.userData);
           }, 100);  
         },() => {
           setTimeout(() => {          

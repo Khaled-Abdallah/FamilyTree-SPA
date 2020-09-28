@@ -4,13 +4,13 @@
 <head></head>
 
 <body>
-   
+<!--    
     <div class="spinner" *ngIf="showSnipper"> 
         <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" type="ball-beat"
             fullScreen="true">
             <p style="color: white;text-align :center;"> جارِ التحميل... </p>
         </ngx-spinner>
-    </div>
+    </div> -->
 
 <!-- <ng-progress id="myProgress"></ng-progress> -->
 
@@ -168,6 +168,7 @@
 
             <!-- ===================== -->
             <br>
+               <div [hidden]="userData.userInfo.genderId == 2">
                 <label for=""> الزوجات</label>
                 <table class="table table-hover table-bordered m-0 align-middle">
                     <thead>
@@ -192,6 +193,7 @@
                     <br> <br> <br>
                 </div>
             </div>
+               </div>
 
             </div>
         </div>

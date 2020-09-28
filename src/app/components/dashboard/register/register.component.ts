@@ -35,16 +35,16 @@ export class RegisterComponent implements OnInit {
         this.getFamily();
         this.getStatus();
         this.getParents();
-
+       
     this.registerForm = this.fb.group({
       statusId: [, [Validators.required]],
       familyId: [, [Validators.required]],
       parentId: [, [Validators.required]],
       genderId: [, [Validators.required]],
       fullName: [, [Validators.required]],
-      userName: [, [Validators.required]],
-      password: [, [Validators.required]],
-      email: [, [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      userName: [, [Validators.required, Validators.pattern('^[A-Za-z0-9_-]+$')]],
+      password: [, [Validators.required, Validators.minLength(6), , Validators.maxLength(20)]],
+      email: [, [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$')]],
       phoneNumber: [, [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
       birthDateM: [ ,[Validators.required]],
       birthDateH: [,]      

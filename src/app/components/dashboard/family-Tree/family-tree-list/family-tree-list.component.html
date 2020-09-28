@@ -172,7 +172,7 @@
         <div class="card">
             <div class="col-12">
                 <tabset #productTabs class="member-tabset ">
-                    <tab heading=" الزوجات">
+                    <tab heading=" الزوجات" *ngIf="userData.userInfo.genderId == 1">
                         <user-wifes [userWifes]="userData.wifes" [userId]="userData.userInfo.id"></user-wifes>
                     </tab>
                     <tab heading=" الابناء">

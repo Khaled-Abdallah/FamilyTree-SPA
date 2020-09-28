@@ -226,8 +226,6 @@ export class FamilyTreeListComponent implements OnInit {
   }
 
   _showUserDetails(node: any){
-    // console.log(node.data);
-    // return;
 
     this.spinner.show();
     this._parentId = node.data.id;
@@ -235,7 +233,9 @@ export class FamilyTreeListComponent implements OnInit {
         .subscribe(_userData => {
           setTimeout(() => {
             this.userData = _userData;
-            //console.log(this.userData);
+            console.log(this.userData);
+            console.log(this.userData.userInfo.genderId);
+
             this.treeTitle = "- تفاصيل الشخصية";
             this.showUserDetails = true;
             this.showFamilyTree = false;  

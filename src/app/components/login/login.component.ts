@@ -37,12 +37,13 @@ export class LoginComponent implements OnInit {
               private authService: AuthService,
               private settingsService: SettingsService) 
    {
-      this.online$ = merge(
-        of(navigator.onLine),
-        fromEvent(window, 'online').pipe(mapTo(true)),
-        fromEvent(window, 'offline').pipe(mapTo(false))
-      );
-      this.initialData();
+      // this.online$ = merge(
+      //   of(navigator.onLine),
+      //   fromEvent(window, 'online').pipe(mapTo(true)),
+      //   fromEvent(window, 'offline').pipe(mapTo(false))
+      // );
+
+      //this.initialData();
    }
 
     ngOnInit() {
@@ -108,7 +109,7 @@ export class LoginComponent implements OnInit {
             this.noSettings = false;
           }
         },() => {
-          this.alertifyService.tError("خطأ فى تحميل البيانات ... حاول مرة اخرى");
+          //this.alertifyService.tError("خطأ فى تحميل البيانات ... حاول مرة اخرى");
         },() => {
             //
         });

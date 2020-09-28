@@ -91,7 +91,7 @@
                                     [ngClass]="{'has-error': (registerForm.get('userName').touched || registerForm.get('userName').dirty) && !registerForm.get('userName').valid }">
                                     <label class="control-label"> اسم المستخدم</label>
                                     <input class="form-control" formControlName="userName" type="text"
-                                        placeholder="اسم المستخدم">
+                                        placeholder="  اسم المستخدم ( بالانجليزى)">
 
 
                                     <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
@@ -99,7 +99,7 @@
                                                 registerForm.get('userName').touched">
                                         <div *ngIf="registerForm.get('userName').errors?.required">اسم
                                             المستخدم مطلوب</div>
-
+                                            <div *ngIf="registerForm.get('userName').errors?.pattern">عربى من فضلك</div>
                                     </div>
                                 </div>
                                 <div class="col-6"
@@ -114,6 +114,8 @@
                                                     registerForm.get('password').touched">
                                         <div *ngIf="registerForm.get('password').errors?.required">كلمة المرور مطلوبة
                                         </div>
+                                        <div *ngIf="registerForm.get('password').errors?.minlength">كلمة المرور لاتقل عن 6 خانات</div>
+                                        <div *ngIf="registerForm.get('password').errors?.maxlength">كلمة المرور تزيد عن 20 خانة</div>
 
                                     </div>
                                 </div>
