@@ -166,7 +166,6 @@ export class FamilCharListComponent implements OnInit {
   }
 
   save() {
-    debugger
     if (this.userData == null) {
       //alert('عفوا ... اختر شخصية من شجرة العائلة');
       this.fcRequired = true;

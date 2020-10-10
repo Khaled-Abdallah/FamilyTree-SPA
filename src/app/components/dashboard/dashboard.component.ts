@@ -55,7 +55,6 @@ export class DashboardComponent implements OnInit {
     //lodding user image
     this.authService.currentImgUrl.subscribe(imgUrl => 
       {
-        debugger
         this.imgUrl = imgUrl
         this.imgUrl = localStorage.getItem('image');
       });
