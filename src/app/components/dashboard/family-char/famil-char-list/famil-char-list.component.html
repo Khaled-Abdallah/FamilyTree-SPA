@@ -49,7 +49,7 @@
                         <!-- buttons -->
                         <div class="btns">
                       
-                                <button class="btn btn-sm btn-radius btn-bgcolor btn-showAll-mob" type="button"
+                                <button class="btn btn-sm btn-radius btn-bgcolor btn-showAll-mob last-btn" type="button"
                                     (click)="getFamilyChar_All()">
                                     عرض الكل
                                     &nbsp;<i class="fa fa-list" aria-hidden="true"></i> &nbsp;
@@ -126,7 +126,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div *ngIf="familyChar.isAccepted == null" style="text-align: center;">
+                                        <div *ngIf="familyChar.isAccepted == null"  class="status-align">
                                             <div>
                                                 <span class="badge badge-inverse"
                                                     style="font-size: 11px;padding: 6px">قيد
@@ -134,7 +134,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div *ngIf="familyChar.isAccepted == false" style="text-align: center;">
+                                        <div *ngIf="familyChar.isAccepted == false"  class="status-align">
                                             <div>
                                                 <span class="badge badge-danger"
                                                     style="font-size: 11px;padding: 6px">مرفوضة
@@ -150,7 +150,7 @@
 
                                     <div class="col-xl-12 col-md-10">
                                         <div style="padding-top:10px; text-align: center">
-                                            <button class="btn btn-sm btn-radius btn-bgcolor"
+                                            <button class="btn btn-sm btn-radius btn-bgcolor btn-details"
                                                 style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
                                                 type="button" (click)="getForEdit(editTemplate,familyChar.id)">
                                                 تفاصيل
@@ -224,6 +224,7 @@
                             </div>
                         </div>
                     </tab>
+                    
                     <tab heading="طلبات قيد الانتظار">
                         <div class="row" style="padding-left:25px;padding-right:25px;padding-top: 17px"
                             *ngIf="familyCharactersWatting.data?.length > 0">

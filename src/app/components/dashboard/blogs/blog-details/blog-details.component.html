@@ -37,37 +37,30 @@
                                                 </div>                                                
                                             <!-- </div> -->
                                         </div>
-                                        <div class="col-xl-2 col-md-10" >
-                                                <div  *ngIf="blog.isAccepted" style="text-align: center;">
-                                                        حالة المدونة
-                                                        <div>
-                                                            <span class="badge badge-success"
-                                                                style="font-size: 12px;padding: 6px">تم القبول
-                                                            </span>
-                                                        </div>
+                                        <!-- Status -->
+                                        <div class="col-xl-2 col-md-10" class="status-align">
+                                                <div  *ngIf="blog.isAccepted" >
+                                                    <span class="badge badge-success"
+                                                    style="font-size: 12px;padding: 6px">تم القبول
+                                                </span>
                                                     </div>   
-                                                    <div  *ngIf="blog.isAccepted == false" style="text-align: center;">
-                                                            حالة المدونة
-                                                            <div>
-                                                                <span class="badge badge-danger"
-                                                                    style="font-size: 12px;padding: 6px">مرفوضة
-                                                                </span>
-                                                            </div>
+
+                                                    <div  *ngIf="blog.isAccepted == false">                                                           
+                                                        <span class="badge badge-danger"
+                                                        style="font-size: 12px;padding: 6px">مرفوضة
+                                                    </span>
                                                     </div>
-                                                    <div *ngIf="blog.isAccepted == null" style="text-align: center;">
-                                                        حالة المدونة
-                                                        <div>
-                                                            <span class="badge badge-inverse" style="font-size: 10px;padding: 6px">قيد
-                                                                الانتظار
-                                                            </span>
-                                                        </div>
+                                                    <div *ngIf="blog.isAccepted == null">
+                                                        <span class="badge badge-inverse" style="font-size: 10px;padding: 6px">قيد
+                                                            الانتظار
+                                                        </span>
                                                     </div>  
                                         </div>                    
                                     </div>
                                        <!-- description -->
                                     <div class="row">
                                             <div class="col-xl-12 col-md-12" >
-                                                    <div style="margin-right: 83px;margin-top: 10px;">
+                                                    <div style="margin-top: 10px;">
                                                             <p style="color:black;font-size: 14px">
                                                                     {{blog?.description}}
                                                             </p>
@@ -127,7 +120,7 @@
                               </div>
                             </div>
                           </div>
-                        <tabset class="member-tabset">
+                        <tabset class="member-tabset custome-style">
                             <tab heading="تعليقات المدونة">
                                 <div class="row">
                                    <div class="col-12">
@@ -135,10 +128,11 @@
                                           style="padding-bottom: -40px;padding-right: 20px;padding-left: 20px;padding-bottom: 10px;padding-top: -5px;border-radius: 5px;margin-bottom: 15px;border-bottom:1px solid  rgb(222, 226, 222)">
                                             <!-- data -->
                                             <div class="row">
-                                                <div class="col-11" >
-                                                    <img [src]= "comment?.image == null || comment?.image == '' ? '../../../assets/users/user.png' : imgUrl + comment?.image"  class="img-responsive rounded-circle" alt="user"
-                                                        style="border:1px solid gray;width:50px;height:45px">
-                                                    <div class="wid-u-info">
+                                                <div class="col-12" >
+                                                    <img [src]= "comment?.image == null || comment?.image == '' ? '../../../assets/users/user.png' : imgUrl + comment?.image"  
+                                                    class="img-responsive rounded-circle" alt="user"
+                                                        style="border:1px solid gray;width:50px;height:45px;margin-left: 7px;">
+                                                    <!-- <div class="wid-u-info"> -->
                                                         <div>
                                                             <h4 class="m-t-5 m-b-5" style="color:green">{{comment?.byUser}}</h4>
                                                             <p class="m-b-5 font-13">
@@ -147,28 +141,38 @@
                                                                 &nbsp;( &nbsp;{{comment?.createdDateM | amLocale:'ar' | amTimeAgo}}&nbsp;)
                                                             </p>                                                            
                                                         </div>                                                
-                                                    </div>
-                                                    <div style="margin-right: 90px;">
+                                                    <!-- </div> -->
+                                                    <div style="margin-right: 55px;">
                                                         <p class="m-b-5 font-13" style="color:black">
                                                             {{comment?.comment}}
                                                         </p>
                                                     </div>
+                                                    <div>
+                                                        <button class="btn btn-sm btn-radius btn-delete" style="margin-right: 55px;margin-top: 6px;"
+                                                            type="submit" (click)="openConfirmDelete(deleteCommentTemplate, comment.id)">
+                                                            حذف
+                                                        &nbsp;<i class="fas fa-trash"></i>
+                                                </button>
+                                                    </div>
+                                                  
                                                 </div> 
-                                                <div [hidden]="userRole == 'UserAccount'" class="col-1"  style="text-align: left;padding-top: 10px">
-                                                    <button class="btn btn-sm btn-radius" style="background-color:rgb(185, 42, 24);color:white;padding-top: 6px;padding-left: 15px;padding-right: 15px"
+
+                                                <!-- <div class="col-1 col-delete" [hidden]="userRole == 'UserAccount'" >
+                                                    <button class="btn btn-sm btn-radius btn-delete" 
                                                         type="submit" (click)="openConfirmDelete(deleteCommentTemplate, comment.id)">
                                                         حذف
                                                         &nbsp;<i class="fas fa-trash"></i>
-                                                </button>
-                                                </div>                                                                                
-                                            </div>                                                                                      
+                                                    </button>
+                                                </div>  -->
+                                            </div> 
                                      </div>
         
                                    </div>
                                 </div>
 
+                                <!-- pagging -->
                                 <div class="row" *ngIf="comments.data?.length > 0" >
-                                        <div class="col-7" style="text-align: left;margin-top: 23px;height: 40px">
+                                        <div class="col-12" style="text-align: center;margin-top: 23px;height: 40px">
                                             <pagination-controls 
                                             id ="blogComments"
                                             class="my-pagination" 
@@ -183,7 +187,7 @@
                                             screenReaderCurrentLabel="You're on page">
                                         </pagination-controls>
                                     </div>
-                                    <div class="col-5" style="text-align: right;margin-top: 23px;height: 40px;padding-top: 3px">
+                                    <div class="col-12" style="text-align: center;margin-top: 23px;padding-top: 3px">
                                         <i class="fa fa-spinner fa-spin" style="font-size:20px;color:#0c6418;" *ngIf="loadingData"></i>
                                     </div>
                                 </div>                             

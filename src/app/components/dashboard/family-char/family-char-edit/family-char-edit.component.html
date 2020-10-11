@@ -34,17 +34,24 @@
 
         <!-- status -->
         <div class="col-xl-2 col-md-2">
-            <div *ngIf="familyChar.isAccepted" style="text-align: center;">
+            <div *ngIf="familyChar.isAccepted == true" style="text-align: center;">
                 الحالة
                 <div>
                     <span class="badge badge-success" style="font-size: 11px;padding: 6px">تم القبول
                     </span>
                 </div>
             </div>
-            <div *ngIf="!familyChar.isAccepted" style="text-align: center;">
+            <div *ngIf="familyChar.isAccepted == null" style="text-align: center;">
                 الحالة
                 <div>
                     <span class="badge badge-inverse" style="font-size: 11px;padding: 6px">قيد الانتظار
+                    </span>
+                </div>
+            </div>
+            <div *ngIf="familyChar.isAccepted == false"  class="status-align">
+                <div>
+                    <span class="badge badge-danger"
+                        style="font-size: 11px;padding: 6px">مرفوضة
                     </span>
                 </div>
             </div>

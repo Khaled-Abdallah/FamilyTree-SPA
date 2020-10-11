@@ -1,0 +1,55 @@
+
+@media all and (max-width: 767px){
+    .search-mob{
+        width: 95%;
+    }
+
+    .btn-mob{
+        width: 100%;
+    }
+    
+    .btn-showAll-mob{
+        width: 29%;
+    }
+
+    .last-btn{
+        width: 95%;
+        margin-bottom: 6px;
+    }
+
+    .pagging-style{
+        text-align: center;
+        margin-top: 10px;
+        height: 10px;
+    }
+    
+    .loading-pagging{
+        text-align: center;
+        margin-top: 5px;
+        height: 10px;
+        padding-top: 3px
+    }
+
+    .status-align{
+        text-align: right;
+        margin-right: 6px;
+    }
+}
+
+/* =========================================== */
+.pagging-style{
+    text-align: center;
+    margin-top: 10px;
+    height: 30px;
+}
+
+.loading-pagging{
+    text-align: center;
+    margin-top: 5px;
+    height: 10px;
+    padding-top: 3px
+}
+
+.status-align{
+    text-align: center
+}

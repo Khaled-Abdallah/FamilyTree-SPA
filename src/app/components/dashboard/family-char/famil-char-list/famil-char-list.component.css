@@ -31,7 +31,13 @@
     }
 
     .last-btn{
-        width: 95%;
+        width: 90%;
+        margin-bottom: 6px;
+    }
+
+    .btn-details{
+        width: 80%;
+        margin-bottom: 6px;
     }
 
     .loading-search{
