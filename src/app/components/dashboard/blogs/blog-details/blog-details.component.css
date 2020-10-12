@@ -5,11 +5,21 @@
   }
 
   .custome-style{
-    display: inline;
+    display:inline ;
+  }
+
+  .btn-details{
+    width: 98%;
+    margin-bottom: 3px;
   }
 
 }
 /* ========================= */
+
+.btn-details{
+  padding-top: 6px;padding-left: 15px;padding-right: 15px;
+}
+
 .member-tabset > .nav-tabs{
     margin-right: -2px;
   }

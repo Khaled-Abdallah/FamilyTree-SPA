@@ -229,24 +229,26 @@
                                                 <!-- <td>{{ userCom?.comment | slice:0:50 }} ....</td> -->
                                                 
                                                 <td class="align-middle" style="text-align: center">
-                                                    <button (click)="getUserComment(commentDetailsTemplate,userCom?.id)" class="btn btn-sm btn-radius btn-bgcolor"
-                                                        style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                    <button (click)="getUserComment(commentDetailsTemplate,userCom?.id)" 
+                                                        class="btn btn-sm btn-radius btn-bgcolor btn-details"
                                                         type="button">
-                                                        تفاصيل التعليق
+                                                        تفاصيل 
                                                         &nbsp;
                                                         <i class="fas fa-info-circle"></i>
                                                     </button> &nbsp;
 
-                                                    <button [hidden]="userRole == 'UserAccount'" (click)="acceptBlogUserComment(blogDetailsId, userCom.id, true )" class="btn btn-sm btn-radius btn-bgcolor"
-                                                    style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
-                                                    type="button">
+                                                    <button [hidden]="userRole == 'UserAccount'" 
+                                                        (click)="acceptBlogUserComment(blogDetailsId, userCom.id, true )" 
+                                                        class="btn btn-sm btn-radius btn-bgcolor btn-details"
+                                                        type="button">
                                                     قبول
                                                     &nbsp;<i class="fa fa-check" aria-hidden="true"></i>
                                                         <i class="fa fa-spinner fa-spin" style="font-size:15px;color: white" *ngIf="loadingAcceptUserCommentData == userCom.id"></i>
                                                 </button>&nbsp;
 
-                                                <button [hidden]="userRole == 'UserAccount'" (click)="refusalBlogUserComment(blogDetailsId, userCom.id, false )" class="btn btn-sm btn-radius btn-bgcolor"
-                                                style="padding-top: 6px;padding-left: 15px;padding-right: 15px"
+                                                <button [hidden]="userRole == 'UserAccount'" 
+                                                    (click)="refusalBlogUserComment(blogDetailsId, userCom.id, false )" 
+                                                    class="btn btn-sm btn-radius btn-bgcolor btn-details"
                                                 type="button">
                                                 رفض
                                                 &nbsp;<span class="fa fa-times"></span>
