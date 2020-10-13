@@ -242,6 +242,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  changeRoute(url) {
+    debugger
+    this.router.navigate(['/admin', 'family-tree']);
+    //this.router.navigateByUrl('/admin/family-tree', { skipLocationChange: true });
+    //setTimeout(() => this.router.navigate(url));
+  }
  
 
 }

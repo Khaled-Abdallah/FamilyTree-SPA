@@ -5,6 +5,7 @@ import { AlertifyService } from 'src/app/services/alertify.service';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { CustomValidationService } from 'src/app/services/custom-validation.service';
 
 @Component({
   selector: 'app-register',
@@ -26,8 +27,8 @@ export class RegisterComponent implements OnInit {
     private modalService: ModalService,
     private alertifyService: AlertifyService,
     private fb: FormBuilder,
-    private fileUploadService: FileUploadService) {
-        
+    private fileUploadService: FileUploadService,
+    private customValidationService: CustomValidationService){
      }
 
   ngOnInit() {
@@ -42,12 +43,12 @@ export class RegisterComponent implements OnInit {
       parentId: [, [Validators.required]],
       genderId: [, [Validators.required]],
       fullName: [, [Validators.required]],
-      userName: [, [Validators.required, Validators.pattern('^[A-Za-z0-9_-]+$')]],
+      userName: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9_-]+$')], this.customValidationService.userNameExsist.bind(this)],
       password: [, [Validators.required, Validators.minLength(6), , Validators.maxLength(20)]],
-      email: [, [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$')]],
-      phoneNumber: [, [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
-      birthDateM: [ ,[Validators.required]],
-      birthDateH: [,]      
+      email: [, [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$')],this.customValidationService.emailExsist.bind(this)],
+      phoneNumber: [, [Validators.required, Validators.minLength(10), Validators.maxLength(11)], this.customValidationService.phoneExsist.bind(this)],
+      birthDateM: [],
+      birthDateH: []      
     });
     this.bsConfig = {
       containerClass: 'theme-green',

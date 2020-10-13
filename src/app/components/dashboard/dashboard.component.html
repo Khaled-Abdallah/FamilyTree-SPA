@@ -130,15 +130,25 @@
                     </li> -->
 
                     <li class="has_sub">
-                            <a [routerLink]="['/admin','family-tree']" class="waves-effect" routerLinkActive="active">
+                            <a  
+                                [routerLink]="['/admin','family-tree']" 
+                                class="waves-effect" routerLinkActive="active">
                                 <i class="fa fa-tree" aria-hidden="true"></i>
                                 <span style="font-size: 17px"> شجرة العائلة</span> 
                             </a>
+                            <!-- <a  
+                            (click)="changeRoute(url)"
+                            [routerLink]="['/admin','family-tree']" 
+                            class="waves-effect" routerLinkActive="active">
+                            <i class="fa fa-tree" aria-hidden="true"></i>
+                            <span style="font-size: 17px"> شجرة العائلة</span> 
+                        </a> -->
                         </li>
                    
                     <li class="has_sub">
                         <a [routerLink]="['/admin','family-characters']" class="waves-effect" routerLinkActive="active">
-                            <i class="fas fa-user-cog"></i><span style="font-size: 17px">شخصيات العائلة</span>
+                            <i class="fas fa-address-card"></i>
+                            <span style="font-size: 17px">شخصيات العائلة</span>
                         </a>
                     </li>
 
@@ -177,7 +187,9 @@
                         </li>
 
                     <li class="has_sub">
-                        <a [routerLink]="['/admin','terms']"  routerLinkActive="active" class="waves-effect"><i class="fas fa-info"></i>
+                        <a [routerLink]="['/admin','terms']"  routerLinkActive="active" class="waves-effect">
+                            <i class="fas fa-info"></i>
+                            <!-- <i class="icon-legal"></i> -->
                             <span style="font-size: 17px"> الشروط والاحكام</span> 
                         </a>                      
                     </li>
@@ -189,7 +201,8 @@
                         </li>                 
                         
                         <li class="has_sub" [hidden]="userRole == 'UserAccount' || userRole == 'Admin'">
-                            <a [routerLink]="['/admin','register']"  routerLinkActive="active" class="waves-effect"><i class="fas fa-cogs"></i>
+                            <a [routerLink]="['/admin','register']"  routerLinkActive="active" class="waves-effect">
+                                <i class="fa fa-registered" aria-hidden="true"></i>
                                 <span style="font-size: 17px"> التسجيل </span> 
                             </a>                        
                         </li>

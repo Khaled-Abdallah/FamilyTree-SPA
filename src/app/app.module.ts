@@ -82,6 +82,7 @@ import { ValidateEqualModule } from 'ng-validate-equal';
 import { VerticalTreeComponent } from './components/dashboard/vertical-tree/vertical-tree.component';
 import { RegisterComponent } from './components/dashboard/register/register.component';
 import { FirtSettingsComponent } from './components/dashboard/firt-settings/firt-settings.component';
+import { CustomValidationService } from './services/custom-validation.service';
 
 
 export function getToken() {
@@ -200,6 +201,7 @@ export function getToken() {
     RefusalCommentsResolver,
     RefusalNewsCommentsResolver,
     FamilCharWattingResolverService,
+    CustomValidationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -84,10 +84,6 @@ export class AuthService {
       }
     }
 
-    checkExsist(type: string, feild: any){ 
-      return this.http.get(this.baseUrl + 'checkExsist/' + type + '/' + feild);
-    }
-
     //for users
     updateUser(user: any) {
       return this.http.post(this.baseUrl + 'updateUser' , user)

@@ -19,6 +19,11 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  checkExsists(type: string, feild: any){ 
+    debugger
+    return this.http.get(this._accounturl + 'checkExsist/' + type + '/' + feild);
+  }
+
   getUserPermission(pageNo: number): any {
     return this.http.get(this._url + 'getUserPermission?pageNo=' + pageNo);
   }

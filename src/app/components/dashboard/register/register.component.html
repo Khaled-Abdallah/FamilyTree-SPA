@@ -94,12 +94,20 @@
                                         placeholder="  اسم المستخدم ( بالانجليزى)">
 
 
-                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
-                                        class="alert" *ngIf="!registerForm.get('userName').valid &&
-                                                registerForm.get('userName').touched">
-                                        <div *ngIf="registerForm.get('userName').errors?.required">اسم
-                                            المستخدم مطلوب</div>
-                                            <div *ngIf="registerForm.get('userName').errors?.pattern">عربى من فضلك</div>
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" *ngIf="!registerForm.get('userName').valid && registerForm.get('userName').touched">
+                                        <div *ngIf="registerForm.get('userName').errors?.required">
+                                             اسم المستخدم مطلوب
+                                        </div>
+                                        <div *ngIf="registerForm.get('userName').errors?.pattern">
+                                            عفوا استخدم اللغة الانجليزية فقط
+                                        </div>
+                                        <div *ngIf="registerForm.get('userName').pending">
+                                            جار فحص اسم المستخدم
+                                            <i class="fa fa-spinner fa-spin" style="font-size:16px;"></i>
+                                        </div>
+                                        <div *ngIf="registerForm.get('userName').errors?.userNameExsist">
+                                              عفوا اسم المستخدم موجود مسبفا
+                                       </div>
                                     </div>
                                 </div>
                                 <div class="col-6"
@@ -137,13 +145,16 @@
                                         *ngIf="!registerForm.get('email').valid &&
                                                                                                                                                                 registerForm.get('email').touched">
                                         <div *ngIf="registerForm.get('email').pending">جار فحص البريد
-                                            الاكترونى ......</div>
+                                            الاكترونى
+                                            <i class="fa fa-spinner fa-spin" style="font-size:16px;"></i>
+                                        </div>
                                         <div *ngIf="registerForm.get('email').errors?.required">البريد
                                             الاكترونى مطلوب</div>
                                         <div *ngIf="registerForm.get('email').errors?.pattern">صيغة
                                             البريد الاكترونى غير صحيحة</div>
-                                        <!-- <div *ngIf="registerForm.get('email').errors?.emailUnique">البريد
-                                                الاكترونى موجود مسبقا</div> -->
+                                        <div *ngIf="registerForm.get('email').errors?.emailExsist">
+                                            عفوا البريد الاكترونى موجود مسبقا 
+                                        </div>
                                     </div>
                                 </div>
 
@@ -157,16 +168,19 @@
                                     <label class="control-label"> رقم الجوال</label>
                                     <input class="form-control" formControlName="phoneNumber" type="text"
                                         placeholder="رقم الجوال" (keypress)="checkMobilNumber($event)">
-                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold"
-                                        class="alert"
-                                        *ngIf="!registerForm.get('phoneNumber').valid &&
-                                                                                                            registerForm.get('phoneNumber').touched">
+                                    <div style="margin-top:6px;margin-bottom:-15px;color:red;font-weight: bold" class="alert" *ngIf="!registerForm.get('phoneNumber').valid &&  registerForm.get('phoneNumber').touched">
+                                        <div *ngIf="registerForm.get('phoneNumber').pending">جار فحص رقم الجوال
+                                            <i class="fa fa-spinner fa-spin" style="font-size:16px;"></i>
+                                        </div>
                                         <div *ngIf="registerForm.get('phoneNumber').errors?.required">
                                             رقم الجوال مطلوب </div>
                                         <div *ngIf="registerForm.get('phoneNumber').errors?.maxlength">رقم
                                             الجوال لا يزيد عن 10 رقم</div>
                                         <div *ngIf="registerForm.get('phoneNumber').errors?.minlength">رقم
                                             الجوال لا يقل عن 10 رقم</div>
+                                            <div *ngIf="registerForm.get('phoneNumber').errors?.phoneExsist">
+                                                عفوا رقم الجوال موجود مسبقا 
+                                            </div>
                                     </div>
 
                                 </div>

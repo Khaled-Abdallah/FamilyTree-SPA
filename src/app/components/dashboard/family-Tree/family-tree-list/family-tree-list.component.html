@@ -1,7 +1,12 @@
 <div class="row" style="margin-bottom: 7px;margin-top: -8px">
     <div class="col-12">
         <h4 class="page-title" style="font-size: 18px;padding-right: 5px; ">شجرة العائلة
-        {{ treeTitle }} 
+        {{ treeTitle }} &nbsp;&nbsp;
+        <button *ngIf="showUserDetails" class="btn btn-radius btn-sm btn-bgcolor" type="button" (click)="returnToFamilyTree()">
+            الذهاب الى شجرة العائلة
+            &nbsp;
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
         </h4>
     </div>
 </div>
@@ -17,7 +22,7 @@
 
                                 <!-- tree -->                               
                                      <div class="col-12" style="margin-top: 10px;border:1px solid #e4e9e4;padding: 10px;">
-                                        <input #box (keyup)="find(box.value)" class="form-control">
+                                        <input #box (keyup)="find(box.value)" class="form-control" placeholder="بحث بالاسم الثلاثى">
                                             <app-vertical-tree 
                                             [data]="treeData" 
                                             [width]="width" 
@@ -196,7 +201,7 @@
 
 
 <!-- return button -->
-<div class="row" *ngIf="showUserDetails" >
+<!-- <div class="row" *ngIf="showUserDetails" >
        
     <div class="col-12">
             <div class="card">
@@ -210,7 +215,7 @@
                 </div>
             </div>
 </div>
-</div>
+</div> -->
 
 <ng-template #detailsTemplate>
     <div class="modal-header">

@@ -60,7 +60,7 @@ export class FamilyTreeListComponent implements OnInit {
   _parentId: Number = 0;
   userRole: string = "";
 
-  depthLimit = 4;
+  depthLimit = 20;
   treeId="ftree";
   width=window.innerWidth;
   height=window.innerHeight;
@@ -236,7 +236,7 @@ export class FamilyTreeListComponent implements OnInit {
             console.log(this.userData);
             console.log(this.userData.userInfo.genderId);
 
-            this.treeTitle = "- تفاصيل الشخصية";
+            this.treeTitle = "- التفاصيل";
             this.showUserDetails = true;
             this.showFamilyTree = false;  
           }, 50);  
@@ -328,6 +328,32 @@ export class FamilyTreeListComponent implements OnInit {
   }
 
   returnToFamilyTree(){
+    // this.spinner.show();
+
+    // this.showUserDetails = false;
+    // this.showFamilyTree = true;
+    // this.userId = 0;
+    // this.treeTitle = "";
+
+    // this.userService.getFamilyTreeForMobile()
+    //   .subscribe(_users => {
+    //     setTimeout(() => {
+    //       this.familyTree = _users;
+    //       this.treeData = this.limitTreeDepth(this.copyObj(this.familyTree[0]),this.depthLimit);
+    //       this.spinner.hide();     
+    //     }, 1000); 
+    // },() => {
+    //   setTimeout(() => {
+    //     this.alertifyService.tError("خطأ فى تحميل البيانات ... يرجى  المحاولة مرة اخرى");  
+    //     this.spinner.hide();
+    //   }, 1000);       
+    // }
+    // ,() => {
+    //     setTimeout(() => {          
+    //       this.spinner.hide();     
+    //     }, 1000);                   
+    // });
+
     this.showUserDetails = false;
     this.showFamilyTree = true;
     this.userId = 0;
